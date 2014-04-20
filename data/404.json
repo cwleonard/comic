@@ -1,0 +1,17 @@
+{
+  "cells": [
+    {
+      "bubble": {
+    	  "text": "Oops, can't find that comic!",
+    	  "top": 15,
+    	  "left": 90
+      },
+      "img": {
+    	  "src": "frog.svg",
+    	  "width": 150,
+    	  "top": 100,
+    	  "left": 260
+      }
+    }
+  ]
+}

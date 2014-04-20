@@ -1,0 +1,68 @@
+.bubble {
+	position: absolute;
+	width: 200px;
+	padding: 10px;
+	text-align: center;
+	background: #FFFFFF;
+	-webkit-border-radius: 28px;
+	-moz-border-radius: 28px;
+	border-radius: 28px;
+	border: #000000 solid 3px;
+	font-family: 'Sniglet', sans-serif;
+	font-size: initial;
+	line-height: initial;
+	color: #000000;
+	box-sizing: initial;
+	-moz-box-sizing: initial;
+	-webkit-box-sizing: initial;
+}
+
+.bubble:after {
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-width: 34px 15px 0;
+	border-color: #FFFFFF transparent;
+	display: block;
+	width: 0;
+	z-index: 1;
+	bottom: -32px;
+	left: 159px;
+	box-sizing: initial;
+	-moz-box-sizing: initial;
+	-webkit-box-sizing: initial;
+}
+
+.bubble:before {
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-width: 36px 17px 0;
+	border-color: #000000 transparent;
+	display: block;
+	width: 0;
+	z-index: 0;
+	bottom: -38px;
+	left: 157px;
+	box-sizing: initial;
+	-moz-box-sizing: initial;
+	-webkit-box-sizing: initial;
+}
+
+.box {
+	width: 450px;
+	height: 280px;
+	border: #BBBBBB solid 3px;
+	margin: auto;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 5px 5px 10px #CCCCCC;
+	border-radius: 7px;
+	margin-bottom: 5px;
+	margin-top: 10px;
+	background-color: #FFFFFF;
+}
+
+.box img {
+	position: absolute;
+}

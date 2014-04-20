@@ -1,0 +1,31 @@
+{
+  "cells": [
+    {
+      "bubble": {
+    	  "text": "Is running a server farm more like running a dairy farm, or a turkey farm?",
+    	  "top": 15,
+    	  "left": 90
+      },
+      "img": {
+    	  "src": "frog.svg",
+    	  "width": 150,
+    	  "top": 120,
+    	  "left": 260
+      }
+    },
+    {
+      "bubble": {
+    	  "text": "We need backgrounds in these boxes.",
+    	  "width": 280,
+    	  "top": 25,
+    	  "left": 100
+      },
+      "img": {
+    	  "src": "science.svg",
+    	  "width": 150,
+    	  "top": 100,
+    	  "left": 130
+      }
+    }
+  ]
+}
