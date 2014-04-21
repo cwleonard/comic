@@ -11,24 +11,55 @@ var conn = mysql.createConnection(dbconf);
 
 conn.connect();
 
-app.set('view engine', 'jade');
+function prevComic(d, cb) {
+	
+	var sql = 'SELECT id, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
+		'WHERE pub_date = (SELECT MAX(pub_date) FROM comic_data WHERE pub_date < ?)';
+	conn.query(sql, [d], function(err, rows) {
+		
+		if (err) {
+			console.log(err);
+			cb(null);
+		} else {
+		
+			if (rows.length > 0) {
+				cb(rows[0].id);
+			} else {
+				cb(null);
+			}
+			
+		}
+		
+	});
+	
+}
 
-// logging comes first
-app.use(function(req, res, next) {
-	console.log('%s %s', req.method, req.url);
-	next();
-});
+function nextComic(d, cb) {
+	
+	var sql = 'SELECT id, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
+		'WHERE pub_date = (SELECT MIN(pub_date) FROM comic_data WHERE pub_date > ?)';
+	conn.query(sql, [d], function(err, rows) {
+		
+		if (err) {
+			console.log(err);
+			cb(null);
+		} else {
+		
+			if (rows.length > 0) {
+				cb(rows[0].id);
+			} else {
+				cb(null);
+			}
+			
+		}
+		
+	});
+	
+}
 
-app.use(compress);
-
-// if nothing explicit requested, send index.html
-app.get('/', function(req, res) {
-	res.sendfile('./public/index.html');
-});
-
-app.get('/test/:n', function(req, res) {
-
-	conn.query('SELECT data FROM comic_data WHERE id = ?', [req.params.n], function(err, rows) {
+function getComicFromDB(sql, req, res) {
+	
+	conn.query(sql, function(err, rows) {
 		
 		if (err) {
 			
@@ -38,7 +69,22 @@ app.get('/test/:n', function(req, res) {
 			
 			if (rows.length > 0) {
 				
-				res.render('comic', JSON.parse(rows[0].data));
+				var obj = JSON.parse(rows[0].data);
+				obj.pubDate = rows[0].pd;
+				
+				prevComic(rows[0].pub_date, function(p) {
+					
+					obj.prevDate = p;
+					
+					nextComic(rows[0].pub_date, function(n) {
+
+						obj.nextDate = n;
+						res.render('comic', obj);
+						
+					});
+					
+					
+				});
 				
 			} else {
 				
@@ -58,7 +104,36 @@ app.get('/test/:n', function(req, res) {
 			}
 			
 		}
+		
 	});
+
+}
+
+
+app.set('view engine', 'jade');
+
+// logging comes first
+app.use(function(req, res, next) {
+	console.log('%s %s', req.method, req.url);
+	next();
+});
+
+app.use(compress);
+
+// if nothing explicit requested, send most recent comic
+app.get('/', function(req, res) {
+	
+	var sql = 'SELECT pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
+		'WHERE pub_date = (SELECT MAX(pub_date) FROM comic_data)';
+	getComicFromDB(sql, req, res);
+	
+});
+
+app.get('/:n', function(req, res) {
+
+	var sql = 'SELECT pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data ' +
+		'FROM comic_data WHERE id = ' + conn.escape(req.params.n);
+	getComicFromDB(sql, req, res);
 	
 });
 
@@ -80,6 +155,11 @@ app.get('/images/:img', function(req, res) {
 });
 
 app.use(express.static('public'));
+
+app.use(function(err, req, res, next) {
+	console.error(err.stack);
+	res.send(500, 'Something broke!');
+});
 
 var server = app.listen(3000, function() {
 	console.log('listening on port %d', server.address().port);
