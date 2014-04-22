@@ -18,6 +18,14 @@ $(function(){
 		e.preventDefault();
 		$('body,html').animate({scrollTop: 0}, 500);
 	});
-});	
+});
 
 /* Scroll To Top Ends */
+
+function replaceComic(url) {
+	
+	$.get(url, function(data) {
+		$("#comicArea").html(data);
+	}, 'html');
+	
+}

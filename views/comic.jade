@@ -5,6 +5,6 @@
 		img(style='top: ' + cells[c].img.top + 'px; left: ' + cells[c].img.left + 'px;'+(cells[c].img.width ? ' width: ' + cells[c].img.width + 'px;' : ''),src='/images/'+cells[c].img.src,alt='frog')
 p.pubdate= 'Published ' + pubDate
 if prevDate
-	p.pubdate!= '<a href="' + prevDate + '">previous</a>'
+	p.pubdate!= '<a href="#" onclick="replaceComic(\'/chtml/' + prevDate + '\');">previous</a>'
 if nextDate
-	p.pubdate!= '<a href="' + nextDate + '">next</a>'
+	p.pubdate!= '<a href="#" onclick="replaceComic(\'/chtml/' + nextDate + '\');">next</a>'
