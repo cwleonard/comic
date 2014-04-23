@@ -2,7 +2,8 @@
 	div.box
 		p.bubble(style=(cells[c].bubble.width ? 'width: ' + cells[c].bubble.width + 'px;' : '') + 'top: ' + cells[c].bubble.top + 'px; left: ' + cells[c].bubble.left + 'px;')
 			= cells[c].bubble.text
-		img(style='top: ' + cells[c].img.top + 'px; left: ' + cells[c].img.left + 'px;'+(cells[c].img.width ? ' width: ' + cells[c].img.width + 'px;' : ''),src='/images/'+cells[c].img.src,alt='frog')
+		- for (var i in cells[c].imgs)
+			img(style='top: ' + cells[c].imgs[i].top + 'px; left: ' + cells[c].imgs[i].left + 'px;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + 'px;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
 p.pubdate= 'Published ' + pubDate
 if prevDate
 	p.pubdate!= '<a href="#" onclick="replaceComic(\'/chtml/' + prevDate + '\');">previous</a>'
