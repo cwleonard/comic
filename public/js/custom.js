@@ -29,3 +29,11 @@ function replaceComic(url) {
 	}, 'html');
 	
 }
+
+$(function() {
+
+    var e = 'c' + 'a' + 's' + 'e' + 'y' + '@' + 'amphibian.com';
+    var s = $("#mailme");
+    s.attr('href','mailto:' + e);
+
+});
