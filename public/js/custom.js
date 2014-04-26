@@ -42,12 +42,31 @@ var animated = [];
 function setupAnimation() {
 	animated = [];
 	$("img[animated='true'").each(function(idx, elem) {
+		
+		var trvl = Number($(elem).attr('travel'));
+		
+		// for now, everything starts by moving left
+		elem.direction = -1;
+		
+		elem.pos = Number($(elem).css('left').replace('px', ''));
+		
+		if (elem.direction == -1) {
+			// when moving left, right bound is starting location, left bound is trvl less than that
+			elem.rightBound = elem.pos;
+			elem.leftBound = elem.rightBound - trvl;
+		} else {
+			// when moving right, left bound is starting location, right bound is trvl more than that
+			elem.leftBound = elem.pos;
+			elem.rightBound = elem.leftBound + trvl;
+		}
+		
+		elem.pps = Number($(elem).attr('speed'));
+		
 		animated.push(elem);
 	});
 }
 
-$(function () {
-	
+$(function () { 
 	var lastTime = null;
 	
 	function run(timestamp) {
@@ -61,31 +80,26 @@ $(function () {
 		
 		animated.forEach(function (elem, idx) {
 				
-			var pps = Number($(elem).attr('speed'));
-			var m = pps * (elapsed / 1000);
+			var m = elem.pps * (elapsed / 1000);
 
-			var trvl = Number($(elem).attr('travel'));
+			// calculate new position
+			var np = elem.pos + (m * elem.direction);
 			
-			var l = elem.left || Number($(elem).css('left').replace('px', ''));
-			
-			if (!elem.moved) {
-				elem.moved = m;
-			} else {
-				elem.moved += m;
-			}
-			
-			if (!elem.direction) {
-				elem.direction = 1;
-			}
-			
-			if (elem.moved >= trvl) {
+			while (elem.leftBound > np || elem.rightBound < np) {
+				
+				// reverse direction
 				elem.direction *= -1;
-				elem.moved = 0;
+				
+				if (elem.leftBound > np) {
+					np = elem.leftBound + (elem.leftBound - np);
+				} else if (elem.rightBound < np) {
+					np = elem.rightBound - (np - elem.rightBound);
+				}
+				
 			}
 			
-			var l3 = l - (m * elem.direction);
-			$(elem).css('left', l3 + 'px');
-			elem.left = l3;
+			$(elem).css('left', np + 'px');
+			elem.pos = np;
 			
 		});
 			
