@@ -93,7 +93,7 @@ app.use(function(req, res, next){
 		if (err) {
 			next(err);
 		} else {
-			res.render('comic', JSON.parse(data), function(err, str) {
+			res.render('comicpage', JSON.parse(data), function(err, str) {
 				if (err) {
 					next(err);
 				} else {

@@ -6,12 +6,12 @@
     	  "top": 15,
     	  "left": 90
       },
-      "img": {
+      "imgs": [{
     	  "src": "frog.svg",
     	  "width": 150,
     	  "top": 100,
     	  "left": 260
-      }
+      }]
     }
   ]
 }

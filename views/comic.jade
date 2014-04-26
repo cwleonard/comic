@@ -3,7 +3,7 @@
 		p.bubble(style=(cells[c].bubble.width ? 'width: ' + cells[c].bubble.width + 'px;' : '') + 'top: ' + cells[c].bubble.top + 'px; left: ' + cells[c].bubble.left + 'px;')
 			= cells[c].bubble.text
 		- for (var i in cells[c].imgs)
-			img(move=cells[c].imgs[i].move ? 'true' : 'false',left=cells[c].imgs[i].left,style='top: ' + cells[c].imgs[i].top + 'px; left: ' + cells[c].imgs[i].left + 'px;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + 'px;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
+			img(animated=cells[c].imgs[i].move ? 'true' : 'false',speed='15',travel='50',style='top: ' + cells[c].imgs[i].top + 'px; left: ' + cells[c].imgs[i].left + 'px;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + 'px;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
 p.pubdate= 'Published ' + pubDate
 if prevDate
 	p.pubdate!= '<a href="#" onclick="replaceComic(\'/chtml/' + prevDate + '\');">previous</a>'

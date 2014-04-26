@@ -38,12 +38,17 @@ $(function() {
 
 });
 
-$(function() {
+var animated = [];
+function setupAnimation() {
+	animated = [];
+	$("img[animated='true'").each(function(idx, elem) {
+		animated.push(elem);
+	});
+}
+
+$(function () {
 	
 	var lastTime = null;
-	var counter1 = 0;
-	var counter2 = 0;
-	var direction = 1;
 	
 	function run(timestamp) {
 
@@ -54,26 +59,36 @@ $(function() {
 		elapsed = timestamp - lastTime;
 		lastTime = timestamp;
 		
-		move = false;
-		counter1 += elapsed;
-		counter2 += elapsed;
-		if (counter1 >= 100) {
-			counter = 0;
-			move = true;
-		}
-		if (counter2 >= 1500) {
-			counter2 = 0;
-			direction *= -1;
-		}
-		
-		if (move) {
-			$("img[move='true'").each(function(idx, elem) {
-				var l = $(elem).css('left');
-				var l2 = Number(l.replace('px', ''));
-				$(elem).css('left', (l2-direction) + 'px');
-			});
-		}
-		
+		animated.forEach(function (elem, idx) {
+				
+			var pps = Number($(elem).attr('speed'));
+			var m = pps * (elapsed / 1000);
+
+			var trvl = Number($(elem).attr('travel'));
+			
+			var l = elem.left || Number($(elem).css('left').replace('px', ''));
+			
+			if (!elem.moved) {
+				elem.moved = m;
+			} else {
+				elem.moved += m;
+			}
+			
+			if (!elem.direction) {
+				elem.direction = 1;
+			}
+			
+			if (elem.moved >= trvl) {
+				elem.direction *= -1;
+				elem.moved = 0;
+			}
+			
+			var l3 = l - (m * elem.direction);
+			$(elem).css('left', l3 + 'px');
+			elem.left = l3;
+			
+		});
+			
 		var me = this;
 		window.requestAnimationFrame(function(e) { run(e); });
 		
@@ -82,4 +97,8 @@ $(function() {
 	var me = this;
 	window.requestAnimationFrame(function(e) { run(e); });
 	
+});
+
+$(function() {
+	setupAnimation();
 });
