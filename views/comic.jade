@@ -1,9 +1,9 @@
 - for (var c in cells)
-	div.box
+	div.box(style=cells[c].background ? 'background-color: ' + cells[c].background : '')
 		p.bubble(style=(cells[c].bubble.width ? 'width: ' + cells[c].bubble.width + 'px;' : '') + 'top: ' + cells[c].bubble.top + 'px; left: ' + cells[c].bubble.left + 'px;')
 			= cells[c].bubble.text
 		- for (var i in cells[c].imgs)
-			img(animated=cells[c].imgs[i].move ? 'true' : 'false',speed='15',travel='50',style='top: ' + cells[c].imgs[i].top + 'px; left: ' + cells[c].imgs[i].left + 'px;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + 'px;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
+			img(animated=cells[c].imgs[i].move ? 'true' : 'false',speed='15',travel=cells[c].imgs[i].travel ? cells[c].imgs[i].travel : '0',direction=cells[c].imgs[i].direction ? cells[c].imgs[i].direction : '',style='top: ' + cells[c].imgs[i].top + 'px; left: ' + cells[c].imgs[i].left + 'px;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + 'px;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
 p.pubdate= 'Published ' + pubDate
 if prevDate
 	p.pubdate!= '<a href="#" onclick="replaceComic(\'/chtml/' + prevDate + '\');">previous</a>'
