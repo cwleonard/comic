@@ -67,6 +67,34 @@
 	position: absolute;
 }
 
+div.info {
+	width: 450px;
+	margin: auto;
+	position: relative;
+	margin-top: 10px;
+	padding-bottom: 2.2em;
+}
+
+.info p.rnav {
+	font-size: 1.8em;
+	display: inline;
+	float: right;
+}
+
+.info p.lnav {
+	font-size: 1.8em;
+	display: inline;
+	float: left;
+}
+
+.info a {
+	color: #004400;
+}
+
+.info a:hover,a:focus {
+	color: #009600;
+}
+
 p.pubdate {
 	text-align: center;
 }

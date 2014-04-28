@@ -26,6 +26,7 @@ function replaceComic(url) {
 	
 	$.get(url, function(data) {
 		$("#comicArea").html(data);
+		setupAnimation();
 	}, 'html');
 	
 }
@@ -127,9 +128,16 @@ function setupAnimation() {
 				elem.upperBound = elem.pos;
 				elem.lowerBound = elem.upperBound + trvl;
 				elem.moveFunction = moveUpDown;
+			} else {
+				// unknown direction value
+				elem.moveFunction = function() {
+					// no op
+				};
 			}
 
-			elem.pps = Number($(elem).attr('speed'));
+			var speed = $(elem).attr('speed');
+			speed = speed || '0';
+			elem.pps = Number(speed);
 
 			animated.push(elem);
 
