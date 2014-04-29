@@ -1,0 +1,17 @@
+{
+  "cells": [
+    {
+      "bubble": {
+    	  "text": "Something broke!!",
+    	  "top": 15,
+    	  "left": 90
+      },
+      "imgs": [{
+    	  "src": "frog.svg",
+    	  "width": 150,
+    	  "top": 100,
+    	  "left": 260
+      }]
+    }
+  ]
+}

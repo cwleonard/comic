@@ -1,0 +1,17 @@
+form
+	textarea#data(rows=50,cols=100)
+	button(type='button',onclick='doSave();') save
+script.
+	function doSave() {
+		$.ajax({
+			url: '/data',
+			type: 'POST',
+			data: $('#data').val(),
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'text',
+			success: function(data) {
+				console.log(data);
+			}
+		});
+		
+	}

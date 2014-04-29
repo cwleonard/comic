@@ -31,7 +31,6 @@ app.get('/', function(req, res, next) {
 		}
 	});
 	
-	
 });
 
 // load individual comic pages by id
@@ -68,6 +67,52 @@ app.get('/chtml/:n', function(req, res, next) {
 		}
 	});
 	
+});
+
+app.get('/data/:n', function(req, res, next) {
+
+	cfact.loadById(req.params.n, function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			res.setHeader('Content-Type', 'application/json');
+			res.send(data);
+		} else {
+			res.send(404); // don't use the full-page 404 for missing data
+		}
+	});
+	
+});
+
+app.get('/editor', function(req, res, next) {
+	
+	res.render('editpage', {});
+	
+});
+
+
+app.post('/data', function(req, res, next) {
+
+	// stream in the posted data
+	var data = '';
+	req.setEncoding('utf8');
+	req.on('data', function(chunk) {
+		data += chunk;
+	});
+
+	req.on('end', function() {
+		// we have read the entire POST body
+		cfact.storeData(data, function(err, newid) {
+			if (err) {
+				next(err);
+			} else {
+				res.setHeader('Content-Type', 'text/plain');
+				res.send('data id: ' + newid);
+			}
+		});
+
+	});
+
 });
 
 app.get('/images/:img', function(req, res, next) {
@@ -107,7 +152,19 @@ app.use(function(req, res, next){
 // handle 500
 app.use(function(err, req, res, next) {
 	console.error(err.stack);
-	res.send(500, 'Something broke!');
+	fs.readFile('data/500.json', { encoding: 'utf-8' }, function(err, data) {
+		if (err) {
+			console.error(err.stack);
+		} else {
+			res.render('comicpage', JSON.parse(data), function(err, str) {
+				if (err) {
+					console.error(err.stack);
+				} else {
+					res.send(500, str);
+				}
+			});
+		}
+	});
 });
 
 var server = app.listen(3000, function() {

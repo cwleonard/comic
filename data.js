@@ -152,6 +152,24 @@ module.exports = function(dbconf) {
 				}
 			});
 
+		},
+		
+		storeData: function(data, cb) {
+			
+			conn.query('INSERT INTO comic_data (data) VALUES (?)', [data], function(err, result) {
+				
+				if (err) {
+					cb(err);
+				} else {
+					if (result.affectedRows == 1) {
+						cb(null, result.insertId);
+					} else {
+						cb(new Error('no data inserted!'));
+					}
+				}
+				
+			});
+			
 		}
 
 	};
