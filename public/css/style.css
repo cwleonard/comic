@@ -75,6 +75,14 @@ div.info {
 	padding-bottom: 2.2em;
 }
 
+div#controls {
+	padding-left: 5px;
+}
+
+span.control {
+	padding-left: 15px;
+}
+
 .info p.rnav {
 	font-size: 1.8em;
 	display: inline;

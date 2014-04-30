@@ -3,6 +3,10 @@ html
 	include head
 	body
 		include header
+		div#controls
+			p(style='position: absolute; font-size: 3em;')
+				span.control(onclick='addCell();')!= '<i class="fa fa-plus"></i>'
+				span.control(onclick='doSave2();')!= '<i class="fa fa-save"></i>'
 		div#comicArea
-			include editor
+		include editor
 		include footer
