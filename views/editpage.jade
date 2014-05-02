@@ -3,12 +3,13 @@ html
 	include head
 	link(href='/css/jquery.contextMenu.css',rel='stylesheet')
 	link(href='/css/jquery-ui-1.10.4.min.css',rel='stylesheet')
+	link(href='/css/jquery-editable.css',rel='stylesheet')
 	body
 		include header
 		div#controls
 			p(style='position: absolute; font-size: 3em;')
 				span.control(onclick='addCell();')!= '<i class="fa fa-plus"></i>'
 				span.control(onclick='doSave2();')!= '<i class="fa fa-save"></i>'
-		div#comicArea
+		div#comicArea(style='min-height: 500px;')
 		include editor
 		include footer
