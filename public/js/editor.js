@@ -96,6 +96,8 @@ function addCell() {
 
 function setupMenu(imgSelectOptions) {
 	
+	
+	
 	$.contextMenu({
 		
 		selector: '.box',
@@ -120,21 +122,25 @@ function setupMenu(imgSelectOptions) {
 					var o = $.contextMenu.getInputValues(options, $this.data());
 					var selectedImage = o.pickImage;
 					
-					var d = document.createElement('div');
-					var i = document.createElement('img');
-					
-					$(i).css('height','100px');
-					$(i).css('width','100px');
-					$(i).attr('src', '/images/' + selectedImage);
-					
-					$(d).addClass('divimg');
-					$(d).append(i);
-					
-					// see http://stackoverflow.com/questions/4948582/jquery-draggable-and-resizable
-					$(options.$trigger).append(d);
-					
-					$(d).draggable();
-					$(i).resizable({aspectRatio: true});
+					if (selectedImage) {
+						
+						var d = document.createElement('div');
+						var i = document.createElement('img');
+
+						$(i).css('height','100px');
+						$(i).css('width','100px');
+						$(i).attr('src', '/images/' + selectedImage);
+
+						$(d).addClass('divimg');
+						$(d).append(i);
+
+						// see http://stackoverflow.com/questions/4948582/jquery-draggable-and-resizable
+						$(options.$trigger).append(d);
+
+						$(d).draggable();
+						$(i).resizable({aspectRatio: true});
+
+					}
 
 				}
 			},
@@ -187,6 +193,81 @@ function setupMenu(imgSelectOptions) {
 		}
 		
 	});
+
+	
+	$.contextMenu({
+		
+		selector: '.divimg',
+		items: {
+			width: {
+				name: 'Width',
+				type: 'text',
+				value: ''
+			},
+			left: {
+				name: 'Left',
+				type: 'text',
+				value: ''
+			},
+			top: {
+				name: 'Top',
+				type: 'text',
+				value: ''
+			},
+			sep1: "----------",
+			pickImage: {
+				name: "Select Image",
+				type: 'select',
+				options: imgSelectOptions
+			},
+			addImage: {
+				name: "Change Image",
+				callback: function(key, options) {
+					
+					var $this = this;
+					var o = $.contextMenu.getInputValues(options, $this.data());
+					var selectedImage = o.pickImage;
+					
+					$(options.$trigger).find("img").each(function(idx, elem) {
+						$(elem).attr('src', '/images/' + selectedImage);
+					});
+					
+				}
+			},
+			sep2: "----------",
+			addBubble: {
+				name: "Delete",
+				callback: function(key, options) {
+					console.log(key);
+					$(options.$trigger).remove();
+				}
+			}
+
+		},
+		events: {
+			show: function(opt) {
+				var $this = this;
+				var img = $this.find('img')
+				var w = img.css('width');
+				var t = $this.css('top');
+				var l = $this.css('left');
+				var isrc = img.attr('src');
+				isrc = isrc.substring(isrc.lastIndexOf('/')+1);
+				var d = {
+					width: w,
+					top: t,
+					left: l,
+					pickImage: isrc
+				};
+				$.contextMenu.setInputValues(opt, d);
+			},
+			hide: function(opt) {
+				// do something
+			}
+		}
+		
+	});
+	
 	
 }
 
