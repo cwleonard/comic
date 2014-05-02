@@ -27,7 +27,8 @@
 	width: 0;
 	z-index: 1;
 	bottom: -32px;
-	left: 159px;
+	margin-left: -20px;
+	left: 50%;
 	box-sizing: initial;
 	-moz-box-sizing: initial;
 	-webkit-box-sizing: initial;
@@ -43,7 +44,8 @@
 	width: 0;
 	z-index: 0;
 	bottom: -38px;
-	left: 157px;
+	margin-left: -22px;
+	left: 50%;
 	box-sizing: initial;
 	-moz-box-sizing: initial;
 	-webkit-box-sizing: initial;

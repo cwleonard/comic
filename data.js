@@ -161,13 +161,36 @@ module.exports = function(dbconf) {
 				if (err) {
 					cb(err);
 				} else {
-					if (result.affectedRows == 1) {
+					if (result.affectedRows === 1) {
 						cb(null, result.insertId);
 					} else {
 						cb(new Error('no data inserted!'));
 					}
 				}
 				
+			});
+			
+		},
+		
+		listImages: function(cb) {
+			
+			conn.query('SELECT filename, type FROM comic_img', function(err, rows) {
+				if (err) {
+					cb(err);
+				} else {
+					if (rows.length > 0) {
+						var data = [];
+						for (var i = 0; i < rows.length; i++) {
+							data.push({
+								filename: rows[i].filename,
+								type: rows[i].type
+							});
+						}
+						cb(null, data);
+					} else {
+						cb(null, []);
+					}
+				}
 			});
 			
 		}

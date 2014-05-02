@@ -115,6 +115,21 @@ app.post('/data', function(req, res, next) {
 
 });
 
+app.get('/images', function(req, res, next) {
+	
+	cfact.listImages(function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			res.setHeader('Content-Type', 'application/json');
+			res.send(data);
+		} else {
+			next(new Error('missing image data!')); // this shouldn't happen
+		}
+	});
+	
+});
+
 app.get('/images/:img', function(req, res, next) {
 	
 	cfact.loadImage(req.params.img, function (err, data) {
