@@ -100,6 +100,7 @@ function setupMenu(imgSelectOptions) {
 	
 	$.contextMenu({
 		
+		zIndex: 100,
 		selector: '.box',
 		items: {
 			bgcolor: {
@@ -197,6 +198,7 @@ function setupMenu(imgSelectOptions) {
 	
 	$.contextMenu({
 		
+		zIndex: 100,
 		selector: '.divimg',
 		items: {
 			width: {
@@ -238,8 +240,7 @@ function setupMenu(imgSelectOptions) {
 			addBubble: {
 				name: "Delete",
 				callback: function(key, options) {
-					console.log(key);
-					$(options.$trigger).remove();
+					$(options.$trigger).detach();
 				}
 			}
 
@@ -247,7 +248,7 @@ function setupMenu(imgSelectOptions) {
 		events: {
 			show: function(opt) {
 				var $this = this;
-				var img = $this.find('img')
+				var img = $this.find('img');
 				var w = img.css('width');
 				var t = $this.css('top');
 				var l = $this.css('left');
@@ -262,7 +263,17 @@ function setupMenu(imgSelectOptions) {
 				$.contextMenu.setInputValues(opt, d);
 			},
 			hide: function(opt) {
-				// do something
+				var $this = this;
+				var o = $.contextMenu.getInputValues(opt, $this.data());
+				$this.css('top', o.top);
+				$this.css('left', o.left);
+				var img = $this.find('img');
+				if (img.css('width') !== o.width) {
+					img.resizable('destroy');
+					img.css('width', o.width);
+					img.css('height', o.width);
+					img.resizable({aspectRatio: true});
+				}
 			}
 		}
 		
