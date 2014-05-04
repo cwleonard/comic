@@ -237,6 +237,21 @@ function setupMenu(imgSelectOptions) {
 				}
 			},
 			sep2: "----------",
+			moveBack: {
+				name: "Move Back",
+				callback: function(key, options) {
+					var n = options.$trigger;
+					n.insertBefore(n.prev());
+				}
+			},
+			moveUp: {
+				name: "Move Forward",
+				callback: function(key, options) {
+					var n = options.$trigger;
+					n.insertAfter(n.next());
+				}
+			},
+			sep3: "----------",
 			addBubble: {
 				name: "Delete",
 				callback: function(key, options) {
