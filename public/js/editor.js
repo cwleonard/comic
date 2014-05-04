@@ -1,8 +1,8 @@
-function doSave() {
+function sendData(d) {
 	$.ajax({
 		url: '/data',
 		type: 'POST',
-		data: $('#data').val(),
+		data: JSON.stringify(d),
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'text',
 		success: function(data) {
@@ -23,7 +23,7 @@ function rgb2hex(rgb) {
 
 }
 
-function doSave2() {
+function doSave2(pushToServer) {
 	
 	var cobj = {
 		cells: []
@@ -82,6 +82,10 @@ function doSave2() {
 	
 	//$('#data').val(JSON.stringify(cobj));
 	console.log(cobj);
+	
+	if (pushToServer) {
+		sendData(cobj);
+	}
 
 }
 
