@@ -97,6 +97,28 @@ function addCell() {
 
 }
 
+function getImageAttributes(image, cb) {
+	
+	$.ajax({
+		url: '/images/' + image,
+		type: 'GET',
+		dataType: 'xml',
+		success: function(data) {
+			var w = data.rootElement.getAttribute('width');
+			var h = data.rootElement.getAttribute('height');
+			cb(null, {
+				width: w,
+				height: h
+			});
+		},
+		error: function() {
+			cb(new Error('could not get image attributes'));
+		}
+	});
+	
+	
+}
+
 
 function setupMenu(imgSelectOptions) {
 	
@@ -129,21 +151,31 @@ function setupMenu(imgSelectOptions) {
 					
 					if (selectedImage) {
 						
-						var d = document.createElement('div');
-						var i = document.createElement('img');
+						getImageAttributes(selectedImage, function(err, ia) {
+							
+							if (err) {
+								console.error(err);
+							} else {
 
-						$(i).css('height','100px');
-						$(i).css('width','100px');
-						$(i).attr('src', '/images/' + selectedImage);
+								var d = document.createElement('div');
+								var i = document.createElement('img');
 
-						$(d).addClass('divimg');
-						$(d).append(i);
+								$(i).css('height', ia.height + 'px');
+								$(i).css('width', ia.width + 'px');
+								$(i).attr('src', '/images/' + selectedImage);
 
-						// see http://stackoverflow.com/questions/4948582/jquery-draggable-and-resizable
-						$(options.$trigger).append(d);
+								$(d).addClass('divimg');
+								$(d).append(i);
 
-						$(d).draggable();
-						$(i).resizable({aspectRatio: true});
+								// see http://stackoverflow.com/questions/4948582/jquery-draggable-and-resizable
+								$(options.$trigger).append(d);
+
+								$(d).draggable();
+								$(i).resizable({aspectRatio: true});
+								
+							}
+
+						});
 
 					}
 
@@ -234,6 +266,9 @@ function setupMenu(imgSelectOptions) {
 					var o = $.contextMenu.getInputValues(options, $this.data());
 					var selectedImage = o.pickImage;
 					
+					
+					
+					
 					$(options.$trigger).find("img").each(function(idx, elem) {
 						$(elem).attr('src', '/images/' + selectedImage);
 					});
@@ -300,6 +335,27 @@ function setupMenu(imgSelectOptions) {
 	
 	
 }
+
+function toggleImgUpload() {
+	
+	$('#imgUpload').toggle();
+	
+}
+
+$(function() {
+	
+	$('#imgUpload').iframePostForm({
+		json: true,
+		post: function() {
+			console.log('starting upload');
+		},
+		complete: function(resp) {
+			console.log(resp);
+			$('#imgUpload').hide();
+		}
+	});
+	
+});
 
 $(function() {
 	

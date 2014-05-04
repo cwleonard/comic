@@ -7,9 +7,13 @@ html
 	body
 		include header
 		div#controls
+			form#imgUpload(action="/images", method="POST", enctype="multipart/form-data")
+				input(type='file', name='svg')
+				button(type='submit') Upload Image
 			p(style='position: absolute; font-size: 3em;')
 				span.control(onclick='addCell();')!= '<i class="fa fa-plus"></i>'
 				span.control(onclick='doSave2();')!= '<i class="fa fa-save"></i>'
+				span.control(onclick='toggleImgUpload();')!= '<i class="fa fa-picture-o"></i>'
 		div#comicArea(style='min-height: 500px;')
 		include editor
 		include footer

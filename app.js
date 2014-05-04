@@ -1,7 +1,10 @@
 var express = require('express');
 var fs = require('fs');
-var compress = require('compression')();
+var compress = require('compression');
+var multiparty = require('multiparty');
 var cdata = require('./data');
+
+
 
 var app = express();
 
@@ -16,7 +19,7 @@ app.use(function(req, res, next) {
 	next();
 });
 
-app.use(compress);
+app.use(compress());
 
 // if nothing explicit requested, send most recent comic
 app.get('/', function(req, res, next) {
@@ -128,6 +131,58 @@ app.get('/images', function(req, res, next) {
 		}
 	});
 	
+});
+
+app.post('/images', function(req, res, next) {
+	
+	var uploadName = '';
+	var uploadType = '';
+	var chunks = [];
+	var totalLength = 0;
+
+	var form = new multiparty.Form();
+	
+	form.on('error', function(err) {
+		res.send(JSON.stringify({
+			success: false,
+			error: err
+		}));
+	});
+	
+	form.on('close', function() {
+		
+		var b = Buffer.concat(chunks, totalLength);
+		console.log('storing file %s (%d bytes)', uploadName, b.length);
+		cfact.storeImage(uploadName, b, uploadType, function(err, info) {
+			if (err) {
+				res.send(JSON.stringify({
+					success: false,
+					error: err
+				}));
+			} else {
+				res.send(JSON.stringify({
+					success: true
+				}));
+			}
+		});
+
+	});
+
+	form.on('part', function(part) {
+		
+		part.on('data', function(chunk) {
+			  chunks.push(chunk);
+			  totalLength += chunk.length;
+		});
+		part.on('end', function() {
+			  uploadName = part.filename;
+			  uploadType = part.headers['content-type'];
+		});
+		
+	});
+	
+    form.parse(req);
+    
 });
 
 app.get('/images/:img', function(req, res, next) {

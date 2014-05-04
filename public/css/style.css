@@ -108,3 +108,9 @@ span.control {
 p.pubdate {
 	text-align: center;
 }
+
+form#imgUpload {
+	padding-top: 70px;
+	position: absolute;
+	display: none;
+}
