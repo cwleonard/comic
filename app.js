@@ -2,9 +2,10 @@ var express = require('express');
 var fs = require('fs');
 var compress = require('compression');
 var multiparty = require('multiparty');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 var cdata = require('./data');
-
-
 
 var app = express();
 
@@ -13,12 +14,39 @@ var cfact = cdata(dbconf);
 
 app.set('view engine', 'jade');
 
+
+passport.use(new LocalStrategy(function(username, password, done) {
+	
+	console.log('username: ' + username);
+	
+	if (username === 'error') {
+		done(new Error('test error'));
+	} else if (username === 'user') {
+		if (password === 'password') {
+			console.log('good login');
+			done(null, { userid: '33333' });
+		} else {
+			console.log('incorrect password');
+			done(null, false, { message: 'incorrect password' });
+		}
+	} else {
+		console.log('incorrect username');
+		done(null, false, { message: 'incorrect username' });
+	}
+	
+}));
+
+
+// --------- set up routes and middleware and such
+
+
 // logging comes first
 app.use(function(req, res, next) {
 	console.log('%s %s', req.method, req.url);
 	next();
 });
 
+app.use(passport.initialize());
 app.use(compress());
 
 // if nothing explicit requested, send most recent comic
@@ -34,6 +62,13 @@ app.get('/', function(req, res, next) {
 		}
 	});
 	
+});
+
+app.post('/login', function(req, res, next) {
+	passport.authorize('local', {
+		successRedirect: '/',
+		failureRedirect: '/login'
+	});
 });
 
 // load individual comic pages by id
