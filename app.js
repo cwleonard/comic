@@ -1,19 +1,14 @@
 var express = require('express');
 var fs = require('fs');
 var compress = require('compression');
+var bodyParser = require('body-parser');
 var multiparty = require('multiparty');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var cdata = require('./data');
 
-var app = express();
-
-var dbconf = JSON.parse(fs.readFileSync('data/dbconf.json', { encoding: 'utf-8' }));
-var cfact = cdata(dbconf);
-
-app.set('view engine', 'jade');
-
+// --- set up login strategy
 
 passport.use(new LocalStrategy(function(username, password, done) {
 	
@@ -37,8 +32,15 @@ passport.use(new LocalStrategy(function(username, password, done) {
 }));
 
 
-// --------- set up routes and middleware and such
+var app = express();
 
+var dbconf = JSON.parse(fs.readFileSync('data/dbconf.json', { encoding: 'utf-8' }));
+var cfact = cdata(dbconf);
+
+app.set('view engine', 'jade');
+
+
+// --------- set up routes and middleware and such
 
 // logging comes first
 app.use(function(req, res, next) {
@@ -46,8 +48,9 @@ app.use(function(req, res, next) {
 	next();
 });
 
-app.use(passport.initialize());
+app.use(bodyParser());
 app.use(compress());
+app.use(passport.initialize());
 
 // if nothing explicit requested, send most recent comic
 app.get('/', function(req, res, next) {
@@ -64,11 +67,12 @@ app.get('/', function(req, res, next) {
 	
 });
 
-app.post('/login', function(req, res, next) {
-	passport.authorize('local', {
-		successRedirect: '/',
-		failureRedirect: '/login'
-	});
+app.get('/login', function(req, res, next) {
+	res.render('login');
+});
+
+app.post('/login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}), function(req, res, next) {
+	res.redirect('/');
 });
 
 // load individual comic pages by id

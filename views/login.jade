@@ -1,0 +1,11 @@
+doctype html
+html
+	include head
+	body
+		include header
+		form(action='/login',method='POST')
+			input(type='text',name='username')
+			input(type='password',name='password')
+			input(type='submit')
+		include footer
+		include js
