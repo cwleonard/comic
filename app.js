@@ -3,6 +3,8 @@ var fs = require('fs');
 var compress = require('compression');
 var bodyParser = require('body-parser');
 var multiparty = require('multiparty');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -31,6 +33,14 @@ passport.use(new LocalStrategy(function(username, password, done) {
 	
 }));
 
+passport.serializeUser(function(user, done) {
+	done(null, user.userid);
+});
+
+passport.deserializeUser(function(id, done) {
+	console.log('deserializer looking for ' + id);
+	done(null, {});
+});
 
 var app = express();
 
@@ -48,9 +58,12 @@ app.use(function(req, res, next) {
 	next();
 });
 
+app.use(cookieParser()); // required before session.
+app.use(session({ secret: 'keyboard cat'}));
 app.use(bodyParser());
 app.use(compress());
 app.use(passport.initialize());
+app.use(passport.session());
 
 // if nothing explicit requested, send most recent comic
 app.get('/', function(req, res, next) {
