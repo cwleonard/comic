@@ -1,15 +1,11 @@
 .bubble {
 	position: absolute;
-	width: 200px;
+	width: 44%;
 	padding: 10px;
 	text-align: center;
 	background: #FFFFFF;
-	-webkit-border-radius: 28px;
-	-moz-border-radius: 28px;
-	border-radius: 28px;
 	border: #000000 solid 3px;
 	font-family: 'Sniglet', sans-serif;
-	font-size: initial;
 	line-height: initial;
 	color: #000000;
 	box-sizing: initial;
@@ -51,11 +47,71 @@
 	-webkit-box-sizing: initial;
 }
 
-.box {
-	width: 450px;
-	height: 280px;
-	border: #BBBBBB solid 3px;
+div.sizer {
 	margin: auto;
+}
+
+@media only screen and (min-width: 300px) {
+
+	div.sizer {
+		width: 310px;
+	}
+
+	.box {
+		height: 194px;
+	}
+	
+	.bubble {
+		font-size: 1em;
+		-webkit-border-radius: 20px;
+		-moz-border-radius: 20px;
+		border-radius: 20px;
+	}
+
+}
+
+@media only screen and (min-width: 400px) {
+
+	div.sizer {
+		width: 340px;
+	}
+
+	.box {
+		height: 212px;
+	}
+
+	.bubble {
+		font-size: 1.1em;
+		-webkit-border-radius: 23px;
+		-moz-border-radius: 23px;
+		border-radius: 23px;
+	}
+
+}
+
+@media only screen and (min-width: 600px) {
+
+	div.sizer {
+		width: 450px;
+	}
+
+	.box {
+		height: 280px;
+	}
+	
+	.bubble {
+		font-size: 1.2em;
+		-webkit-border-radius: 28px;
+		-moz-border-radius: 28px;
+		border-radius: 28px;
+	}
+
+}
+
+
+.box {
+	width: 100%;
+	border: #BBBBBB solid 3px;
 	position: relative;
 	overflow: hidden;
 	box-shadow: 5px 5px 10px #CCCCCC;
@@ -70,7 +126,7 @@
 }
 
 div.info {
-	width: 450px;
+	width: 100%;
 	margin: auto;
 	position: relative;
 	margin-top: 10px;

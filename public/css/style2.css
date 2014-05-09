@@ -172,7 +172,7 @@ header{
 }
 
 header .logo h1{
-	font-size:65px;
+/*	font-size:65px; */
 	line-height:45px;
 	color:#fff;
 	font-family: 'Gochi Hand', cursive;
@@ -1550,6 +1550,30 @@ footer .copy{
 /* Responsive CSS */
 
 /* Mobile phones */
+@media (min-width: 300px){
+
+	header .logo h1 {
+		font-size: 3.8em;
+	}
+
+}
+
+@media (min-width: 400px){
+
+	header .logo h1 {
+		font-size: 4em;
+	}
+
+}
+
+@media (min-width: 600px){
+
+	header .logo h1 {
+		font-size: 5em;
+	}
+
+}
+
 @media (max-width: 480px){
 
 	header{
@@ -1557,7 +1581,7 @@ footer .copy{
 	}
 	header .navigation a{
 		margin-right:7px;
-		margin-left:7px;
+/*		margin-left:7px;  */
 		line-height:50px;
 	}
 
