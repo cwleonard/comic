@@ -1550,26 +1550,33 @@ footer .copy{
 /* Responsive CSS */
 
 /* Mobile phones */
-@media (min-width: 300px){
+@media (max-width: 399px){
 
+	header {
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	
 	header .logo h1 {
 		font-size: 3.8em;
 	}
 
+	header .navigation a {
+		font-size: 1em;
+		padding: 5px 10px;
+	}
+
 }
 
-@media (min-width: 400px){
+@media (max-width: 479px){
 
 	header .logo h1 {
 		font-size: 4em;
 	}
 
-}
-
-@media (min-width: 600px){
-
-	header .logo h1 {
-		font-size: 5em;
+	header .navigation a {
+		font-size: 1.2em;
+		padding: 10px 15px;
 	}
 
 }
@@ -1577,12 +1584,25 @@ footer .copy{
 @media (max-width: 480px){
 
 	header{
-		padding-bottom:15px;
+		/* padding-bottom:15px; */
 	}
-	header .navigation a{
+	header .navigation a {
 		margin-right:7px;
-/*		margin-left:7px;  */
+		margin-left:7px;
 		line-height:50px;
+	}
+
+}
+
+
+@media (max-width: 1280px){
+
+	header {
+		margin-bottom: 10px;
+	}
+	
+	header .logo h1 {
+		font-size: 5em;
 	}
 
 }
