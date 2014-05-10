@@ -100,6 +100,9 @@ function setupAnimation() {
 		
 		if (trvl > 0) {
 
+			var sizerWidth  = Number($(elem).parent().css('width').replace(/\D/g, ''));
+			var sizerHeight = Number($(elem).parent().css('height').replace(/\D/g, ''));
+			
 			var dir = $(elem).attr('direction');
 
 			if (dir === 'left') {
@@ -107,26 +110,26 @@ function setupAnimation() {
 				elem.pos = Number($(elem).css('left').replace('px', ''));
 				elem.direction = -1;
 				elem.rightBound = elem.pos;
-				elem.leftBound = elem.rightBound - trvl;
+				elem.leftBound = elem.rightBound - (sizerWidth * (trvl / 100));
 				elem.moveFunction = moveLeftRight;
-			} else if (dir === 'right'){
+			} else if (dir === 'right') {
 				// when moving right, left bound is starting location, right bound is trvl more than that
 				elem.pos = Number($(elem).css('left').replace('px', ''));
 				elem.direction = 1;
 				elem.leftBound = elem.pos;
-				elem.rightBound = elem.leftBound + trvl;
+				elem.rightBound = elem.leftBound + (sizerWidth * (trvl / 100));
 				elem.moveFunction = moveLeftRight;
 			} else if (dir === 'up') {
 				elem.pos = Number($(elem).css('top').replace('px', ''));
 				elem.direction = -1;
 				elem.lowerBound = elem.pos;
-				elem.upperBound = elem.lowerBound - trvl;
+				elem.upperBound = elem.lowerBound - (sizerHeight * (trvl / 100));
 				elem.moveFunction = moveUpDown;
 			} else if (dir === 'down') {
 				elem.pos = Number($(elem).css('top').replace('px', ''));
 				elem.direction = 1;
 				elem.upperBound = elem.pos;
-				elem.lowerBound = elem.upperBound + trvl;
+				elem.lowerBound = elem.upperBound + (sizerHeight * (trvl / 100));
 				elem.moveFunction = moveUpDown;
 			} else {
 				// unknown direction value
