@@ -1,4 +1,4 @@
-div.sizer
+div#sizer
 	- for (var c in cells)
 		div.box(style=cells[c].background ? 'background-color: ' + cells[c].background : undefined)
 			p.bubble(style=(cells[c].bubble.width ? 'width: ' + cells[c].bubble.width + '%;' : '') + 'top: ' + cells[c].bubble.top + '%; left: ' + cells[c].bubble.left + '%;')

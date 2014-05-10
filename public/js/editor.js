@@ -25,12 +25,14 @@ function rgb2hex(rgb) {
 
 function doSave2(pushToServer) {
 	
+	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
+	
 	var cobj = {
 		cells: []
 	};
-	$('#comicArea div.box').each(function(idx, elem) {
+	$('#sizer div.box').each(function(idx, elem) {
 		
-		console.log('found box element');
+		var sizerHeight = Number($(elem).css('height').replace(/\D/g, ''));
 		
 		var bgc =$(elem).css('background-color');
 		if (bgc.search("rgb") != -1) {
@@ -58,11 +60,23 @@ function doSave2(pushToServer) {
 		});
 		
 		$(elem).find(".divimg").each(function(idx, elem) {
-			console.log('found image element');
-			var t = $(elem).css('top');
-			var l = $(elem).css('left');
+			
+			var cssTop = $(elem).css('top');
+			var cssLeft = $(elem).css('left');
+			
+			// positions need converted to %
+			var t = Number(cssTop.replace(/\D/g, ''));
+			var l = Number(cssLeft.replace(/\D/g, ''));
+			t = t * (1 / sizerHeight) * 100;
+			l = l * (1 / sizerWidth) * 100;
+			
 			$(elem).find("div.ui-wrapper").each(function(idx, elem) {
-				var w = $(elem).css('width');
+				
+				// width needs converted to %
+				var cssWidth = $(elem).css('width');
+				var w = Number(cssWidth.replace(/\D/g, ''));
+				w = w * (1 / sizerWidth) * 100;
+				
 				$(elem).find("img").each(function(idx, elem) {
 					var s = elem.src;
 					s = s.substring(s.lastIndexOf('/')+1);
@@ -93,7 +107,7 @@ function addCell() {
 
 	var d = document.createElement('div');
 	$(d).addClass('box');
-	$('#comicArea').append(d);
+	$('#sizer').append(d);
 
 }
 

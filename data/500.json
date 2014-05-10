@@ -3,14 +3,14 @@
     {
       "bubble": {
     	  "text": "Something broke!!",
-    	  "top": 15,
-    	  "left": 90
+    	  "top": 5.36,
+    	  "left": 20
       },
       "imgs": [{
     	  "src": "frog.svg",
-    	  "width": 150,
-    	  "top": 100,
-    	  "left": 260
+    	  "width": 33.3333,
+    	  "top": 35.7,
+    	  "left": 57.8
       }]
     }
   ]
