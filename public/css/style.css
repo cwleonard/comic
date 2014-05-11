@@ -103,12 +103,14 @@ span.control {
 	font-size: 1.8em;
 	display: inline;
 	float: right;
+	cursor: pointer;
 }
 
 .info p.lnav {
 	font-size: 1.8em;
 	display: inline;
 	float: left;
+	cursor: pointer;
 }
 
 .info a {

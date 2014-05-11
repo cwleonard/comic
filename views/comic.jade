@@ -8,6 +8,6 @@ div#sizer
 	div.info
 		p.pubdate= 'Published ' + pubDate
 		if prevDate
-			p.lnav!= '<a href="#" onclick="replaceComic(\'/chtml/' + prevDate + '\');"><i class="fa fa-arrow-circle-left"></i> Previous</a>'
+			p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-arrow-circle-left"></i> Previous</a>'
 		if nextDate
-			p.rnav!= '<a href="#" onclick="replaceComic(\'/chtml/' + nextDate + '\');">Next <i class="fa fa-arrow-circle-right"></i></a>'
+			p.rnav!= '<a onclick="replaceComic(\'' + nextDate + '\');">Next <i class="fa fa-arrow-circle-right"></i></a>'

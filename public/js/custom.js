@@ -22,20 +22,42 @@ $(function(){
 
 /* Scroll To Top Ends */
 
-function replaceComic(url) {
+function replaceComic(id, push) {
 	
-	$.get(url, function(data) {
+	if (push === undefined) {
+		push = true;
+	}
+	
+	$.get('/chtml/' + id, function(data) {
+		
+		if (push) {
+			console.log('pushing ' + id);
+			var stateObj = { comicId: id };
+			history.pushState(stateObj, "comic " + id, id);
+		}
+		
 		$("#comicArea").html(data);
 		setupAnimation();
+		
 	}, 'html');
 	
 }
 
 $(function() {
 
+	// set the mailto address in this way so it's not easy for robots to find
     var e = 'c' + 'a' + 's' + 'e' + 'y' + '@' + 'amphibian.com';
     var s = $("#mailme");
     s.attr('href','mailto:' + e);
+    
+    // listen for history changes
+    $(window).bind('popstate', function(event) {
+    	var s = event.originalEvent.state;
+    	if (s) {
+			console.log('popped ' + s.comicId);
+    		replaceComic(s.comicId, false);
+    	}
+    });
 
 });
 
