@@ -54,10 +54,16 @@ $(function() {
     $(window).bind('popstate', function(event) {
     	var s = event.originalEvent.state;
     	if (s) {
-			console.log('popped ' + s.comicId);
     		replaceComic(s.comicId, false);
     	}
     });
+
+    // replace current URL with the current id, so back button behavior is consistent
+    var currentId = $('#info').attr('comicId');
+    history.replaceState({
+    	comicId: currentId
+    }, 'comic ' + currentId, currentId);
+    
 
 });
 

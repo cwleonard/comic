@@ -5,7 +5,10 @@ div#sizer
 				= cells[c].bubble.text
 			- for (var i in cells[c].imgs)
 				img(animated=cells[c].imgs[i].move ? 'true' : undefined,speed=cells[c].imgs[i].speed ? cells[c].imgs[i].speed : undefined,travel=cells[c].imgs[i].travel ? cells[c].imgs[i].travel : undefined,direction=cells[c].imgs[i].direction ? cells[c].imgs[i].direction : undefined,style='top: ' + cells[c].imgs[i].top + '%; left: ' + cells[c].imgs[i].left + '%;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + '%;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
-	div.info
+	div#info(comicId=id,class='info')
+		div#tweet
+			| <a href="https://twitter.com/share" class="twitter-share-button" data-via="frogcomics">Tweet</a>
+			| <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 		p.pubdate= 'Published ' + pubDate
 		if prevDate
 			p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-arrow-circle-left"></i> Previous</a>'
