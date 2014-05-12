@@ -7,8 +7,9 @@ div#sizer
 				img(animated=cells[c].imgs[i].move ? 'true' : undefined,speed=cells[c].imgs[i].speed ? cells[c].imgs[i].speed : undefined,travel=cells[c].imgs[i].travel ? cells[c].imgs[i].travel : undefined,direction=cells[c].imgs[i].direction ? cells[c].imgs[i].direction : undefined,style='top: ' + cells[c].imgs[i].top + '%; left: ' + cells[c].imgs[i].left + '%;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + '%;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
 	div#info(comicId=id,class='info')
 		div#tweet
-			| <a href="https://twitter.com/share" class="twitter-share-button" data-via="frogcomics">Tweet</a>
-			| <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+			| <iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html" style="width:130px; height:20px;"></iframe> 
+		div#fb
+			| <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.amphibian.net%2F5&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=true&amp;height=21&amp;appId=121560161486" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true"></iframe>
 		p.pubdate= 'Published ' + pubDate
 		if prevDate
 			p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-arrow-circle-left"></i> Previous</a>'
