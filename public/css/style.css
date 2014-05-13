@@ -1,7 +1,7 @@
 .bubble {
 	position: absolute;
 	width: 44%;
-	padding: 10px;
+	padding: 2%;
 	text-align: center;
 	background: #FFFFFF;
 	border: #000000 solid 3px;
@@ -74,7 +74,7 @@ div#sizer {
 	margin-top: 10px;
 	background-color: #FFFFFF;
 	
-	/* height will be adjusted by screen size. this is the minium */
+	/* height will be adjusted by screen size. this is the minimum */
 	height: 194px;
 	
 }
@@ -88,7 +88,7 @@ div.info {
 	margin: auto;
 	position: relative;
 	margin-top: 10px;
-	padding-bottom: 2.2em;
+	/* padding-bottom: 2.2em; */
 }
 
 div#controls {
@@ -122,13 +122,29 @@ span.control {
 }
 
 p.pubdate {
-	text-align: center;
+	text-align: right;
 }
 
 form#imgUpload {
 	padding-top: 70px;
 	position: absolute;
 	display: none;
+}
+
+div#sizer hr {
+	margin-top: 8px;
+	margin-bottom: 10px;
+	border-top: 1px solid #B2DBB8;
+}
+
+div#social-buttons {
+	width: 40%;
+	float: left;
+}
+
+div#pubdatediv {
+	width: 60%;
+	float: right;
 }
 
 /* --------- responsive media stuff ---------------------- */
@@ -163,7 +179,7 @@ form#imgUpload {
 	}
 	
 	.bubble {
-		font-size: 1.2em;
+		font-size: 1.3em;
 		-webkit-border-radius: 28px;
 		-moz-border-radius: 28px;
 		border-radius: 28px;
