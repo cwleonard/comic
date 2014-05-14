@@ -147,6 +147,10 @@ div#pubdatediv {
 	float: right;
 }
 
+.col-md-4 {
+	margin-bottom: 10px;
+}
+
 /* --------- responsive media stuff ---------------------- */
 
 @media only screen and (min-width: 400px) {

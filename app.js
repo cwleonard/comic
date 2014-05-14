@@ -145,6 +145,11 @@ app.get('/editor', function(req, res, next) {
 	
 });
 
+app.get('/about', function(req, res, next) {
+	
+	res.render('about', {});
+	
+});
 
 app.post('/data', function(req, res, next) {
 

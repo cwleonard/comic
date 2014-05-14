@@ -388,7 +388,7 @@ header .navigation a:hover{
 }
 
 .about-us .about-one-content{
-	margin-left:110px;
+	/* margin-left:110px; */
 }
 
 .about-us .about-one-item h3{
@@ -468,13 +468,14 @@ header .navigation a:hover{
 }
 
 .about-us .about-three-item a img{
-	width:140px;
+	/* width:140px; */
 	height:140px;
-	border-radius:100px;
+	border-radius:10px;
 	display:inline-block;
 	margin-bottom:10px;
-	border:3px solid #fff;
+	border: 3px solid #fff;
 	box-shadow:0px 0px 2px #888;
+	background-color: rgb(197, 197, 197);
 }
 
 .about-us .about-three-item h3{
