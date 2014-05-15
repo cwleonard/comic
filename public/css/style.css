@@ -1,3 +1,8 @@
+.bubble-text {
+	/* adjusted by screen size. this is the minimum  */
+	font-size: 1.1em;
+}
+
 .bubble {
 	position: absolute;
 	width: 44%;
@@ -13,7 +18,6 @@
 	-webkit-box-sizing: initial;
 	
 	/* the following are adjusted by screen size. these values are the minimums.  */
-	font-size: 1em;
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
@@ -24,34 +28,65 @@
 	content: '';
 	position: absolute;
 	border-style: solid;
-	border-width: 34px 15px 0;
 	border-color: #FFFFFF transparent;
-	display: block;
+	display: none;
 	width: 0;
 	z-index: 1;
-	bottom: -32px;
-	margin-left: -20px;
-	left: 50%;
 	box-sizing: initial;
 	-moz-box-sizing: initial;
 	-webkit-box-sizing: initial;
+	/* the following are adjusted by screen size. these values are the minimums.  */
+	border-width: 21px 7px 0;
+	bottom: -21px;
+	margin-left: -12px;
 }
 
 .bubble:before {
 	content: '';
 	position: absolute;
 	border-style: solid;
-	border-width: 36px 17px 0;
 	border-color: #000000 transparent;
-	display: block;
+	display: none;
 	width: 0;
 	z-index: 0;
-	bottom: -38px;
-	margin-left: -22px;
-	left: 50%;
 	box-sizing: initial;
 	-moz-box-sizing: initial;
 	-webkit-box-sizing: initial;
+	/* the following are adjusted by screen size. these values are the minimums.  */
+	border-width: 25px 9px 0;
+	bottom: -27px;
+	margin-left: -14px;
+}
+
+
+.bubble25:after {
+	left: 25%;
+	display: block;
+}
+
+.bubble25:before {
+	left: 25%;
+	display: block;
+}
+
+.bubble50:after {
+	display: block;
+	left: 50%;
+}
+
+.bubble50:before {
+	display: block;
+	left: 50%;
+}
+
+.bubble75:after {
+	display: block;
+	left: 75%;
+}
+
+.bubble75:before {
+	display: block;
+	left: 75%;
 }
 
 div#sizer {
@@ -81,6 +116,7 @@ div#sizer {
 
 .box img {
 	position: absolute;
+	z-index: 2;
 }
 
 div.info {
@@ -163,8 +199,11 @@ div#pubdatediv {
 		height: 212px;
 	}
 
+	.bubble-text {
+		font-size: 1.2em;
+	}
+
 	.bubble {
-		font-size: 1.1em;
 		-webkit-border-radius: 23px;
 		-moz-border-radius: 23px;
 		border-radius: 23px;
@@ -182,11 +221,26 @@ div#pubdatediv {
 		height: 280px;
 	}
 	
+	.bubble-text {
+		font-size: 1.6em;
+	}
+	
 	.bubble {
-		font-size: 1.3em;
 		-webkit-border-radius: 28px;
 		-moz-border-radius: 28px;
 		border-radius: 28px;
+	}
+
+	.bubble:after {
+		border-width: 34px 15px 0;
+		bottom: -32px;
+		margin-left: -20px;
+	}
+	
+	.bubble:before {
+		border-width: 36px 17px 0;
+		bottom: -38px;
+		margin-left: -22px;
 	}
 
 }

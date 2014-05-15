@@ -1,7 +1,7 @@
 div#sizer
 	- for (var c in cells)
 		div.box(style=cells[c].background ? 'background-color: ' + cells[c].background : undefined)
-			p.bubble(style=(cells[c].bubble.width ? 'width: ' + cells[c].bubble.width + '%;' : '') + 'top: ' + cells[c].bubble.top + '%; left: ' + cells[c].bubble.left + '%;')
+			p(class='bubble bubble-text bubble' + (cells[c].bubble.stemPos ? cells[c].bubble.stemPos : 50),style=(cells[c].bubble.width ? 'width: ' + cells[c].bubble.width + '%;' : '') + 'top: ' + cells[c].bubble.top + '%; left: ' + cells[c].bubble.left + '%;')
 				= cells[c].bubble.text
 			- for (var i in cells[c].imgs)
 				img(animated=cells[c].imgs[i].move ? 'true' : undefined,speed=cells[c].imgs[i].speed ? cells[c].imgs[i].speed : undefined,travel=cells[c].imgs[i].travel ? cells[c].imgs[i].travel : undefined,direction=cells[c].imgs[i].direction ? cells[c].imgs[i].direction : undefined,style='top: ' + cells[c].imgs[i].top + '%; left: ' + cells[c].imgs[i].left + '%;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + '%;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
