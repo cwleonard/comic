@@ -151,6 +151,12 @@ app.get('/about', function(req, res, next) {
 	
 });
 
+app.get('/merch', function(req, res, next) {
+	
+	res.render('merch', {});
+	
+});
+
 app.post('/data', function(req, res, next) {
 
 	// stream in the posted data

@@ -1,0 +1,65 @@
+doctype html
+html
+	include head
+	body
+		include header
+		
+		div(class="about-us block",style="border-bottom: none;")
+			div(class="container")
+				
+				div(class="about-one",style="margin-bottom: 20px;")
+
+					div(class="about-one-item")
+
+						div(class="about-one-content")
+							h3 Stickers - Amphibious Adhesives.
+							p These high-quality vinyl stickers look great on your laptop, car, guitar, or face.
+
+							div.container-fluid
+								div.row
+									div.col-sm-4
+										div.buy
+											img(class='img-responsive',src='/simg/science_frog_sticker.png')
+											p Let's Do Science!
+											p Large stickers are 2.7" x 2.9". Small ones are 1.6" x 1.7".
+											div
+												| <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+												| <input type="hidden" name="cmd" value="_s-xclick">
+												| <input type="hidden" name="hosted_button_id" value="W4WXH5DNEREJG">
+												| <table>
+												| <tr><td><input type="hidden" name="on0" value="Size">Size</td></tr><tr><td><select name="os0">
+												| <option value="Small">Small $0.99 USD</option>
+												| <option value="Large">Large $1.99 USD</option>
+												| </select> </td></tr>
+												| </table>
+												| <input type="hidden" name="currency_code" value="USD">
+												| <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+												| <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+												| </form>
+									div.col-sm-4
+										div.buy
+											img(class='img-responsive',src='/simg/frog_sticker.png')
+											p Froggy Fun
+											p Large and Small sizes available.
+									div.col-sm-4
+										div.buy
+											img(class='img-responsive',src='/simg/frog2_sticker.png')
+											p Say Something!
+											p Large and Small sizes available.
+									
+					div(class="clearfix")
+				
+				div(class="about-one")
+
+					div(class="about-one-item")
+
+						div(class="about-one-content")
+							h3 Other Stuff.
+							p 
+								| You can get frogs on all kinds of stuff in my <a href="http://www.zazzle.com/frogshirts">Zazzle shop</a>.
+
+					div(class="clearfix")
+
+		
+		include footer
+		include js

@@ -187,6 +187,26 @@ div#pubdatediv {
 	margin-bottom: 10px;
 }
 
+.col-sm-4 {
+	margin-bottom: 10px;
+}
+
+div.buy {
+	
+	padding: 20px;
+	border: 1px solid #999999;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	
+}
+
+div.buy img {
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+}
+
 /* --------- responsive media stuff ---------------------- */
 
 @media only screen and (min-width: 400px) {
