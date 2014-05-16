@@ -46,14 +46,25 @@ function doSave2(pushToServer) {
 		};
 		
 		$(elem).find("p.bubble").each(function(idx, elem) {
-			var t = $(elem).css('top');
-			var l = $(elem).css('left');
-			var w = $(elem).css('width');
+			var cssTop = $(elem).css('top');
+			var cssLeft = $(elem).css('left');
+			var cssWidth = $(elem).css('width');
+			var sp = $(elem).hasClass('bubble25') ? 25 : ($(elem).hasClass('bubble75') ? 75 : 50);
+			
+			// positions need converted to %
+			var t = Number(cssTop.replace(/\D/g, ''));
+			var l = Number(cssLeft.replace(/\D/g, ''));
+			var w = Number(cssWidth.replace(/\D/g, ''));
+			t = t * (1 / sizerHeight) * 100;
+			l = l * (1 / sizerWidth) * 100;
+			w = w * (1 / sizerWidth) * 100;
+			
 			$(elem).find("span").each(function(idx, elem) {
 				b.bubble = {
 						top: t,
 						left: l,
 						width: w,
+						stemPos: sp,
 						text: $(elem).text()
 				};
 			});
@@ -133,6 +144,21 @@ function getImageAttributes(image, cb) {
 	
 }
 
+function toggleStemPosition(obj) {
+	
+	var t = obj.target;
+	if ($(t).hasClass('bubble50')) {
+		$(t).removeClass('bubble50');
+		$(t).addClass('bubble75');
+	} else if ($(t).hasClass('bubble75')) {
+		$(t).removeClass('bubble75');
+		$(t).addClass('bubble25');
+	} else if ($(t).hasClass('bubble25')) {
+		$(t).removeClass('bubble25');
+		$(t).addClass('bubble50');
+	}
+	
+}
 
 function setupMenu(imgSelectOptions) {
 	
@@ -199,13 +225,17 @@ function setupMenu(imgSelectOptions) {
 			addBubble: {
 				name: "Add Bubble",
 				callback: function(key, options) {
-					console.log(key);
+
 					var p = document.createElement('p');
 					var s = document.createElement('span');
-					$(s).append(document.createTextNode('whatnot'));
+					$(s).append(document.createTextNode('what does the frog say?'));
 					
 					$(p).addClass('bubble');
+					$(p).addClass('bubble-text');
+					$(p).addClass('bubble50');
 					$(p).append(s);
+					
+					$(p).dblclick(toggleStemPosition);
 					
 					$(options.$trigger).append(p);
 					$(p).draggable().resizable();
