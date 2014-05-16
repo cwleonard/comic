@@ -159,26 +159,16 @@ app.get('/merch', function(req, res, next) {
 
 app.post('/data', function(req, res, next) {
 
-	// stream in the posted data
-	var data = '';
-	req.setEncoding('utf8');
-	req.on('data', function(chunk) {
-		data += chunk;
+	var data = JSON.stringify(req.body);
+	cfact.storeData(data, function(err, newid) {
+		if (err) {
+			next(err);
+		} else {
+			res.setHeader('Content-Type', 'text/plain');
+			res.send('data id: ' + newid);
+		}
 	});
-
-	req.on('end', function() {
-		// we have read the entire POST body
-		cfact.storeData(data, function(err, newid) {
-			if (err) {
-				next(err);
-			} else {
-				res.setHeader('Content-Type', 'text/plain');
-				res.send('data id: ' + newid);
-			}
-		});
-
-	});
-
+	
 });
 
 app.get('/images', function(req, res, next) {

@@ -52,9 +52,9 @@ function doSave2(pushToServer) {
 			var sp = $(elem).hasClass('bubble25') ? 25 : ($(elem).hasClass('bubble75') ? 75 : 50);
 			
 			// positions need converted to %
-			var t = Number(cssTop.replace(/\D/g, ''));
-			var l = Number(cssLeft.replace(/\D/g, ''));
-			var w = Number(cssWidth.replace(/\D/g, ''));
+			var t = Number(cssTop.replace('px', ''));
+			var l = Number(cssLeft.replace('px', ''));
+			var w = Number(cssWidth.replace('px', ''));
 			t = t * (1 / sizerHeight) * 100;
 			l = l * (1 / sizerWidth) * 100;
 			w = w * (1 / sizerWidth) * 100;
@@ -76,8 +76,8 @@ function doSave2(pushToServer) {
 			var cssLeft = $(elem).css('left');
 			
 			// positions need converted to %
-			var t = Number(cssTop.replace(/\D/g, ''));
-			var l = Number(cssLeft.replace(/\D/g, ''));
+			var t = Number(cssTop.replace('px', ''));
+			var l = Number(cssLeft.replace('px', ''));
 			t = t * (1 / sizerHeight) * 100;
 			l = l * (1 / sizerWidth) * 100;
 			
@@ -85,7 +85,7 @@ function doSave2(pushToServer) {
 				
 				// width needs converted to %
 				var cssWidth = $(elem).css('width');
-				var w = Number(cssWidth.replace(/\D/g, ''));
+				var w = Number(cssWidth.replace('px', ''));
 				w = w * (1 / sizerWidth) * 100;
 				
 				$(elem).find("img").each(function(idx, elem) {
