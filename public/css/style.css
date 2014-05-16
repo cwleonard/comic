@@ -201,10 +201,20 @@ div.buy {
 	
 }
 
+div.buy table {
+	margin: auto;
+}
+
 div.buy img {
+	margin: auto;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
+}
+
+div.buy p.mtitle {
+	text-align: center;
+	font-weight: bold;
 }
 
 /* --------- responsive media stuff ---------------------- */
