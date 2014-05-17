@@ -1,4 +1,6 @@
 div#sizer
+	if title
+		p.cTitle= title
 	- for (var c in cells)
 		div.box(style=cells[c].background ? 'background-color: ' + cells[c].background : undefined)
 			p(class='bubble bubble-text bubble' + (cells[c].bubble.stemPos ? cells[c].bubble.stemPos : 50),style=(cells[c].bubble.width ? 'width: ' + cells[c].bubble.width + '%;' : '') + 'top: ' + cells[c].bubble.top + '%; left: ' + cells[c].bubble.left + '%;')

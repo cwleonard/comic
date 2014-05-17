@@ -161,16 +161,38 @@ p.pubdate {
 	text-align: right;
 }
 
-form#imgUpload {
-	padding-top: 70px;
-	position: absolute;
-	display: none;
+p.cTitle {
+	font-family: 'Sniglet', sans-serif;
+	text-align: center;
+	margin-top: 10px;
+	
+	/* size will be adjusted by screen size. this is the minimum */
+	font-size: 1.8em;
 }
 
 div#sizer hr {
 	margin-top: 8px;
 	margin-bottom: 10px;
 	border-top: 1px solid #B2DBB8;
+}
+
+div#sizer label {
+	font-weight: normal;
+}
+
+div#toolbar {
+	position: fixed;
+}
+
+.affix {
+	top: 8px;
+	left: 8px;
+}
+
+.affix-top {
+	position: fixed;
+	top: 110px;
+	left: 8px;
 }
 
 div#social-buttons {
@@ -225,6 +247,10 @@ div.buy p.mtitle {
 		width: 340px;
 	}
 
+	p.cTitle {
+		font-size: 2.1em;
+	}
+
 	.box {
 		height: 212px;
 	}
@@ -245,6 +271,10 @@ div.buy p.mtitle {
 
 	div#sizer {
 		width: 450px;
+	}
+	
+	p.cTitle {
+		font-size: 2.7em;
 	}
 
 	.box {
