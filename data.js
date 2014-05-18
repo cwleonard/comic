@@ -176,7 +176,9 @@ module.exports = function(dbconf) {
 		
 		storeData: function(data, cb) {
 			
-			conn.query('INSERT INTO comic_data (data) VALUES (?)', [data], function(err, result) {
+			var json = JSON.stringify(data);
+
+			conn.query('INSERT INTO comic_data (pub_date, data) VALUES (?, ?)', [data.pubDate, json], function(err, result) {
 				
 				if (err) {
 					cb(err);

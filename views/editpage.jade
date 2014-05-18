@@ -4,6 +4,7 @@ html
 	link(href='/css/jquery.contextMenu.css',rel='stylesheet')
 	link(href='/css/jquery-ui-1.10.4.min.css',rel='stylesheet')
 	link(href='/css/jquery-editable.css',rel='stylesheet')
+	link(href='/css/bootstrap-datetimepicker.min.css',rel='stylesheet')
 	body
 		include header
 		div#controls
@@ -17,6 +18,11 @@ html
 				div.form-group(style='margin-top: 15px;')
 					label(for="ctitle") Comic Title (optional)
 					input#ctitle.form-control(type="text",placeholder="comic title")
+				div.form-group
+					label(for="datePicker") Publish Date
+					div#datePicker(class="input-group date",data-date-format="YYYY-MM-DD")
+						input#pubDate(type="text",class="form-control",placeholder="publish date")
+						span(class="input-group-addon")!= '<i class="fa fa-calendar"></i>'
 
 		include imgUpload
 		

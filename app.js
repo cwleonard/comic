@@ -159,8 +159,7 @@ app.get('/merch', function(req, res, next) {
 
 app.post('/data', function(req, res, next) {
 
-	var data = JSON.stringify(req.body);
-	cfact.storeData(data, function(err, newid) {
+	cfact.storeData(req.body, function(err, newid) {
 		if (err) {
 			next(err);
 		} else {

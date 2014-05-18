@@ -28,11 +28,14 @@ function doSave2(evt, pushToServer) {
 	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
 	
 	var ct = $('#ctitle').val();
+	var pd = $('#pubDate').val();
 	
 	var cobj = {
+		pubDate: pd,
 		title: ct,
 		cells: []
 	};
+	
 	$('#sizer div.box').each(function(idx, elem) {
 		
 		var sizerHeight = Number($(elem).css('height').replace(/\D/g, ''));
@@ -406,6 +409,16 @@ $(function() {
 			$('#myModal').modal('toggle');
 		}
 	});
+	
+});
+
+$(function() {
+	
+	$('#datePicker').datetimepicker({
+		pickTime : false
+	});
+	
+	$('#pubDate').val(moment().format('YYYY-MM-DD'));
 	
 });
 
