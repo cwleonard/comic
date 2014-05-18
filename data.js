@@ -28,7 +28,8 @@ module.exports = function(dbconf) {
 	function nextComic(d, cb) {
 		
 		var sql = 'SELECT id, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
-			'WHERE pub_date = (SELECT MIN(pub_date) FROM comic_data WHERE pub_date > ?)';
+			'WHERE pub_date = (SELECT MIN(pub_date) FROM comic_data WHERE pub_date > ? AND ' +
+			'DATE(pub_date) <= CURDATE())';
 		conn.query(sql, [d], function(err, rows) {
 			
 			if (err) {
@@ -52,7 +53,7 @@ module.exports = function(dbconf) {
 		loadCurrent: function (cb) {
 			
 			var sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
-				'WHERE pub_date = (SELECT MAX(pub_date) FROM comic_data)';
+				'WHERE pub_date = (SELECT MAX(pub_date) FROM comic_data WHERE DATE(pub_date) <= CURDATE())';
 			conn.query(sql, function(err, rows) {
 				
 				if (err) {
