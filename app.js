@@ -1,6 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var compress = require('compression');
+var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var multiparty = require('multiparty');
 var cookieParser = require('cookie-parser');
@@ -53,10 +54,7 @@ app.set('view engine', 'jade');
 // --------- set up routes and middleware and such
 
 // logging comes first
-app.use(function(req, res, next) {
-	console.log('%s %s', req.method, req.url);
-	next();
-});
+app.use(morgan());
 
 app.use(cookieParser()); // required before session.
 app.use(session({ secret: 'keyboard cat'}));
