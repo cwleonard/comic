@@ -167,6 +167,8 @@ function toggleStemPosition(obj) {
 
 function setupMenu(imgSelectOptions) {
 	
+	$.contextMenu( 'destroy' );
+	
 	$.contextMenu({
 		
 		zIndex: 100,
@@ -407,6 +409,7 @@ $(function() {
 		complete: function(resp) {
 			console.log(resp);
 			$('#myModal').modal('toggle');
+			buildMenu();
 		}
 	});
 	
@@ -422,7 +425,7 @@ $(function() {
 	
 });
 
-$(function() {
+function buildMenu() {
 	
 	$.ajax({
 		url: '/images',
@@ -436,5 +439,11 @@ $(function() {
 			setupMenu(sd);
 		}
 	});
+	
+}
+
+$(function() {
+
+	buildMenu();
 	
 });

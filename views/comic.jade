@@ -14,13 +14,13 @@ div#sizer
 			if nextDate
 				p.rnav!= '<a onclick="replaceComic(\'' + nextDate + '\');">Next <i class="fa fa-arrow-circle-right"></i></a>'
 			div(style='clear: both;')
-		hr
-		div#social-buttons
-			div#tweet(class='share')
-				iframe(allowtransparency='true',frameborder='0',scrolling='no',src='https://platform.twitter.com/widgets/tweet_button.html',style='width:130px; height:20px;') 
-			div#fb(class='share')
-				iframe(src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.amphibian.net%2F" + id + "&width&layout=button_count&action=like&show_faces=false&share=true&height=21&appId=121560161486" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true")
 		if (pubDate)
+			hr
+			div#social-buttons
+				div#tweet(class='share')
+					iframe(allowtransparency='true',frameborder='0',scrolling='no',src='https://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fwww.amphibian.net%2F' + id + '&via=frogcomics',style='width:130px; height:20px;') 
+				div#fb(class='share')
+					iframe(src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.amphibian.net%2F" + id + "&width&layout=button_count&action=like&show_faces=false&share=true&height=21&appId=121560161486" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true")
 			div#pubdatediv
 				p.pubdate= 'Published ' + pubDate
-		div(style='clear: both;')
+			div(style='clear: both;')
