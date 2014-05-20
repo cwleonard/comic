@@ -1,10 +1,14 @@
+- var pageTitle = (title ? 'Amphibian.com - ' + title : 'Amphibian.com')
 head
-	title Amphibian.com
+	title= pageTitle
 	meta(charset='utf-8')
 	meta(name='viewport',content='width=device-width,user-scalable=1')
 	meta(property='og:site_name',content='Amphibian.com')
-	meta(property='og:title',content='page title')
-	meta(property='og:description',content='What happens when frogs start a technology company...')
+	meta(property='og:title',content=( title ? title : 'Today\'s Comic'))
+	if pubDate
+		meta(property='og:description',content='Amphibian.com webcomic for ' + pubDate)
+	else
+		meta(property='og:description',content='The ongoing story of what happens when frogs start a technology company...')
 	meta(property='og:url',content='http://www.amphibian.net/' + id)
 	meta(property='og:type',content='website')
 	meta(property='og:image',content='http://www.amphibian.net/simg/og_logo.png')

@@ -39,6 +39,14 @@ function replaceComic(id, push) {
 		$("#comicArea").html(data);
 		setupAnimation();
 		
+		// may want to adjust page title
+		var tElem = $('.cTitle');
+		if (tElem.length != 0) {
+			document.title = 'Amphibian.com - ' + tElem.text();
+		} else {
+			document.title = 'Amphibian.com';
+		}
+		
 	}, 'html');
 	
 }
