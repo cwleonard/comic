@@ -12,6 +12,7 @@ html
 				div.btn-group-vertical
 					button#addCellButton(type='button',class='btn btn-default btn-lg')!= '<i class="fa fa-plus"></i>'
 					button#saveButton(type='button',class='btn btn-default btn-lg')!= '<i class="fa fa-save"></i>'
+					button#loadButton(type='button',class='btn btn-default btn-lg')!= '<i class="fa fa-folder-open-o"></i>'
 					button#addImageButton(type='button',class='btn btn-default btn-lg')!= '<i class="fa fa-picture-o"></i>'
 		div#comicArea(style='min-height: 500px;')
 			div#sizer
@@ -25,6 +26,7 @@ html
 						span(class="input-group-addon")!= '<i class="fa fa-calendar"></i>'
 
 		include imgUpload
+		include comicLoad
 		
 		include editor
 		include footer

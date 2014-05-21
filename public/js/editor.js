@@ -119,11 +119,60 @@ function doSave2(evt, pushToServer) {
 
 }
 
-function addCell() {
+function addImage(cell, img) {
+
+	getImageAttributes(img.src, function(err, imgSize) {
+
+		if (!err) {
+
+			var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
+			var sizerHeight = Number($(cell).css('height').replace(/\D/g, ''));
+
+			var d = document.createElement('div');
+			var i = document.createElement('img');
+
+			var w = (img.width / 100) * sizerWidth;
+			var h = w / (imgSize.width / imgSize.height);
+
+			var l = (img.left / 100) * sizerWidth; 
+			var t = (img.top / 100) * sizerHeight;
+
+			$(i).css('height', h + 'px');
+
+			$(i).css('width', w + 'px');
+			$(i).css('top', t + 'px');
+			$(i).css('left', l + 'px');
+			$(i).attr('src', '/images/' + img.src);
+
+			$(d).addClass('divimg');
+			$(d).append(i);
+
+			// see http://stackoverflow.com/questions/4948582/jquery-draggable-and-resizable
+			$(cell).append(d);
+
+			$(d).draggable();
+			$(i).resizable({aspectRatio: true});
+
+		}
+
+	});
+	
+}
+
+function addCell(c) {
 
 	var d = document.createElement('div');
 	$(d).addClass('box');
 	$('#sizer').append(d);
+	
+	if (c) {
+		
+		$(d).css('background-color', c.background);
+		$.each(c.imgs, function(idx, obj) {
+			addImage(d, obj);
+		});
+		
+	}
 
 }
 
@@ -188,7 +237,6 @@ function setupMenu(imgSelectOptions) {
 			addImage: {
 				name: "Add Image",
 				callback: function(key, options) {
-					console.log(key);
 					
 					var $this = this;
 					var o = $.contextMenu.getInputValues(options, $this.data());
@@ -391,11 +439,54 @@ function toggleImgUpload() {
 	
 }
 
+function showComicList() {
+	
+	$('#loadModal').modal('toggle');
+	$.ajax({
+		url: '/list',
+		type: 'GET',
+		dataType: 'json',
+		success: function(data) {
+			$.each(data, function(idx, val) {
+				var oval = val.id + " :: " + val.published + " :: " + val.title;
+				$('#comicSelect').append($("<option></option>").attr("value", val.id).text(oval));
+			});
+		}
+	});
+	
+}
+
+function doLoad() {
+	
+	var id = $('#comicSelect').val();
+
+	$.ajax({
+		url: '/data/' + id,
+		type: 'GET',
+		dataType: 'json',
+		success: function(data) {
+			
+			$('#loadModal').modal('toggle');
+			
+			$('#ctitle').val(data.title);
+			$('#pubDate').val(data.pubDate);
+
+			$.each(data.cells, function(idx, c) {
+				addCell(c);
+			});
+			
+		}
+	});
+	
+}
+
 $(function() {
 	
 	$('#addCellButton').click(addCell);
 	$('#saveButton').click(doSave2);
 	$('#addImageButton').click(toggleImgUpload);
+	$('#loadButton').click(showComicList);
+	$('#confirmLoadButton').click(doLoad);
 	
 });
 

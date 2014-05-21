@@ -2,14 +2,13 @@ var mysql = require('mysql');
 
 module.exports = function(dbconf) {
 	
-	var conn = mysql.createConnection(dbconf);
-	conn.connect();
+	var pool = mysql.createPool(dbconf);
 	
 	function prevComic(d, cb) {
 		
 		var sql = 'SELECT id, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
 			'WHERE pub_date = (SELECT MAX(pub_date) FROM comic_data WHERE pub_date < ?)';
-		conn.query(sql, [d], function(err, rows) {
+		pool.query(sql, [d], function(err, rows) {
 			
 			if (err) {
 				cb(err);
@@ -30,7 +29,7 @@ module.exports = function(dbconf) {
 		var sql = 'SELECT id, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
 			'WHERE pub_date = (SELECT MIN(pub_date) FROM comic_data WHERE pub_date > ? AND ' +
 			'DATE(pub_date) <= CURDATE())';
-		conn.query(sql, [d], function(err, rows) {
+		pool.query(sql, [d], function(err, rows) {
 			
 			if (err) {
 				cb(err);
@@ -54,7 +53,7 @@ module.exports = function(dbconf) {
 			
 			var sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
 				'WHERE pub_date = (SELECT MAX(pub_date) FROM comic_data WHERE DATE(pub_date) <= CURDATE())';
-			conn.query(sql, function(err, rows) {
+			pool.query(sql, function(err, rows) {
 				
 				if (err) {
 					cb(err);
@@ -97,8 +96,8 @@ module.exports = function(dbconf) {
 		loadById: function (id, cb) {
 
 			var sql = 'SELECT pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data ' +
-				'FROM comic_data WHERE id = ' + conn.escape(id);
-			conn.query(sql, function(err, rows) {
+				'FROM comic_data WHERE id = ' + pool.escape(id);
+			pool.query(sql, function(err, rows) {
 
 				if (err) {
 					cb(err);
@@ -140,7 +139,7 @@ module.exports = function(dbconf) {
 		
 		loadImage: function(name, cb) {
 
-			conn.query('SELECT data, type FROM comic_img WHERE filename = ?', [name], function(err, rows) {
+			pool.query('SELECT data, type FROM comic_img WHERE filename = ?', [name], function(err, rows) {
 				if (err) {
 					cb(err);
 				} else {
@@ -159,7 +158,7 @@ module.exports = function(dbconf) {
 		
 		storeImage: function(fn, data, type, cb) {
 			
-			conn.query('INSERT INTO comic_img (filename, type, data) VALUES (?, ?, ?)', [fn, type, data], function(err, result) {
+			pool.query('INSERT INTO comic_img (filename, type, data) VALUES (?, ?, ?)', [fn, type, data], function(err, result) {
 				
 				if (err) {
 					cb(err);
@@ -179,7 +178,7 @@ module.exports = function(dbconf) {
 			
 			var json = JSON.stringify(data);
 
-			conn.query('INSERT INTO comic_data (pub_date, data) VALUES (?, ?)', [data.pubDate, json], function(err, result) {
+			pool.query('INSERT INTO comic_data (pub_date, data) VALUES (?, ?)', [data.pubDate, json], function(err, result) {
 				
 				if (err) {
 					cb(err);
@@ -197,7 +196,7 @@ module.exports = function(dbconf) {
 		
 		listImages: function(cb) {
 			
-			conn.query('SELECT filename, type FROM comic_img', function(err, rows) {
+			pool.query('SELECT filename, type FROM comic_img', function(err, rows) {
 				if (err) {
 					cb(err);
 				} else {
@@ -207,6 +206,32 @@ module.exports = function(dbconf) {
 							data.push({
 								filename: rows[i].filename,
 								type: rows[i].type
+							});
+						}
+						cb(null, data);
+					} else {
+						cb(null, []);
+					}
+				}
+			});
+			
+		},
+		
+		listComics: function(cb) {
+			
+			pool.query('SELECT id, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ORDER by id', function(err, rows) {
+				if (err) {
+					cb(err);
+				} else {
+					if (rows.length > 0) {
+						var data = [];
+						for (var i = 0; i < rows.length; i++) {
+							var c = JSON.parse(rows[i].data);
+							var t = (c.title ? c.title : 'no title');
+							data.push({
+								id: rows[i].id,
+								published: rows[i].pd,
+								title: t
 							});
 						}
 						cb(null, data);

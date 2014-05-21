@@ -122,6 +122,22 @@ app.get('/chtml/:n', function(req, res, next) {
 	
 });
 
+app.get('/list', function(req, res, next) {
+	
+	cfact.listComics(function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			res.setHeader('Content-Type', 'application/json');
+			res.send(data);
+		} else {
+			next(new Error('missing comic data!')); // this shouldn't happen
+		}
+	});
+	
+});
+
+
 app.get('/data/:n', function(req, res, next) {
 
 	cfact.loadById(req.params.n, function (err, data) {
