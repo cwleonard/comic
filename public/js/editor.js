@@ -159,6 +159,51 @@ function addImage(cell, img) {
 	
 }
 
+function addBubble(cell, b) {
+
+	var bub = b || {};
+	var stemPos = bub.stemPos || '50';
+	var txt = bub.text || 'What does the frog say?';
+	var bLeft = bub.left || 5;
+	var bTop = bub.top || 5;
+	var bWidth = bub.width || 50;
+	
+	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
+	var sizerHeight = Number($(cell).css('height').replace(/\D/g, ''));
+
+	var w = (bWidth / 100) * sizerWidth;
+
+	var l = (bLeft / 100) * sizerWidth; 
+	var t = (bTop / 100) * sizerHeight;
+	
+	var p = document.createElement('p');
+	var s = document.createElement('span');
+	$(s).append(document.createTextNode(txt));
+	
+	$(p).css('top', t + 'px');
+	$(p).css('left', l + 'px');
+	$(p).css('width', w + 'px');
+	$(p).css('position', 'absolute');
+	
+	$(p).addClass('bubble');
+	$(p).addClass('bubble-text');
+	$(p).addClass('bubble' + stemPos);
+	$(p).append(s);
+	
+	$(p).dblclick(toggleStemPosition);
+	
+	$(cell).append(p);
+	$(p).draggable().resizable();
+	$(s).editable({
+		type: 'text',
+		mode: 'inline',
+		success: function(response, newValue) {
+			console.log(newValue);
+		}
+	});
+	
+}
+
 function addCell(c) {
 
 	var d = document.createElement('div');
@@ -171,11 +216,32 @@ function addCell(c) {
 		$.each(c.imgs, function(idx, obj) {
 			addImage(d, obj);
 		});
-		
+
+		//$.each(c.bubbles, function(idx, obj) {
+			addBubble(d, c.bubble);
+		//});
+
 	}
 
 }
 
+function clear() {
+	
+	$('#ctitle').val('');
+	$('#pubDate').val(moment().format('YYYY-MM-DD'));
+	$('#sizer div.box').remove();
+	
+}
+
+/**
+ * Access a SVG on the server and extract the width and height from it.
+ * If successful, the callback function will be invoked with one or two parameters.
+ * The first parameter is the error encountered, or null if there was no error.
+ * The second is an object containing width and height properties. 
+ * 
+ * @param image
+ * @param cb function to be called when finished
+ */
 function getImageAttributes(image, cb) {
 	
 	$.ajax({
@@ -244,30 +310,11 @@ function setupMenu(imgSelectOptions) {
 					
 					if (selectedImage) {
 						
-						getImageAttributes(selectedImage, function(err, ia) {
-							
-							if (err) {
-								console.error(err);
-							} else {
-
-								var d = document.createElement('div');
-								var i = document.createElement('img');
-
-								$(i).css('height', ia.height + 'px');
-								$(i).css('width', ia.width + 'px');
-								$(i).attr('src', '/images/' + selectedImage);
-
-								$(d).addClass('divimg');
-								$(d).append(i);
-
-								// see http://stackoverflow.com/questions/4948582/jquery-draggable-and-resizable
-								$(options.$trigger).append(d);
-
-								$(d).draggable();
-								$(i).resizable({aspectRatio: true});
-								
-							}
-
+						addImage(options.$trigger, {
+							src: selectedImage,
+							width: 25,
+							top: 5,
+							left: 5
 						});
 
 					}
@@ -279,26 +326,8 @@ function setupMenu(imgSelectOptions) {
 				name: "Add Bubble",
 				callback: function(key, options) {
 
-					var p = document.createElement('p');
-					var s = document.createElement('span');
-					$(s).append(document.createTextNode('what does the frog say?'));
+					addBubble(options.$trigger);
 					
-					$(p).addClass('bubble');
-					$(p).addClass('bubble-text');
-					$(p).addClass('bubble50');
-					$(p).append(s);
-					
-					$(p).dblclick(toggleStemPosition);
-					
-					$(options.$trigger).append(p);
-					$(p).draggable().resizable();
-					$(s).editable({
-						type: 'text',
-						mode: 'inline',
-						success: function(response, newValue) {
-							console.log(newValue);
-						}
-					});
 				}
 			}
 
@@ -362,9 +391,6 @@ function setupMenu(imgSelectOptions) {
 					var $this = this;
 					var o = $.contextMenu.getInputValues(options, $this.data());
 					var selectedImage = o.pickImage;
-					
-					
-					
 					
 					$(options.$trigger).find("img").each(function(idx, elem) {
 						$(elem).attr('src', '/images/' + selectedImage);
@@ -466,6 +492,8 @@ function doLoad() {
 		dataType: 'json',
 		success: function(data) {
 			
+			clear();
+			
 			$('#loadModal').modal('toggle');
 			
 			$('#ctitle').val(data.title);
@@ -482,6 +510,7 @@ function doLoad() {
 
 $(function() {
 	
+	$('#clearButton').click(clear);
 	$('#addCellButton').click(addCell);
 	$('#saveButton').click(doSave2);
 	$('#addImageButton').click(toggleImgUpload);
