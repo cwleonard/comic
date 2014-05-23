@@ -1,7 +1,21 @@
-function sendData(d) {
+function postData(d) {
 	$.ajax({
 		url: '/data',
 		type: 'POST',
+		data: JSON.stringify(d),
+		contentType: 'application/json; charset=utf-8',
+		dataType: 'text',
+		success: function(data) {
+			console.log(data);
+		}
+	});
+
+}
+
+function putData(id, d) {
+	$.ajax({
+		url: '/data/' + id,
+		type: 'PUT',
 		data: JSON.stringify(d),
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'text',
@@ -23,7 +37,21 @@ function rgb2hex(rgb) {
 
 }
 
-function doSave2(evt, pushToServer) {
+function doSave(evt) {
+
+	var cobj = buildComicOjbect();
+	postData(cobj);
+
+}
+
+function doUpdate(evt) {
+
+	var cobj = buildComicOjbect();
+	putData($('#hiddenId').val(), cobj);
+	
+}
+
+function buildComicOjbect() {
 	
 	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
 	
@@ -78,16 +106,26 @@ function doSave2(evt, pushToServer) {
 		
 		$(elem).find(".divimg").each(function(idx, elem) {
 			
-			var cssTop = $(elem).css('top');
-			var cssLeft = $(elem).css('left');
-			
-			// positions need converted to %
-			var t = Number(cssTop.replace('px', ''));
-			var l = Number(cssLeft.replace('px', ''));
-			t = t * (1 / sizerHeight) * 100;
-			l = l * (1 / sizerWidth) * 100;
+			var draggableTop = Number($(elem).css('top').replace('px', ''));
+			var draggableLeft = Number($(elem).css('left').replace('px', ''));
 			
 			$(elem).find("div.ui-wrapper").each(function(idx, elem) {
+
+				var wrapperTop = Number($(elem).css('top').replace('px', ''));
+				var wrapperLeft = Number($(elem).css('left').replace('px', ''));
+
+				// why am I doing this? because when the image was created, it was
+				// given a top and left value. making it draggable and resizable sets
+				// relative positioning on the ui-draggable (divimg) div and absolute
+				// positioning on the ui-wrapper div. to get the actual location of
+				// the image, we have to add those 2 values together. the values on
+				// the ui-wrapper div don't change, but the values on ui-draggable might.
+				var t = draggableTop + wrapperTop;
+				var l = draggableLeft + wrapperLeft;
+				
+				// positions need converted to %
+				t = t * (1 / sizerHeight) * 100;
+				l = l * (1 / sizerWidth) * 100;
 				
 				// width needs converted to %
 				var cssWidth = $(elem).css('width');
@@ -111,11 +149,7 @@ function doSave2(evt, pushToServer) {
 		
 	});
 	
-	console.log(cobj);
-	
-	if (pushToServer) {
-		sendData(cobj);
-	}
+	return cobj;
 
 }
 
@@ -125,8 +159,8 @@ function addImage(cell, img) {
 
 		if (!err) {
 
-			var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
-			var sizerHeight = Number($(cell).css('height').replace(/\D/g, ''));
+			var sizerWidth = Number($('#sizer').css('width').replace('px', ''));
+			var sizerHeight = Number($(cell).css('height').replace('px', ''));
 
 			var d = document.createElement('div');
 			var i = document.createElement('img');
@@ -496,8 +530,11 @@ function doLoad() {
 			
 			$('#loadModal').modal('toggle');
 			
+			var pd = moment(data.pubDate.substring(data.pubDate.indexOf(',') + 1), ['DD MMM YYYY' , 'D MMM YYYY']);
+			
 			$('#ctitle').val(data.title);
-			$('#pubDate').val(data.pubDate);
+			$('#pubDate').val(pd.format('YYYY-MM-DD'));
+			$('#hiddenId').val(data.id);
 
 			$.each(data.cells, function(idx, c) {
 				addCell(c);
@@ -512,7 +549,7 @@ $(function() {
 	
 	$('#clearButton').click(clear);
 	$('#addCellButton').click(addCell);
-	$('#saveButton').click(doSave2);
+	$('#saveButton').click(doSave);
 	$('#addImageButton').click(toggleImgUpload);
 	$('#loadButton').click(showComicList);
 	$('#confirmLoadButton').click(doLoad);

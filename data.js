@@ -174,19 +174,35 @@ module.exports = function(dbconf) {
 			
 		},
 		
-		storeData: function(data, cb) {
+		storeData: function(data, idOrCb, cb) {
+			
+			var id = typeof(idOrCb) === 'function' ? null : idOrCb;
+			var callback = typeof(idOrCb) === 'function' ? idOrCb : cb;
 			
 			var json = JSON.stringify(data);
 
-			pool.query('INSERT INTO comic_data (pub_date, data) VALUES (?, ?)', [data.pubDate, json], function(err, result) {
+			var sql;
+			var params;
+			if (id) {
+				sql = 'INSERT INTO comic_data (id, pub_date, data) VALUES (?, ?, ?) ' + 
+					'ON DUPLICATE KEY UPDATE pub_date = VALUES(pub_date), data = VALUES(data)';
+				params = [id, data.pubDate, json];
+			} else {
+				sql = 'INSERT INTO comic_data (pub_date, data) VALUES (?, ?)';
+				params = [data.pubDate, json];
+			}
+			
+			pool.query(sql, params, function(err, result) {
 				
 				if (err) {
-					cb(err);
+					callback(err);
 				} else {
-					if (result.affectedRows === 1) {
-						cb(null, result.insertId);
+					if (id) {
+						callback(null, id);
+					} else if (result.affectedRows === 1) {
+						callback(null, result.insertId);
 					} else {
-						cb(new Error('no data inserted!'));
+						callback(new Error('no data inserted!'));
 					}
 				}
 				

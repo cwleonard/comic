@@ -153,6 +153,33 @@ app.get('/data/:n', function(req, res, next) {
 	
 });
 
+app.post('/data', function(req, res, next) {
+	
+	cfact.storeData(req.body, function(err, newid) {
+		if (err) {
+			next(err);
+		} else {
+			res.setHeader('Content-Type', 'text/plain');
+			res.send('data id: ' + newid);
+		}
+	});
+	
+});
+
+app.put('/data/:n', function(req, res, next) {
+	
+	var i = isNaN(req.params.n) ? null : Number(req.params.n);
+	cfact.storeData(req.body, i, function(err, newid) {
+		if (err) {
+			next(err);
+		} else {
+			res.setHeader('Content-Type', 'text/plain');
+			res.send('data id: ' + newid);
+		}
+	});
+	
+});
+
 app.get('/editor', function(req, res, next) {
 	
 	res.render('editpage', {});
@@ -171,18 +198,6 @@ app.get('/merch', function(req, res, next) {
 	
 });
 
-app.post('/data', function(req, res, next) {
-
-	cfact.storeData(req.body, function(err, newid) {
-		if (err) {
-			next(err);
-		} else {
-			res.setHeader('Content-Type', 'text/plain');
-			res.send('data id: ' + newid);
-		}
-	});
-	
-});
 
 app.get('/images', function(req, res, next) {
 	
