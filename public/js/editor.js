@@ -4,9 +4,9 @@ function postData(d) {
 		type: 'POST',
 		data: JSON.stringify(d),
 		contentType: 'application/json; charset=utf-8',
-		dataType: 'text',
+		dataType: 'json',
 		success: function(data) {
-			console.log(data);
+			$('#hiddenId').val(data.id);
 		}
 	});
 
@@ -18,9 +18,9 @@ function putData(id, d) {
 		type: 'PUT',
 		data: JSON.stringify(d),
 		contentType: 'application/json; charset=utf-8',
-		dataType: 'text',
+		dataType: 'json',
 		success: function(data) {
-			console.log(data);
+			$('#hiddenId').val(data.id);
 		}
 	});
 
@@ -39,8 +39,18 @@ function rgb2hex(rgb) {
 
 function doSave(evt) {
 
+	var asNew = false;
+	var existingId = $('#hiddenId').val();
+	if (existingId === '') {
+		asNew = true;
+	}
+	
 	var cobj = buildComicOjbect();
-	postData(cobj);
+	if (asNew) {
+		postData(cobj);
+	} else {
+		putData(existingId, cobj);
+	}
 
 }
 
@@ -48,6 +58,99 @@ function doUpdate(evt) {
 
 	var cobj = buildComicOjbect();
 	putData($('#hiddenId').val(), cobj);
+	
+}
+
+/**
+ * Constructs a cell object from a given DOM element
+ * 
+ * @param elem
+ */
+function buildCellObject(elem) {
+	
+	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
+	var sizerHeight = Number($(elem).css('height').replace(/\D/g, ''));
+	
+	var bgc =$(elem).css('background-color');
+	if (bgc.search("rgb") != -1) {
+		bgc = rgb2hex(bgc);
+	}
+	
+	var b = {
+		background: bgc,
+		bubble: undefined,
+		imgs: []
+	};
+	
+	$(elem).find("p.bubble").each(function(idx, elem) {
+		var cssTop = $(elem).css('top');
+		var cssLeft = $(elem).css('left');
+		var cssWidth = $(elem).css('width');
+		var sp = $(elem).hasClass('bubble25') ? 25 : ($(elem).hasClass('bubble75') ? 75 : 50);
+		
+		// positions need converted to %
+		var t = Number(cssTop.replace('px', ''));
+		var l = Number(cssLeft.replace('px', ''));
+		var w = Number(cssWidth.replace('px', ''));
+		t = t * (1 / sizerHeight) * 100;
+		l = l * (1 / sizerWidth) * 100;
+		w = w * (1 / sizerWidth) * 100;
+		
+		$(elem).find("span").each(function(idx, elem) {
+			b.bubble = {
+					top: t,
+					left: l,
+					width: w,
+					stemPos: sp,
+					text: $(elem).text()
+			};
+		});
+	});
+	
+	$(elem).find(".divimg").each(function(idx, elem) {
+		
+		// sometimes, the style for 'top' and 'left' comes back as 'auto'...
+		// in these cases, we should treat these values as 0
+		var draggableTop  = isNaN($(elem).css('top').replace('px', '')) ? 0 : Number($(elem).css('top').replace('px', ''));
+		var draggableLeft = isNaN($(elem).css('left').replace('px', '')) ? 0 : Number($(elem).css('left').replace('px', ''));
+		
+		$(elem).find("div.ui-wrapper").each(function(idx, elem) {
+
+			var wrapperTop = Number($(elem).css('top').replace('px', ''));
+			var wrapperLeft = Number($(elem).css('left').replace('px', ''));
+
+			// why am I doing this? because when the image was created, it was
+			// given a top and left value. making it draggable and resizable sets
+			// relative positioning on the ui-draggable (divimg) div and absolute
+			// positioning on the ui-wrapper div. to get the actual location of
+			// the image, we have to add those 2 values together. the values on
+			// the ui-wrapper div don't change, but the values on ui-draggable might.
+			var t = draggableTop + wrapperTop;
+			var l = draggableLeft + wrapperLeft;
+			
+			// positions need converted to %
+			t = t * (1 / sizerHeight) * 100;
+			l = l * (1 / sizerWidth) * 100;
+			
+			// width needs converted to %
+			var cssWidth = $(elem).css('width');
+			var w = Number(cssWidth.replace('px', ''));
+			w = w * (1 / sizerWidth) * 100;
+			
+			$(elem).find("img").each(function(idx, elem) {
+				var s = elem.src;
+				s = s.substring(s.lastIndexOf('/')+1);
+				b.imgs.push({
+					top: t,
+					left: l,
+					width: w,
+					src: s
+				});
+			});
+		});
+	});
+
+	return b;
 	
 }
 
@@ -66,85 +169,7 @@ function buildComicOjbect() {
 	
 	$('#sizer div.box').each(function(idx, elem) {
 		
-		var sizerHeight = Number($(elem).css('height').replace(/\D/g, ''));
-		
-		var bgc =$(elem).css('background-color');
-		if (bgc.search("rgb") != -1) {
-			bgc = rgb2hex(bgc);
-		}
-		
-		var b = {
-			background: bgc,
-			bubble: undefined,
-			imgs: []
-		};
-		
-		$(elem).find("p.bubble").each(function(idx, elem) {
-			var cssTop = $(elem).css('top');
-			var cssLeft = $(elem).css('left');
-			var cssWidth = $(elem).css('width');
-			var sp = $(elem).hasClass('bubble25') ? 25 : ($(elem).hasClass('bubble75') ? 75 : 50);
-			
-			// positions need converted to %
-			var t = Number(cssTop.replace('px', ''));
-			var l = Number(cssLeft.replace('px', ''));
-			var w = Number(cssWidth.replace('px', ''));
-			t = t * (1 / sizerHeight) * 100;
-			l = l * (1 / sizerWidth) * 100;
-			w = w * (1 / sizerWidth) * 100;
-			
-			$(elem).find("span").each(function(idx, elem) {
-				b.bubble = {
-						top: t,
-						left: l,
-						width: w,
-						stemPos: sp,
-						text: $(elem).text()
-				};
-			});
-		});
-		
-		$(elem).find(".divimg").each(function(idx, elem) {
-			
-			var draggableTop = Number($(elem).css('top').replace('px', ''));
-			var draggableLeft = Number($(elem).css('left').replace('px', ''));
-			
-			$(elem).find("div.ui-wrapper").each(function(idx, elem) {
-
-				var wrapperTop = Number($(elem).css('top').replace('px', ''));
-				var wrapperLeft = Number($(elem).css('left').replace('px', ''));
-
-				// why am I doing this? because when the image was created, it was
-				// given a top and left value. making it draggable and resizable sets
-				// relative positioning on the ui-draggable (divimg) div and absolute
-				// positioning on the ui-wrapper div. to get the actual location of
-				// the image, we have to add those 2 values together. the values on
-				// the ui-wrapper div don't change, but the values on ui-draggable might.
-				var t = draggableTop + wrapperTop;
-				var l = draggableLeft + wrapperLeft;
-				
-				// positions need converted to %
-				t = t * (1 / sizerHeight) * 100;
-				l = l * (1 / sizerWidth) * 100;
-				
-				// width needs converted to %
-				var cssWidth = $(elem).css('width');
-				var w = Number(cssWidth.replace('px', ''));
-				w = w * (1 / sizerWidth) * 100;
-				
-				$(elem).find("img").each(function(idx, elem) {
-					var s = elem.src;
-					s = s.substring(s.lastIndexOf('/')+1);
-					b.imgs.push({
-						top: t,
-						left: l,
-						width: w,
-						src: s
-					});
-				});
-			});
-		});
-		
+		var b = buildCellObject(elem);
 		cobj.cells.push(b);
 		
 	});
@@ -251,9 +276,9 @@ function addCell(c) {
 			addImage(d, obj);
 		});
 
-		//$.each(c.bubbles, function(idx, obj) {
+		if (c.bubble) {
 			addBubble(d, c.bubble);
-		//});
+		}
 
 	}
 
@@ -261,6 +286,7 @@ function addCell(c) {
 
 function clear() {
 	
+	$('#hiddenId').val('');
 	$('#ctitle').val('');
 	$('#pubDate').val(moment().format('YYYY-MM-DD'));
 	$('#sizer div.box').remove();
@@ -329,6 +355,16 @@ function setupMenu(imgSelectOptions) {
 				value: '#FFFFFF'
 			},
 			sep1: "----------",
+			dupCell: {
+				name: "Duplicate Cell",
+				callback: function(key, options) {
+					
+					var copy = buildCellObject(options.$trigger);
+					addCell(copy);
+					
+				}
+			},
+			sep2: "----------",
 			pickImage: {
 				name: "Select Image",
 				type: 'select',
@@ -355,7 +391,7 @@ function setupMenu(imgSelectOptions) {
 
 				}
 			},
-			sep2: "----------",
+			sep3: "----------",
 			addBubble: {
 				name: "Add Bubble",
 				callback: function(key, options) {

@@ -159,8 +159,10 @@ app.post('/data', function(req, res, next) {
 		if (err) {
 			next(err);
 		} else {
-			res.setHeader('Content-Type', 'text/plain');
-			res.send('data id: ' + newid);
+			res.setHeader('Content-Type', 'application/json');
+			res.send({
+				id: newid
+			});
 		}
 	});
 	
@@ -173,8 +175,10 @@ app.put('/data/:n', function(req, res, next) {
 		if (err) {
 			next(err);
 		} else {
-			res.setHeader('Content-Type', 'text/plain');
-			res.send('data id: ' + newid);
+			res.setHeader('Content-Type', 'application/json');
+			res.send({
+				id: newid
+			});
 		}
 	});
 	
