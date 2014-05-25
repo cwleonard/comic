@@ -54,7 +54,8 @@ app.set('view engine', 'jade');
 // --------- set up routes and middleware and such
 
 // logging comes first
-app.use(morgan());
+//   note: using the header "X-Real-IP" because I proxy this app throuh nginx
+app.use(morgan(':req[X-Real-IP] - - [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'));
 
 app.use(cookieParser()); // required before session.
 app.use(session({ secret: 'keyboard cat'}));
