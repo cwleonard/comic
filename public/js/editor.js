@@ -37,6 +37,13 @@ function rgb2hex(rgb) {
 
 }
 
+/**
+ * Saves the current comic. If this is a comic that has been loaded (i.e. one that
+ * is already in the database) the existing comic is updated. If this is
+ * a new comic, it is added to the database.
+ * 
+ * @param evt
+ */
 function doSave(evt) {
 
 	var asNew = false;
@@ -54,11 +61,17 @@ function doSave(evt) {
 
 }
 
-function doUpdate(evt) {
+/**
+ * Ignores the fact that this could be an existing comic and adds it to
+ * the database with a new id.
+ * 
+ * @param evt
+ */
+function doSaveAsNew(evt) {
 
 	var cobj = buildComicOjbect();
-	putData($('#hiddenId').val(), cobj);
-	
+	postData(cobj);
+
 }
 
 /**
@@ -535,8 +548,13 @@ function toggleImgUpload() {
 	
 }
 
+/**
+ * Display a modal dialog with a list of the existing comics from which to select
+ * a comic for editing.
+ */
 function showComicList() {
 	
+	$('#comicSelect').empty();
 	$('#loadModal').modal('toggle');
 	$.ajax({
 		url: '/list',
@@ -586,6 +604,7 @@ $(function() {
 	$('#clearButton').click(clear);
 	$('#addCellButton').click(addCell);
 	$('#saveButton').click(doSave);
+	$('#saveAsNewButton').click(doSaveAsNew);
 	$('#addImageButton').click(toggleImgUpload);
 	$('#loadButton').click(showComicList);
 	$('#confirmLoadButton').click(doLoad);
