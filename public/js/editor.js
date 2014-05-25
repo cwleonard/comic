@@ -91,7 +91,7 @@ function buildCellObject(elem) {
 	
 	var b = {
 		background: bgc,
-		bubble: undefined,
+		bubbles: [],
 		imgs: []
 	};
 	
@@ -110,13 +110,13 @@ function buildCellObject(elem) {
 		w = w * (1 / sizerWidth) * 100;
 		
 		$(elem).find("span").each(function(idx, elem) {
-			b.bubble = {
+			b.bubbles.push({
 					top: t,
 					left: l,
 					width: w,
 					stemPos: sp,
 					text: $(elem).text()
-			};
+			});
 		});
 	});
 	
@@ -291,6 +291,10 @@ function addCell(c) {
 
 		if (c.bubble) {
 			addBubble(d, c.bubble);
+		} else if (c.bubbles) {
+			$.each(c.bubbles, function(idx, bub) {
+				addBubble(d, bub);
+			});
 		}
 
 	}

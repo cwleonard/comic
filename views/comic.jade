@@ -1,13 +1,22 @@
+mixin makeBubble(bub)
+	p(class='bubble bubble-text bubble' + (bub.stemPos ? bub.stemPos : 50),style=(bub.width ? 'width: ' + bub.width + '%;' : '') + 'top: ' + bub.top + '%; left: ' + bub.left + '%;')
+		= bub.text
+
+mixin makeImage(img)
+	img(animated=img.move ? 'true' : undefined,speed=img.speed ? img.speed : undefined,travel=img.travel ? img.travel : undefined,direction=img.direction ? img.direction : undefined,style='top: ' + img.top + '%; left: ' + img.left + '%;'+(img.width ? ' width: ' + img.width + '%;' : ''),src='/images/'+img.src,alt='frog')
+
 div#sizer
 	if title
 		p.cTitle= title
 	- for (var c in cells)
 		div.box(style=cells[c].background ? 'background-color: ' + cells[c].background : undefined)
 			if cells[c].bubble
-				p(class='bubble bubble-text bubble' + (cells[c].bubble.stemPos ? cells[c].bubble.stemPos : 50),style=(cells[c].bubble.width ? 'width: ' + cells[c].bubble.width + '%;' : '') + 'top: ' + cells[c].bubble.top + '%; left: ' + cells[c].bubble.left + '%;')
-					= cells[c].bubble.text
+				+makeBubble(cells[c].bubble)
+			if cells[c].bubbles
+				- for (var b in cells[c].bubbles)
+					+makeBubble(cells[c].bubbles[b]
 			- for (var i in cells[c].imgs)
-				img(animated=cells[c].imgs[i].move ? 'true' : undefined,speed=cells[c].imgs[i].speed ? cells[c].imgs[i].speed : undefined,travel=cells[c].imgs[i].travel ? cells[c].imgs[i].travel : undefined,direction=cells[c].imgs[i].direction ? cells[c].imgs[i].direction : undefined,style='top: ' + cells[c].imgs[i].top + '%; left: ' + cells[c].imgs[i].left + '%;'+(cells[c].imgs[i].width ? ' width: ' + cells[c].imgs[i].width + '%;' : ''),src='/images/'+cells[c].imgs[i].src,alt='frog')
+				+makeImage(cells[c].imgs[i])
 	div#info(comicId=id,class='info')
 		div
 			if prevDate
