@@ -102,6 +102,25 @@ app.get('/:n', function(req, res, next) {
 	
 });
 
+// render basic (no header, footer, animation, etc) comic pages by id
+app.get('/basic/:n', function(req, res, next) {
+
+	cfact.loadById(req.params.n, function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			data.basic = true;
+			data.pubDate = null;
+			data.prevDate = null;
+			data.nextDate = null;
+			res.render('basiccomicpage', data);
+		} else {
+			next(); // no comic found
+		}
+	});
+	
+});
+
 //get just the comic HTML by id
 app.get('/chtml/:n', function(req, res, next) {
 
