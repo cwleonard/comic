@@ -222,6 +222,21 @@ app.get('/merch', function(req, res, next) {
 	
 });
 
+app.get('/pins/:n', function(req, res, next) {
+	
+	cfact.loadPinImage(req.params.n, function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			res.setHeader('Content-Type', 'image/png');
+			res.send(data);
+		} else {
+			res.send(404); // don't use the full-page 404 for missing images
+		}
+	});
+	
+});
+
 
 app.get('/images', function(req, res, next) {
 	

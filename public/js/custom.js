@@ -47,6 +47,9 @@ function replaceComic(id, push) {
 			document.title = 'Amphibian.com';
 		}
 		
+		// build a new Pinterest button
+		build_pinterest_button($('#pin')[0]);
+		
 	}, 'html');
 	
 }

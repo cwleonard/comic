@@ -137,6 +137,22 @@ module.exports = function(dbconf) {
 
 		},
 		
+		loadPinImage: function(id, cb) {
+
+			pool.query('SELECT static_img FROM comic_data WHERE id = ?', [id], function(err, rows) {
+				if (err) {
+					cb(err);
+				} else {
+					if (rows.length > 0) {
+						cb(null, new Buffer(rows[0].static_img));
+					} else {
+						cb(null, null);
+					}
+				}
+			});
+
+		},
+
 		loadImage: function(name, cb) {
 
 			pool.query('SELECT data, type FROM comic_img WHERE filename = ?', [name], function(err, rows) {
