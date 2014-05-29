@@ -10,6 +10,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var cdata = require('./data');
+var staticImage = require('./staticImage');
 
 // --- set up login strategy
 
@@ -47,6 +48,9 @@ var app = express();
 
 var dbconf = JSON.parse(fs.readFileSync('data/dbconf.json', { encoding: 'utf-8' }));
 var cfact = cdata(dbconf);
+var imageMaker = staticImage({
+	dir: '/temp'
+});
 
 app.set('view engine', 'jade');
 
@@ -198,6 +202,11 @@ app.put('/data/:n', function(req, res, next) {
 			res.setHeader('Content-Type', 'application/json');
 			res.send({
 				id: newid
+			});
+			imageMaker.createImage(newid, function(err) {
+				if (err) {
+					console.log(err);
+				}
 			});
 		}
 	});
