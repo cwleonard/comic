@@ -187,6 +187,11 @@ app.post('/data', function(req, res, next) {
 			res.send({
 				id: newid
 			});
+			imageMaker.createImage(newid, cfact.storePinImage, function(err) {
+				if (err) {
+					console.log(err);
+				}
+			});
 		}
 	});
 	
@@ -203,7 +208,7 @@ app.put('/data/:n', function(req, res, next) {
 			res.send({
 				id: newid
 			});
-			imageMaker.createImage(newid, function(err) {
+			imageMaker.createImage(newid, cfact.storePinImage, function(err) {
 				if (err) {
 					console.log(err);
 				}

@@ -10,7 +10,7 @@ module.exports = function(conf) {
 	
 	return {
 		
-		createImage: function (id, cb) {
+		createImage: function (id, storeFunc, cb) {
 			
 			var fn = tempDir + "/temp-capture-" + id + ".js";
 			var imgFileName = tempDir + "/comic_" + id + ".png";
@@ -45,6 +45,38 @@ module.exports = function(conf) {
 									console.log('removed ' + fn);
 									
 									// read image
+									fs.readFile(imgFileName, function(err, idata) {
+										
+										if (err) {
+											cb(err);
+										} else {
+											
+											console.log('read ' + imgFileName);
+											storeFunc(id, idata, function(err) {
+												
+												if (err) {
+													cb(err);
+												} else {
+
+													// everything worked, clean up image file
+													fs.unlink(imgFileName, function(err) {
+														
+														if (err) {
+															cb(err);
+														} else {
+															console.log('removed ' + imgFileName);
+															cb();
+														}
+														
+													});
+													
+												}
+												
+											});
+											
+										}
+										
+									});
 									
 								}
 								

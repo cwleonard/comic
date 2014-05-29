@@ -153,6 +153,22 @@ module.exports = function(dbconf) {
 
 		},
 
+		storePinImage: function(id, data, cb) {
+
+			pool.query('UPDATE comic_data SET static_img = ? WHERE id = ?', [data, id], function(err, result) {
+				if (err) {
+					cb(err);
+				} else {
+					if (result.affectedRows === 1) {
+						cb(null);
+					} else {
+						cb(new Error('no row updated!'));
+					}
+				}
+			});
+
+		},
+
 		loadImage: function(name, cb) {
 
 			pool.query('SELECT data, type FROM comic_img WHERE filename = ?', [name], function(err, rows) {
