@@ -95,74 +95,85 @@ function buildCellObject(elem) {
 		imgs: []
 	};
 	
-	$(elem).find("p.bubble").each(function(idx, elem) {
-		var cssTop = $(elem).css('top');
-		var cssLeft = $(elem).css('left');
-		var cssWidth = $(elem).css('width');
-		var sp = $(elem).hasClass('bubble25') ? 25 : ($(elem).hasClass('bubble75') ? 75 : 50);
-		
-		// positions need converted to %
-		var t = Number(cssTop.replace('px', ''));
-		var l = Number(cssLeft.replace('px', ''));
-		var w = Number(cssWidth.replace('px', ''));
-		t = t * (1 / sizerHeight) * 100;
-		l = l * (1 / sizerWidth) * 100;
-		w = w * (1 / sizerWidth) * 100;
-		
-		$(elem).find("span").each(function(idx, elem) {
-			b.bubbles.push({
-					top: t,
-					left: l,
-					width: w,
-					stemPos: sp,
-					text: $(elem).text()
-			});
-		});
-	});
+	var zi = 1;
 	
-	$(elem).find(".divimg").each(function(idx, elem) {
+	$(elem).find("div.divimg, p.bubble").each(function(idx, elem) {
 		
-		// sometimes, the style for 'top' and 'left' comes back as 'auto'...
-		// in these cases, we should treat these values as 0
-		var draggableTop  = isNaN($(elem).css('top').replace('px', '')) ? 0 : Number($(elem).css('top').replace('px', ''));
-		var draggableLeft = isNaN($(elem).css('left').replace('px', '')) ? 0 : Number($(elem).css('left').replace('px', ''));
-		
-		$(elem).find("div.ui-wrapper").each(function(idx, elem) {
-
-			var wrapperTop = Number($(elem).css('top').replace('px', ''));
-			var wrapperLeft = Number($(elem).css('left').replace('px', ''));
-
-			// why am I doing this? because when the image was created, it was
-			// given a top and left value. making it draggable and resizable sets
-			// relative positioning on the ui-draggable (divimg) div and absolute
-			// positioning on the ui-wrapper div. to get the actual location of
-			// the image, we have to add those 2 values together. the values on
-			// the ui-wrapper div don't change, but the values on ui-draggable might.
-			var t = draggableTop + wrapperTop;
-			var l = draggableLeft + wrapperLeft;
+		// ====================================== SPEECH BUBBLES ===============
+		if ($(elem).hasClass("bubble")) {
+			
+			var cssTop = $(elem).css('top');
+			var cssLeft = $(elem).css('left');
+			var cssWidth = $(elem).css('width');
+			var sp = $(elem).hasClass('bubble25') ? 25 : ($(elem).hasClass('bubble75') ? 75 : 50);
 			
 			// positions need converted to %
+			var t = Number(cssTop.replace('px', ''));
+			var l = Number(cssLeft.replace('px', ''));
+			var w = Number(cssWidth.replace('px', ''));
 			t = t * (1 / sizerHeight) * 100;
 			l = l * (1 / sizerWidth) * 100;
-			
-			// width needs converted to %
-			var cssWidth = $(elem).css('width');
-			var w = Number(cssWidth.replace('px', ''));
 			w = w * (1 / sizerWidth) * 100;
 			
-			$(elem).find("img").each(function(idx, elem) {
-				var s = elem.src;
-				s = s.substring(s.lastIndexOf('/')+1);
-				b.imgs.push({
-					top: t,
-					left: l,
-					width: w,
-					src: s
+			$(elem).find("span").each(function(idx, elem) {
+				b.bubbles.push({
+						top: t,
+						left: l,
+						width: w,
+						z: zi++,
+						stemPos: sp,
+						text: $(elem).text()
 				});
 			});
-		});
-	});
+			
+		// ====================================== IMAGES =======================
+		} else if ($(elem).hasClass("divimg")) {
+			
+			// sometimes, the style for 'top' and 'left' comes back as 'auto'...
+			// in these cases, we should treat these values as 0
+			var draggableTop  = isNaN($(elem).css('top').replace('px', '')) ? 0 : Number($(elem).css('top').replace('px', ''));
+			var draggableLeft = isNaN($(elem).css('left').replace('px', '')) ? 0 : Number($(elem).css('left').replace('px', ''));
+			
+			$(elem).find("div.ui-wrapper").each(function(idx, elem) {
 
+				var wrapperTop = Number($(elem).css('top').replace('px', ''));
+				var wrapperLeft = Number($(elem).css('left').replace('px', ''));
+
+				// why am I doing this? because when the image was created, it was
+				// given a top and left value. making it draggable and resizable sets
+				// relative positioning on the ui-draggable (divimg) div and absolute
+				// positioning on the ui-wrapper div. to get the actual location of
+				// the image, we have to add those 2 values together. the values on
+				// the ui-wrapper div don't change, but the values on ui-draggable might.
+				var t = draggableTop + wrapperTop;
+				var l = draggableLeft + wrapperLeft;
+				
+				// positions need converted to %
+				t = t * (1 / sizerHeight) * 100;
+				l = l * (1 / sizerWidth) * 100;
+				
+				// width needs converted to %
+				var cssWidth = $(elem).css('width');
+				var w = Number(cssWidth.replace('px', ''));
+				w = w * (1 / sizerWidth) * 100;
+				
+				$(elem).find("img").each(function(idx, elem) {
+					var s = elem.src;
+					s = s.substring(s.lastIndexOf('/')+1);
+					b.imgs.push({
+						top: t,
+						left: l,
+						width: w,
+						z: zi++,
+						src: s
+					});
+				});
+			});
+			
+		}
+		
+	});
+	
 	return b;
 	
 }
@@ -284,18 +295,50 @@ function addCell(c) {
 	
 	if (c) {
 		
+		var stuff = [];
+		
 		$(d).css('background-color', c.background);
 		$.each(c.imgs, function(idx, obj) {
-			addImage(d, obj);
+			//addImage(d, obj);
+			stuff.push({
+				'type': 'image',
+				'object': obj
+			});
 		});
 
 		if (c.bubble) {
-			addBubble(d, c.bubble);
+			//addBubble(d, c.bubble);
+			stuff.push({
+				'type': 'bubble',
+				'object': c.bubble
+			});
 		} else if (c.bubbles) {
 			$.each(c.bubbles, function(idx, bub) {
-				addBubble(d, bub);
+				//addBubble(d, bub);
+				stuff.push({
+					'type': 'bubble',
+					'object': bub
+				});
 			});
 		}
+		
+		// sort stuff by z-index
+		stuff.sort(function(a, b) {
+			var za = a.object.z || 0;
+			var zb = b.object.z || 0;
+			return za - zb;
+		});
+		
+		// now add to cell
+		$.each(stuff, function(idx, s) {
+			
+			if (s.type === 'image') {
+				addImage(d, s.object);
+			} else if (s.type === 'bubble') {
+				addBubble(d, s.object);
+			}
+			
+		});
 
 	}
 
@@ -325,6 +368,7 @@ function getImageAttributes(image, cb) {
 		url: '/images/' + image,
 		type: 'GET',
 		dataType: 'xml',
+		async: false,
 		success: function(data) {
 			var w = data.rootElement.getAttribute('width');
 			var h = data.rootElement.getAttribute('height');
@@ -542,7 +586,80 @@ function setupMenu(imgSelectOptions) {
 		}
 		
 	});
-	
+
+	$.contextMenu({
+		
+		zIndex: 100,
+		selector: 'p.bubble',
+		items: {
+			width: {
+				name: 'Width',
+				type: 'text',
+				value: ''
+			},
+			left: {
+				name: 'Left',
+				type: 'text',
+				value: ''
+			},
+			top: {
+				name: 'Top',
+				type: 'text',
+				value: ''
+			},
+			sep1: "----------",
+			moveBack: {
+				name: "Move Back",
+				callback: function(key, options) {
+					var n = options.$trigger;
+					n.insertBefore(n.prev());
+				}
+			},
+			moveUp: {
+				name: "Move Forward",
+				callback: function(key, options) {
+					var n = options.$trigger;
+					n.insertAfter(n.next());
+				}
+			},
+			sep3: "----------",
+			addBubble: {
+				name: "Delete",
+				callback: function(key, options) {
+					$(options.$trigger).detach();
+				}
+			}
+
+		},
+		events: {
+			show: function(opt) {
+				var $this = this;
+				var w = $this.css('width');
+				var t = $this.css('top');
+				var l = $this.css('left');
+				var d = {
+						width: w,
+						top: t,
+						left: l,
+					};
+				$.contextMenu.setInputValues(opt, d);
+			},
+			hide: function(opt) {
+				var $this = this;
+				var o = $.contextMenu.getInputValues(opt, $this.data());
+				$this.css('top', o.top);
+				$this.css('left', o.left);
+				var img = $this.find('img');
+				if ($this.css('width') !== o.width) {
+					$this.resizable('destroy');
+					$this.css('width', o.width);
+					$this.resizable();
+				}
+			}
+		}
+		
+	});
+
 	
 }
 
