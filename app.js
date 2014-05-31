@@ -220,19 +220,33 @@ app.put('/data/:n', function(req, res, next) {
 
 app.get('/editor', function(req, res, next) {
 	
-	res.render('editpage', {});
+	res.render('editpage', {
+		pageTitle: 'Editor'
+	});
 	
 });
 
 app.get('/about', function(req, res, next) {
 	
-	res.render('about', {});
+	res.render('about', {
+		pageTitle: 'About'
+	});
 	
 });
 
 app.get('/merch', function(req, res, next) {
 	
-	res.render('merch', {});
+	res.render('merch', {
+		pageTitle: 'Merchandise'
+	});
+	
+});
+
+app.get('/games', function(req, res, next) {
+	
+	res.render('games', {
+		pageTitle: 'Games'
+	});
 	
 });
 
