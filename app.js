@@ -221,7 +221,7 @@ app.put('/data/:n', function(req, res, next) {
 app.get('/editor', function(req, res, next) {
 	
 	res.render('editpage', {
-		pageTitle: 'Editor'
+		title: 'Editor'
 	});
 	
 });
@@ -229,7 +229,7 @@ app.get('/editor', function(req, res, next) {
 app.get('/about', function(req, res, next) {
 	
 	res.render('about', {
-		pageTitle: 'About'
+		title: 'About'
 	});
 	
 });
@@ -237,7 +237,7 @@ app.get('/about', function(req, res, next) {
 app.get('/merch', function(req, res, next) {
 	
 	res.render('merch', {
-		pageTitle: 'Merchandise'
+		title: 'Merchandise'
 	});
 	
 });
@@ -245,7 +245,7 @@ app.get('/merch', function(req, res, next) {
 app.get('/games', function(req, res, next) {
 	
 	res.render('games', {
-		pageTitle: 'Games'
+		title: 'Games'
 	});
 	
 });
