@@ -11,29 +11,19 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var cdata = require('./data');
 var staticImage = require('./staticImage');
+var userAuth = require('./userAuth');
+
+var app = express();
+
+var dbconf = JSON.parse(fs.readFileSync('data/dbconf.json', { encoding: 'utf-8' }));
+var cfact = cdata(dbconf);
+var authorizer = userAuth(dbconf);
+var imageMaker = staticImage({
+	dir: '/temp'
+});
 
 // --- set up login strategy
-
-passport.use(new LocalStrategy(function(username, password, done) {
-	
-	console.log('username: ' + username);
-	
-	if (username === 'error') {
-		done(new Error('test error'));
-	} else if (username === 'user') {
-		if (password === 'password') {
-			console.log('good login');
-			done(null, { userid: '33333' });
-		} else {
-			console.log('incorrect password');
-			done(null, false, { message: 'incorrect password' });
-		}
-	} else {
-		console.log('incorrect username');
-		done(null, false, { message: 'incorrect username' });
-	}
-	
-}));
+passport.use(new LocalStrategy(authorizer));
 
 passport.serializeUser(function(user, done) {
 	done(null, user.userid);
@@ -44,16 +34,16 @@ passport.deserializeUser(function(id, done) {
 	done(null, {});
 });
 
-var app = express();
-
-var dbconf = JSON.parse(fs.readFileSync('data/dbconf.json', { encoding: 'utf-8' }));
-var cfact = cdata(dbconf);
-var imageMaker = staticImage({
-	dir: '/temp'
-});
-
+// use jade for templates
 app.set('view engine', 'jade');
 
+// used on resources that you have to be authenticated to use
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) {
+		return next();
+	}
+	res.redirect('/login');
+}
 
 // --------- set up routes and middleware and such
 
@@ -84,11 +74,22 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/login', function(req, res, next) {
-	res.render('login');
+	res.render('login', { message: req.session.messages });
 });
 
-app.post('/login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}), function(req, res, next) {
-	res.redirect('/');
+app.post('/login', function(req, res, next) {
+	passport.authenticate('local', function(err, user, info) {
+		if (err) { return next(err); }
+		if (!user) {
+			req.session.messages =  [info.message];
+			return res.redirect('/login');
+		}
+		req.logIn(user, function(err) {
+			if (err) { return next(err); }
+			req.session.messages = null;
+			return res.redirect('/');
+		});
+	})(req, res, next);
 });
 
 // load individual comic pages by id
@@ -177,7 +178,7 @@ app.get('/data/:n', function(req, res, next) {
 	
 });
 
-app.post('/data', function(req, res, next) {
+app.post('/data', ensureAuthenticated, function(req, res, next) {
 	
 	cfact.storeData(req.body, function(err, newid) {
 		if (err) {
@@ -197,7 +198,7 @@ app.post('/data', function(req, res, next) {
 	
 });
 
-app.put('/data/:n', function(req, res, next) {
+app.put('/data/:n', ensureAuthenticated, function(req, res, next) {
 	
 	var i = isNaN(req.params.n) ? null : Number(req.params.n);
 	cfact.storeData(req.body, i, function(err, newid) {
@@ -218,18 +219,10 @@ app.put('/data/:n', function(req, res, next) {
 	
 });
 
-app.get('/editor', function(req, res, next) {
-	
-	if (req.isAuthenticated()) {
-	
-		res.render('editpage', {
-			title: 'Editor'
-		});
-	
-	} else {
-		next();
-	}
-	
+app.get('/editor', ensureAuthenticated, function(req, res, next) {
+	res.render('editpage', {
+		title: 'Editor'
+	});
 });
 
 app.get('/about', function(req, res, next) {
