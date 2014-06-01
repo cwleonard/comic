@@ -220,9 +220,15 @@ app.put('/data/:n', function(req, res, next) {
 
 app.get('/editor', function(req, res, next) {
 	
-	res.render('editpage', {
-		title: 'Editor'
-	});
+	if (req.isAuthenticated()) {
+	
+		res.render('editpage', {
+			title: 'Editor'
+		});
+	
+	} else {
+		next();
+	}
 	
 });
 

@@ -3,9 +3,27 @@ html
 	include head
 	body
 		include header
-		form(action='/login',method='POST')
-			input(type='text',name='username')
-			input(type='password',name='password')
-			input(type='submit')
+		
+		div(class="container",style='padding-top: 20px; min-height: 500px;')
+		
+			form(action='/login',method='POST')
+
+			div(class='panel panel-primary',style='margin-top: 15px; max-width: 350px; margin: 0 auto;')
+
+				div(class="panel-heading")
+					h2.panel-title Please Sign In
+
+				div(class='panel-body')
+		
+					div.form-group(style='margin-top: 15px; max-width: 300px; margin: 0 auto;')
+		
+						input#username.form-control(type='text',name='username',placeholder="username",style='margin-bottom: 5px;')
+						input#password.form-control(type='password',name='password',placeholder="password")
+
+				div(class='panel-footer')
+
+					button(type="submit",class="btn btn-primary pull-right") Login
+					div(style='clear: both;')
+		
 		include footer
 		include js
