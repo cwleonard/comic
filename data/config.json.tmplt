@@ -1,0 +1,9 @@
+{
+	"secret": "hoppy frog",
+	"database": {
+		"host": "localhost",
+		"user": "user",
+		"password": "12345",
+		"database": "dbname"
+	}
+}

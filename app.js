@@ -15,9 +15,9 @@ var userAuth = require('./userAuth');
 
 var app = express();
 
-var dbconf = JSON.parse(fs.readFileSync('data/dbconf.json', { encoding: 'utf-8' }));
-var cfact = cdata(dbconf);
-var authorizer = userAuth(dbconf);
+var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' }));
+var cfact = cdata(conf.database);
+var authorizer = userAuth(conf.database);
 var imageMaker = staticImage({
 	dir: '/temp'
 });
@@ -29,9 +29,13 @@ passport.serializeUser(function(user, done) {
 	done(null, user.userid);
 });
 
+/*
+ * this deserializer actually performs no user lookup, just
+ * recreates the user object. my user object is not really
+ * much of anything at this point, just the userid.
+ */
 passport.deserializeUser(function(id, done) {
-	console.log('deserializer looking for ' + id);
-	done(null, {});
+	done(null, { userid: id });
 });
 
 // use jade for templates
@@ -52,7 +56,7 @@ function ensureAuthenticated(req, res, next) {
 app.use(morgan(':req[X-Real-IP] - - [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'));
 
 app.use(cookieParser()); // required before session.
-app.use(session({ secret: 'keyboard cat'}));
+app.use(session({ secret: conf.secret }));
 app.use(bodyParser());
 app.use(compress());
 app.use(passport.initialize());
