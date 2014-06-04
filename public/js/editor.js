@@ -555,26 +555,42 @@ function setupMenu(imgSelectOptions) {
 		},
 		events: {
 			show: function(opt) {
+				
 				var $this = this;
-				var img = $this.find('img');
+				
+				// sometimes, the style for 'top' and 'left' comes back as 'auto'...
+				// in these cases, we should treat these values as 0
+				var draggableTop  = isNaN($this.css('top').replace('px', '')) ? 0 : Number($this.css('top').replace('px', ''));
+				var draggableLeft = isNaN($this.css('left').replace('px', '')) ? 0 : Number($this.css('left').replace('px', ''));
+
+				var wrapper = $this.find("div.ui-wrapper");
+				var wrapperTop = Number(wrapper.css('top').replace('px', ''));
+				var wrapperLeft = Number(wrapper.css('left').replace('px', ''));
+
+				var t = draggableTop + wrapperTop;
+				var l = draggableLeft + wrapperLeft;
+
+				var img = wrapper.find('img');
 				var w = img.css('width');
-				var t = $this.css('top');
-				var l = $this.css('left');
 				var isrc = img.attr('src');
 				isrc = isrc.substring(isrc.lastIndexOf('/')+1);
 				var d = {
 					width: w,
-					top: t,
-					left: l,
+					top: t + 'px',
+					left: l + 'px',
 					pickImage: isrc
 				};
 				$.contextMenu.setInputValues(opt, d);
+				
 			},
 			hide: function(opt) {
 				var $this = this;
 				var o = $.contextMenu.getInputValues(opt, $this.data());
-				$this.css('top', o.top);
-				$this.css('left', o.left);
+				//$this.css('top', o.top);
+				//$this.css('left', o.left);
+				var wrapper = $this.find('div.ui-wrapper');
+				wrapper.css('top', o.top);
+				wrapper.css('left', o.left);
 				var img = $this.find('img');
 				if (img.css('width') !== o.width) {
 					img.resizable('destroy');
