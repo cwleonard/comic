@@ -213,19 +213,21 @@ function addImage(cell, img) {
 
 			var d = document.createElement('div');
 			var i = document.createElement('img');
+			
+			var aspectRatio = imgSize.width / imgSize.height;
 
 			var w = (img.width / 100) * sizerWidth;
-			var h = w / (imgSize.width / imgSize.height);
+			var h = w / aspectRatio;
 
 			var l = (img.left / 100) * sizerWidth; 
 			var t = (img.top / 100) * sizerHeight;
 
 			$(i).css('height', h + 'px');
-
 			$(i).css('width', w + 'px');
 			$(i).css('top', t + 'px');
 			$(i).css('left', l + 'px');
 			$(i).attr('src', '/images/' + img.src);
+			$(i).attr('aspectRatio', aspectRatio);
 
 			$(d).addClass('divimg');
 			$(d).append(i);
@@ -584,20 +586,30 @@ function setupMenu(imgSelectOptions) {
 				
 			},
 			hide: function(opt) {
+				
 				var $this = this;
 				var o = $.contextMenu.getInputValues(opt, $this.data());
-				//$this.css('top', o.top);
-				//$this.css('left', o.left);
-				var wrapper = $this.find('div.ui-wrapper');
-				wrapper.css('top', o.top);
-				wrapper.css('left', o.left);
+
+				var newTop = isNaN(o.top.replace('px', '')) ? 0 : Number(o.top.replace('px', ''));
+				var newLeft = isNaN(o.left.replace('px', '')) ? 0 : Number(o.left.replace('px', ''));
+
+				var wrapper = $this.find("div.ui-wrapper");
+				var wrapperTop = Number(wrapper.css('top').replace('px', ''));
+				var wrapperLeft = Number(wrapper.css('left').replace('px', ''));
+
+				$this.css('top', (newTop - wrapperTop) + "px");
+				$this.css('left', (newLeft - wrapperLeft) + "px");
+
 				var img = $this.find('img');
 				if (img.css('width') !== o.width) {
 					img.resizable('destroy');
-					img.css('width', o.width);
-					img.css('height', o.width);
+					var aspectRatio = Number(img.attr('aspectRatio'));
+					var w = Number(o.width.replace('px', ''));
+					img.css('width', w + "px");
+					img.css('height', (w / aspectRatio) + "px");
 					img.resizable({aspectRatio: true});
 				}
+
 			}
 		}
 		
