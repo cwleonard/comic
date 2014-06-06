@@ -2,6 +2,10 @@ mixin makeBubble(bub)
 	p(class='bubble bubble-text bubble' + (bub.stemPos ? bub.stemPos : 50),style=(bub.z ? 'z-index: ' + bub.z + ';' : '') + (bub.width ? 'width: ' + bub.width + '%;' : '') + 'top: ' + bub.top + '%; left: ' + bub.left + '%;')
 		= bub.text
 
+mixin makeText(txt)
+	p(class='free-text',style=(txt.z ? 'z-index: ' + txt.z + ';' : '') + (txt.width ? 'width: ' + txt.width + '%;' : '') + 'top: ' + txt.top + '%; left: ' + txt.left + '%;')
+		= txt.words
+
 mixin makeImage(img)
 	img(animated=img.move ? 'true' : undefined,speed=img.speed ? img.speed : undefined,travel=img.travel ? img.travel : undefined,direction=img.direction ? img.direction : undefined,style='top: ' + img.top + '%; left: ' + img.left + '%;'+(img.width ? ' width: ' + img.width + '%;' : '')+(img.z ? ' z-index: ' + img.z + ';' : ''),src='/images/'+img.src,alt='frog')
 
@@ -15,6 +19,8 @@ div#sizer
 			if cells[c].bubbles
 				- for (var b in cells[c].bubbles)
 					+makeBubble(cells[c].bubbles[b])
+			- for (var i in cells[c].text)
+				+makeText(cells[c].text[i])
 			- for (var i in cells[c].imgs)
 				+makeImage(cells[c].imgs[i])
 	div#info(comicId=id,class='info')

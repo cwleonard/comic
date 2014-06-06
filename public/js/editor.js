@@ -92,12 +92,13 @@ function buildCellObject(elem) {
 	var b = {
 		background: bgc,
 		bubbles: [],
+		text: [],
 		imgs: []
 	};
 	
 	var zi = 1;
 	
-	$(elem).find("div.divimg, p.bubble").each(function(idx, elem) {
+	$(elem).find("div.divimg, p.bubble, p.free-text").each(function(idx, elem) {
 		
 		// ====================================== SPEECH BUBBLES ===============
 		if ($(elem).hasClass("bubble")) {
@@ -123,6 +124,31 @@ function buildCellObject(elem) {
 						z: zi++,
 						stemPos: sp,
 						text: $(elem).text()
+				});
+			});
+
+		// ====================================== FREE TEXT ====================
+		} else if ($(elem).hasClass("free-text")) {
+			
+			var cssTop = $(elem).css('top');
+			var cssLeft = $(elem).css('left');
+			var cssWidth = $(elem).css('width');
+			
+			// positions need converted to %
+			var t = Number(cssTop.replace('px', ''));
+			var l = Number(cssLeft.replace('px', ''));
+			var w = Number(cssWidth.replace('px', ''));
+			t = t * (1 / sizerHeight) * 100;
+			l = l * (1 / sizerWidth) * 100;
+			w = w * (1 / sizerWidth) * 100;
+			
+			$(elem).find("span").each(function(idx, elem) {
+				b.text.push({
+						top: t,
+						left: l,
+						width: w,
+						z: zi++,
+						words: $(elem).text()
 				});
 			});
 			
@@ -289,6 +315,48 @@ function addBubble(cell, b) {
 	
 }
 
+function addText(cell, t) {
+
+	var txt = t || {};
+	var words = txt.words || 'This is some text.';
+	var tLeft = txt.left || 5;
+	var tTop = txt.top || 5;
+	var tWidth = txt.width || 50;
+	
+	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
+	var sizerHeight = Number($(cell).css('height').replace(/\D/g, ''));
+
+	var w = (tWidth / 100) * sizerWidth;
+
+	var l = (tLeft / 100) * sizerWidth; 
+	var t = (tTop / 100) * sizerHeight;
+	
+	var p = document.createElement('p');
+	var s = document.createElement('span');
+	$(s).append(document.createTextNode(words));
+	
+	$(p).css('top', t + 'px');
+	$(p).css('left', l + 'px');
+	$(p).css('width', w + 'px');
+	$(p).css('position', 'absolute');
+	
+	$(p).addClass('free-text');
+	$(p).addClass('free-text-outline');
+	$(p).append(s);
+	
+	$(cell).append(p);
+	$(p).draggable().resizable();
+	$(s).editable({
+		type: 'text',
+		mode: 'inline',
+		success: function(response, newValue) {
+			console.log(newValue);
+		}
+	});
+	
+}
+
+
 function addCell(c) {
 
 	var d = document.createElement('div');
@@ -304,6 +372,14 @@ function addCell(c) {
 			//addImage(d, obj);
 			stuff.push({
 				'type': 'image',
+				'object': obj
+			});
+		});
+
+		$.each(c.text, function(idx, obj) {
+			//addImage(d, obj);
+			stuff.push({
+				'type': 'text',
 				'object': obj
 			});
 		});
@@ -336,6 +412,8 @@ function addCell(c) {
 			
 			if (s.type === 'image') {
 				addImage(d, s.object);
+			} else if (s.type === 'text') {
+				addText(d, s.object);
 			} else if (s.type === 'bubble') {
 				addBubble(d, s.object);
 			}
@@ -462,7 +540,16 @@ function setupMenu(imgSelectOptions) {
 					addBubble(options.$trigger);
 					
 				}
+			},
+			addBubble: {
+				name: "Add Text",
+				callback: function(key, options) {
+
+					addText(options.$trigger);
+					
+				}
 			}
+			
 
 		},
 		events: {
@@ -618,7 +705,7 @@ function setupMenu(imgSelectOptions) {
 	$.contextMenu({
 		
 		zIndex: 100,
-		selector: 'p.bubble',
+		selector: 'p.bubble, p.free-text',
 		items: {
 			width: {
 				name: 'Width',
@@ -677,7 +764,6 @@ function setupMenu(imgSelectOptions) {
 				var o = $.contextMenu.getInputValues(opt, $this.data());
 				$this.css('top', o.top);
 				$this.css('left', o.left);
-				var img = $this.find('img');
 				if ($this.css('width') !== o.width) {
 					$this.resizable('destroy');
 					$this.css('width', o.width);
@@ -688,7 +774,6 @@ function setupMenu(imgSelectOptions) {
 		
 	});
 
-	
 }
 
 function toggleImgUpload() {

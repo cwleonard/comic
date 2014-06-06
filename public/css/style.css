@@ -1,3 +1,24 @@
+.free-text {
+	
+	position: absolute;
+	width: 44%;
+	padding: 2%;
+	text-align: center;
+	font-family: Verdana, Geneva, sans-serif;
+	line-height: initial;
+	color: #000000;
+	box-sizing: initial;
+	-moz-box-sizing: initial;
+	-webkit-box-sizing: initial;
+	
+	/* adjusted by screen size. this is the minimum  */
+	font-size: 1.0em;
+}
+
+.free-text-outline {
+	border: #000000 dashed 1px;
+}
+
 .bubble-text {
 	/* adjusted by screen size. this is the minimum  */
 	font-size: 1.1em;
@@ -256,7 +277,11 @@ div.buy p.mtitle {
 	}
 
 	.bubble-text {
-		font-size: 1.2em;
+		font-size: 1.1em;
+	}
+
+	.free-text {
+		font-size: 1.1em;
 	}
 
 	.bubble {
@@ -284,7 +309,11 @@ div.buy p.mtitle {
 	.bubble-text {
 		font-size: 1.6em;
 	}
-	
+
+	.free-text {
+		font-size: 1.45em;
+	}
+
 	.bubble {
 		-webkit-border-radius: 28px;
 		-moz-border-radius: 28px;
