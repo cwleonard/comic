@@ -217,7 +217,7 @@ function buildComicOjbect() {
 		cells: []
 	};
 	
-	$('#sizer div.box').each(function(idx, elem) {
+	$('#cellArea div.box').each(function(idx, elem) {
 		
 		var b = buildCellObject(elem);
 		cobj.cells.push(b);
@@ -361,7 +361,14 @@ function addCell(c) {
 
 	var d = document.createElement('div');
 	$(d).addClass('box');
-	$('#sizer').append(d);
+	$('#cellArea').append(d);
+
+	/*
+	var controlsDiv = document.createElement('div');
+	$(controlsDiv).addClass('box-controls');
+	$('#cellArea').append(controlsDiv);
+	controlsDiv.innerText = 'testing 1 2 3';
+	*/
 	
 	if (c) {
 		
@@ -429,7 +436,7 @@ function clear() {
 	$('#hiddenId').val('');
 	$('#ctitle').val('');
 	$('#pubDate').val(moment().format('YYYY-MM-DD'));
-	$('#sizer div.box').remove();
+	$('#cellArea div.box').remove();
 	
 }
 
@@ -502,6 +509,24 @@ function setupMenu(imgSelectOptions) {
 					
 					var copy = buildCellObject(options.$trigger);
 					addCell(copy);
+					
+				}
+			},
+			moveCellUp: {
+				name: "Move Cell Up",
+				callback: function(key, options) {
+					
+					var n = options.$trigger;
+					n.insertBefore(n.prev());
+					
+				}
+			},
+			moveCellDown: {
+				name: "Move Cell Down",
+				callback: function(key, options) {
+					
+					var n = options.$trigger;
+					n.insertAfter(n.next());
 					
 				}
 			},
