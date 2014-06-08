@@ -7,7 +7,7 @@ mixin makeText(txt)
 		= txt.words
 
 mixin makeImage(img)
-	img(animated=img.move ? 'true' : undefined,speed=img.speed ? img.speed : undefined,travel=img.travel ? img.travel : undefined,direction=img.direction ? img.direction : undefined,style='top: ' + img.top + '%; left: ' + img.left + '%;'+(img.width ? ' width: ' + img.width + '%;' : '')+(img.z ? ' z-index: ' + img.z + ';' : ''),src='/images/'+img.src,alt='frog')
+	img(animated=img.move ? 'true' : undefined,speed=img.speed ? img.speed : undefined,travel=img.travel ? img.travel : undefined,direction=img.direction ? img.direction : undefined,style='top: ' + img.top + '%; left: ' + img.left + '%;'+(img.width ? ' width: ' + img.width + '%;' : '')+(img.z ? ' z-index: ' + img.z + ';' : ''),src='/images/'+img.src,alt=img.altText ? img.altText : 'object')
 
 div#sizer
 	if title

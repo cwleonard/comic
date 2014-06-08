@@ -49,6 +49,14 @@ function ensureAuthenticated(req, res, next) {
 	res.redirect('/login');
 }
 
+// middleware for resources that should not be cached
+function noCache(req, res, next) {
+	res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+	res.header('Expires', '-1');
+	res.header('Pragma', 'no-cache');
+	next();
+}
+
 // --------- set up routes and middleware and such
 
 // logging comes first
@@ -167,7 +175,7 @@ app.get('/list', function(req, res, next) {
 });
 
 
-app.get('/data/:n', function(req, res, next) {
+app.get('/data/:n', noCache, function(req, res, next) {
 
 	cfact.loadById(req.params.n, function (err, data) {
 		if (err) {

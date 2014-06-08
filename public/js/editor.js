@@ -184,6 +184,7 @@ function buildCellObject(elem) {
 				w = w * (1 / sizerWidth) * 100;
 				
 				$(elem).find("img").each(function(idx, elem) {
+					var a = $(elem).attr('alt');
 					var s = elem.src;
 					s = s.substring(s.lastIndexOf('/')+1);
 					b.imgs.push({
@@ -191,9 +192,12 @@ function buildCellObject(elem) {
 						left: l,
 						width: w,
 						z: zi++,
+						altText: a,
 						src: s
 					});
+
 				});
+					
 			});
 			
 		}
@@ -254,6 +258,7 @@ function addImage(cell, img) {
 			$(i).css('left', l + 'px');
 			$(i).attr('src', '/images/' + img.src);
 			$(i).attr('aspectRatio', aspectRatio);
+			$(i).attr('alt', img.altText || '');
 
 			$(d).addClass('divimg');
 			$(d).append(i);
@@ -375,16 +380,14 @@ function addCell(c) {
 		var stuff = [];
 		
 		$(d).css('background-color', c.background);
-		$.each(c.imgs, function(idx, obj) {
-			//addImage(d, obj);
+		$.each(c.imgs || [], function(idx, obj) {
 			stuff.push({
 				'type': 'image',
 				'object': obj
 			});
 		});
 
-		$.each(c.text, function(idx, obj) {
-			//addImage(d, obj);
+		$.each(c.text || [], function(idx, obj) {
 			stuff.push({
 				'type': 'text',
 				'object': obj
@@ -392,14 +395,12 @@ function addCell(c) {
 		});
 
 		if (c.bubble) {
-			//addBubble(d, c.bubble);
 			stuff.push({
 				'type': 'bubble',
 				'object': c.bubble
 			});
 		} else if (c.bubbles) {
 			$.each(c.bubbles, function(idx, bub) {
-				//addBubble(d, bub);
 				stuff.push({
 					'type': 'bubble',
 					'object': bub
@@ -624,6 +625,11 @@ function setupMenu(imgSelectOptions) {
 				value: ''
 			},
 			sep1: "----------",
+			altText: {
+				name: 'Alt Text',
+				type: 'text',
+				value: ''
+			},
 			pickImage: {
 				name: "Select Image",
 				type: 'select',
@@ -685,6 +691,7 @@ function setupMenu(imgSelectOptions) {
 				var l = draggableLeft + wrapperLeft;
 
 				var img = wrapper.find('img');
+				var a = img.attr('alt') || '';
 				var w = img.css('width');
 				var isrc = img.attr('src');
 				isrc = isrc.substring(isrc.lastIndexOf('/')+1);
@@ -692,6 +699,7 @@ function setupMenu(imgSelectOptions) {
 					width: w,
 					top: t + 'px',
 					left: l + 'px',
+					altText: a,
 					pickImage: isrc
 				};
 				$.contextMenu.setInputValues(opt, d);
@@ -713,6 +721,7 @@ function setupMenu(imgSelectOptions) {
 				$this.css('left', (newLeft - wrapperLeft) + "px");
 
 				var img = $this.find('img');
+				img.attr('alt', o.altText);
 				if (img.css('width') !== o.width) {
 					img.resizable('destroy');
 					var aspectRatio = Number(img.attr('aspectRatio'));
