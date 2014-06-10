@@ -32,8 +32,14 @@ module.exports = function(conf) {
 
 		loadById: function (id, cb) {
 
-			//TODO: load a comic by id from the dataDir
-			cb(null, null);
+			fs.readFile(dataDir + "/" + id + ".json", function(err, data) {
+				if (err) {
+					cb(err);
+				} else {
+					var obj = JSON.parse(data);
+					cb(null, obj);
+				}
+			});
 
 		},
 		
@@ -46,8 +52,13 @@ module.exports = function(conf) {
 
 		storePinImage: function(id, data, cb) {
 
-			//TODO: write data to pinDir
-			cb(null);
+			fs.writeFile(imgDir + "/" + id + ".png", data, function(err) {
+				if (err) {
+					cb(err);
+				} else {
+					cb(null);
+				}
+			});
 
 		},
 
