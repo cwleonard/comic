@@ -7,8 +7,6 @@ module.exports = function(conf) {
 	var dataDir = path.normalize(conf.dataDir || 'comic-data/comics');
 	var pinDir = path.normalize(conf.pinDir || 'comic-data/pins');
 	
-	var cdata = [];
-	
 	function prevComic(d, cb) {
 		
 		//TODO: given date d, load the previous comic from the dataDir
@@ -23,23 +21,6 @@ module.exports = function(conf) {
 		
 	}
 	
-	fs.readdir(dataDir, function(err, files) {
-		if (err) {
-			console.log(err);
-		} else {
-			for (var i = 0; i < files.length; i++) {
-				fs.readFile(files[i], function(err, data) {
-					if (err) {
-						console.log(err);
-					} else {
-						var obj = JSON.parse(data);
-						cdata.push(obj);
-					}
-				});
-			}
-		}
-	});
-
 	return {
 		
 		loadCurrent: function (cb) {
@@ -51,8 +32,7 @@ module.exports = function(conf) {
 
 		loadById: function (id, cb) {
 
-			var fn = dataDir + "/" + id + ".json";
-			fs.readFile(fn, function(err, data) {
+			fs.readFile(dataDir + "/" + id + ".json", function(err, data) {
 				if (err) {
 					cb(err);
 				} else {
