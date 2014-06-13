@@ -7,7 +7,7 @@ module.exports = function(conf) {
 	var dataDir = path.normalize(conf.dataDir || 'comic-data/comics');
 	var pinDir = path.normalize(conf.pinDir || 'comic-data/pins');
 	
-	var cdata = [];
+	var cdata = {};
 	
 	function prevComic(d, cb) {
 		
@@ -22,23 +22,16 @@ module.exports = function(conf) {
 		cb(null, null);
 		
 	}
-	
-	fs.readdir(dataDir, function(err, files) {
-		if (err) {
-			console.log(err);
-		} else {
-			for (var i = 0; i < files.length; i++) {
-				fs.readFile(files[i], function(err, data) {
-					if (err) {
-						console.log(err);
-					} else {
-						var obj = JSON.parse(data);
-						cdata.push(obj);
-					}
-				});
-			}
-		}
-	});
+
+	// read up the data from all the files in dataDir
+	var files = fs.readdirSync(dataDir);
+	for (var i = 0; i < files.length; i++) {
+		var fn = dataDir + path.sep + files[i];
+		var data = fs.readFileSync(dataDir + path.sep + files[i]);
+		var obj = JSON.parse(data);
+		var id = path.basename(fn, path.extname(files[i]));
+		cdata[id] = obj;
+	}
 
 	return {
 		
@@ -51,15 +44,7 @@ module.exports = function(conf) {
 
 		loadById: function (id, cb) {
 
-			var fn = dataDir + "/" + id + ".json";
-			fs.readFile(fn, function(err, data) {
-				if (err) {
-					cb(err);
-				} else {
-					var obj = JSON.parse(data);
-					cb(null, obj);
-				}
-			});
+			cb(null, cdata[id]);
 
 		},
 		
@@ -125,8 +110,30 @@ module.exports = function(conf) {
 			
 			var json = JSON.stringify(data);
 
-			//TODO: write comic data to dataDir (overwrite same id)
-			callback(null, 0);
+			if (!id) {
+				// new data, need to make up a new id
+				var max = 0;
+				for (var idx in cdata){
+					if (Number(idx) > max) {
+						max = Number(idx);
+					}
+				}
+				id = max + 1;
+			}
+			
+			id = Number(id);
+			
+			cdata[id] = data;
+			
+			var fn = dataDir + path.sep + id + '.json';
+			
+			fs.writeFile(fn, json, function(err) {
+				if (err){
+					cb(err);
+				} else {
+					cb(null, id);
+				}
+			});
 			
 		},
 		
