@@ -7,6 +7,7 @@ module.exports = function(conf) {
 	var dataDir = path.normalize(conf.dataDir || 'comic-data/comics');
 	var pinDir = path.normalize(conf.pinDir || 'comic-data/pins');
 	
+	var dateMap = [];
 	var cdata = {};
 	
 	function prevComic(d, cb) {
@@ -31,7 +32,21 @@ module.exports = function(conf) {
 		var obj = JSON.parse(data);
 		var id = path.basename(fn, path.extname(files[i]));
 		cdata[id] = obj;
+		dateMap.push({
+			d: obj.pubDate,
+			id: id
+		});
 	}
+	
+	// sort by publish date
+	dateMap.sort(function(a, b) {
+		var da = new Date(a.d);
+		var db = new Date(b.d);
+		return (da < db ? -1 : (da === db ? 0 : 1));
+	});
+	
+	console.log(dateMap);
+	
 
 	return {
 		
@@ -50,14 +65,21 @@ module.exports = function(conf) {
 		
 		loadPinImage: function(id, cb) {
 
-			//TODO: read data from pinDir
-			cb(null, null);
+			var fn = pinDir + path.sep + id + ".png";
+			fs.readFile(fn, function(err, data) {
+				if (err) {
+					cb(err);
+				} else {
+					cb(null, data);
+				}
+			});
 
 		},
 
 		storePinImage: function(id, data, cb) {
 
-			fs.writeFile(imgDir + "/" + id + ".png", data, function(err) {
+			var fn = pinDir + path.sep + id + ".png";
+			fs.writeFile(fn, data, function(err) {
 				if (err) {
 					cb(err);
 				} else {
@@ -73,7 +95,7 @@ module.exports = function(conf) {
 			//      to use all SVG
 			var ct = 'image/svg+xml';
 			
-			fs.readFile(imgDir + "/" + name, function(err, data) {
+			fs.readFile(imgDir + path.sep + name, function(err, data) {
 				if (err) {
 					cb(err);
 				} else {
@@ -90,7 +112,7 @@ module.exports = function(conf) {
 			
 			// note: ignoring type
 			
-			fs.writeFile(imgDir + "/" + name, data, function(err) {
+			fs.writeFile(imgDir + path.sep + name, data, function(err) {
 				if (err) {
 					cb(err);
 				} else {
@@ -129,9 +151,9 @@ module.exports = function(conf) {
 			
 			fs.writeFile(fn, json, function(err) {
 				if (err){
-					cb(err);
+					callback(err);
 				} else {
-					cb(null, id);
+					callback(null, id);
 				}
 			});
 			
@@ -139,13 +161,20 @@ module.exports = function(conf) {
 		
 		listImages: function(cb) {
 			
-			//TODO: return a list of the imgDir contents in this format:
-			//      {
-			//        filename: <file name>,
-			//        type: 'image/svg+xml'
-			//      }
-			
-			cb(null, []);
+			fs.readdir(dataDir, function(err, files) {
+				if (err) {
+					cb(err);
+				} else {
+					var imgs = [];
+					for (var i = 0; i < files.length; i++) {
+						imgs.push({
+							filename: files[i],
+							type: 'image/svg+xml'
+						});
+					}
+					cb(null, imgs);
+				}
+			});
 			
 		},
 		
