@@ -513,6 +513,14 @@ function setupMenu(imgSelectOptions) {
 					
 				}
 			},
+			remCell: {
+				name: "Remove Cell",
+				callback: function(key, options) {
+					
+					$(options.$trigger).detach();
+					
+				}
+			},
 			moveCellUp: {
 				name: "Move Cell Up",
 				callback: function(key, options) {
