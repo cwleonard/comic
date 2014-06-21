@@ -1,4 +1,5 @@
 var exec = require('child_process').exec;
+var path = require('path');
 var fs = require('fs');
 
 module.exports = function(conf) {
@@ -12,8 +13,8 @@ module.exports = function(conf) {
 		
 		createImage: function (id, storeFunc, cb) {
 			
-			var fn = tempDir + "/temp-capture-" + id + ".js";
-			var imgFileName = tempDir + "/comic_" + id + ".png";
+			var fn = tempDir + path.sep + "temp-capture-" + id + ".js";
+			var imgFileName = tempDir + path.sep + "comic_" + id + ".png";
 			
 			var cFileData = "var page = require('webpage').create();\n" +
 				"page.open('http://localhost:3000/basic/" + id + "', function() {\n" +

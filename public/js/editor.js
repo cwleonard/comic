@@ -567,7 +567,7 @@ function setupMenu(imgSelectOptions) {
 					
 				}
 			},
-			addBubble: {
+			addText: {
 				name: "Add Text",
 				callback: function(key, options) {
 
