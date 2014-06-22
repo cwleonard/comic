@@ -29,6 +29,13 @@ module.exports = function(conf) {
 			
 			var cFileData = "var page = require('webpage').create();\n" +
 				"page.open('http://localhost:3000/basic/" + urlId + "', function() {\n" +
+				"page.clipRect = page.evaluate(function() {\n" +  
+				"    var rect = document.getElementById('comicArea').getBoundingClientRect();\n" +
+				"    var r = JSON.parse(JSON.stringify(rect));\n" +
+				"    r.height += (r.top * 2);\n" +
+				"    r.top = 0;\n" +
+				"    return r;\n" +
+				"});\n" + 
 				"page.render('" + imgFileName.replace(/\\/g, '\\\\') + "');\n" +
 				"phantom.exit();\n" +
 				"});";
