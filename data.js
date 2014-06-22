@@ -169,6 +169,38 @@ module.exports = function(dbconf) {
 
 		},
 
+		loadFBImage: function(id, cb) {
+
+			pool.query('SELECT cell_img FROM comic_data WHERE id = ?', [id], function(err, rows) {
+				if (err) {
+					cb(err);
+				} else {
+					if (rows.length > 0) {
+						cb(null, new Buffer(rows[0].cell_img));
+					} else {
+						cb(null, null);
+					}
+				}
+			});
+
+		},
+
+		storeFBImage: function(id, data, cb) {
+
+			pool.query('UPDATE comic_data SET cell_img = ? WHERE id = ?', [data, id], function(err, result) {
+				if (err) {
+					cb(err);
+				} else {
+					if (result.affectedRows === 1) {
+						cb(null);
+					} else {
+						cb(new Error('no row updated!'));
+					}
+				}
+			});
+
+		},
+
 		loadImage: function(name, cb) {
 
 			pool.query('SELECT data, type FROM comic_img WHERE filename = ?', [name], function(err, rows) {

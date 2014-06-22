@@ -19,7 +19,7 @@ var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' })
 var cfact = cdata(conf.database);
 var authorizer = userAuth(conf.database);
 var imageMaker = staticImage({
-	dir: '/temp'
+	dir: 'c:\\temp'
 });
 
 // --- set up login strategy
@@ -138,6 +138,29 @@ app.get('/basic/:n', function(req, res, next) {
 	
 });
 
+//render basic single cell, given a comic id and cell number (1-based)
+app.get('/basic/:n/:c', function(req, res, next) {
+
+	cfact.loadById(req.params.n, function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			data.basic = true;
+			var cn = Number(req.params.c);
+			var singleCell = [ data.cells[cn - 1] ];
+			data.cells = singleCell;
+			data.title = null;
+			data.pubDate = null;
+			data.prevDate = null;
+			data.nextDate = null;
+			res.render('basiccomicpage', data);
+		} else {
+			next(); // no comic found
+		}
+	});
+	
+});
+
 //get just the comic HTML by id
 app.get('/chtml/:n', function(req, res, next) {
 
@@ -200,9 +223,17 @@ app.post('/data', ensureAuthenticated, function(req, res, next) {
 			res.send({
 				id: newid
 			});
+			// store the static image for Pinterest
 			imageMaker.createImage(newid, cfact.storePinImage, function(err) {
 				if (err) {
 					console.log(err);
+				} else {
+					// now store a static image of one cell for Facebook
+					imageMaker.createImage(newid, 1, cfact.storeFBImage, function(err) {
+						if (err) {
+							console.log(err);
+						}
+					});
 				}
 			});
 		}
@@ -221,9 +252,17 @@ app.put('/data/:n', ensureAuthenticated, function(req, res, next) {
 			res.send({
 				id: newid
 			});
+			// store the static image for Pinterest
 			imageMaker.createImage(newid, cfact.storePinImage, function(err) {
 				if (err) {
 					console.log(err);
+				} else {
+					// now store a static image of one cell for Facebook
+					imageMaker.createImage(newid, 1, cfact.storeFBImage, function(err) {
+						if (err) {
+							console.log(err);
+						}
+					});
 				}
 			});
 		}
@@ -276,6 +315,20 @@ app.get('/pins/:n', function(req, res, next) {
 	
 });
 
+app.get('/cell/:n', function(req, res, next) {
+	
+	cfact.loadFBImage(req.params.n, function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			res.setHeader('Content-Type', 'image/png');
+			res.send(data);
+		} else {
+			res.send(404); // don't use the full-page 404 for missing images
+		}
+	});
+	
+});
 
 app.get('/images', function(req, res, next) {
 	

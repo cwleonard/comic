@@ -11,14 +11,25 @@ module.exports = function(conf) {
 	
 	return {
 		
-		createImage: function (id, storeFunc, cb) {
+		createImage: function (id, cellOrStoreFunc, storeFuncOrCallback, callback) {
+
+			var cellNum = (((typeof cellOrStoreFunc) !== 'function') ? cellOrStoreFunc : null);
+			var storeFunc = (((typeof cellOrStoreFunc) === 'function') ? cellOrStoreFunc : storeFuncOrCallback);
+			var cb = callback || storeFuncOrCallback;
 			
-			var fn = tempDir + path.sep + "temp-capture-" + id + ".js";
-			var imgFileName = tempDir + path.sep + "comic_" + id + ".png";
+			var fileId = id;
+			var urlId = id;
+			if (cellNum) {
+				urlId += '/' + cellNum;
+				fileId += "-" + cellNum;
+			}
+			
+			var fn = tempDir + path.sep + "temp-capture-" + fileId + ".js";
+			var imgFileName = tempDir + path.sep + "comic_" + fileId + ".png";
 			
 			var cFileData = "var page = require('webpage').create();\n" +
-				"page.open('http://localhost:3000/basic/" + id + "', function() {\n" +
-				"page.render('" + imgFileName + "');\n" +
+				"page.open('http://localhost:3000/basic/" + urlId + "', function() {\n" +
+				"page.render('" + imgFileName.replace(/\\/g, '\\\\') + "');\n" +
 				"phantom.exit();\n" +
 				"});";
 			
