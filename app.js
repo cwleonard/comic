@@ -19,7 +19,7 @@ var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' })
 var cfact = cdata(conf.database);
 var authorizer = userAuth(conf.database);
 var imageMaker = staticImage({
-	dir: 'c:\\temp'
+	dir: '/temp'
 });
 
 // --- set up login strategy
