@@ -144,7 +144,11 @@ module.exports = function(dbconf) {
 					cb(err);
 				} else {
 					if (rows.length > 0) {
-						cb(null, new Buffer(rows[0].static_img));
+						if (rows[0].static_img) {
+							cb(null, new Buffer(rows[0].static_img));
+						} else {
+							cb(null, null);
+						}
 					} else {
 						cb(null, null);
 					}
@@ -176,7 +180,11 @@ module.exports = function(dbconf) {
 					cb(err);
 				} else {
 					if (rows.length > 0) {
-						cb(null, new Buffer(rows[0].cell_img));
+						if (rows[0].cell_img) {
+							cb(null, new Buffer(rows[0].cell_img));
+						} else {
+							cb(null, null);
+						}
 					} else {
 						cb(null, null);
 					}
