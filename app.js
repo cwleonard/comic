@@ -57,6 +57,28 @@ function noCache(req, res, next) {
 	next();
 }
 
+// creates static images for pinterest and facebook
+function createStaticImages(id, imageMaker, storageObj, cb) {
+	
+	// store the static image for Pinterest
+	imageMaker.createImage(id, storageObj.storePinImage, function(err) {
+		if (err) {
+			cb(err);
+		} else {
+			// now store a static image of one cell for Facebook
+			imageMaker.createImage(id, 1, storageObj.storeFBImage, function(err) {
+				if (err) {
+					cb(err);
+				} else {
+					cb();
+				}
+			});
+		}
+	});
+
+	
+}
+
 // --------- set up routes and middleware and such
 
 // logging comes first
@@ -223,17 +245,9 @@ app.post('/data', ensureAuthenticated, function(req, res, next) {
 			res.send({
 				id: newid
 			});
-			// store the static image for Pinterest
-			imageMaker.createImage(newid, cfact.storePinImage, function(err) {
+			createStaticImages(newid, imageMaker, cfact, function(err) {
 				if (err) {
 					console.log(err);
-				} else {
-					// now store a static image of one cell for Facebook
-					imageMaker.createImage(newid, 1, cfact.storeFBImage, function(err) {
-						if (err) {
-							console.log(err);
-						}
-					});
 				}
 			});
 		}
@@ -252,17 +266,9 @@ app.put('/data/:n', ensureAuthenticated, function(req, res, next) {
 			res.send({
 				id: newid
 			});
-			// store the static image for Pinterest
-			imageMaker.createImage(newid, cfact.storePinImage, function(err) {
+			createStaticImages(newid, imageMaker, cfact, function(err) {
 				if (err) {
 					console.log(err);
-				} else {
-					// now store a static image of one cell for Facebook
-					imageMaker.createImage(newid, 1, cfact.storeFBImage, function(err) {
-						if (err) {
-							console.log(err);
-						}
-					});
 				}
 			});
 		}
