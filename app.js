@@ -133,7 +133,16 @@ app.get('/:n', function(req, res, next) {
 		if (err) {
 			next(err);
 		} else if (data) {
+			
+			if (data.pubDate) {
+				var p = new Date(data.pubDate);
+				if (p > new Date()) {
+					// remove previous link, this is a comic from the future
+					data.prevDate = null;
+				}
+			}
 			res.render('comicpage', data);
+			
 		} else {
 			next(); // no comic found
 		}
