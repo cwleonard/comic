@@ -26,9 +26,11 @@ div#sizer
 	div#info(comicId=id,class='info')
 		div
 			if prevDate
-				p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-arrow-circle-left"></i> Previous</a>'
+				p.lnav!= '<a onclick="replaceComic(\'0\');"><i class="fa fa-fast-backward"></i></a>&nbsp;'
+				p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-backward"></i> Previous</a>'
 			if nextDate
-				p.rnav!= '<a onclick="replaceComic(\'' + nextDate + '\');">Next <i class="fa fa-arrow-circle-right"></i></a>'
+				p.rnav!= '&nbsp;<a href="/"><i class="fa fa-fast-forward"></i></a>'
+				p.rnav!= '<a onclick="replaceComic(\'' + nextDate + '\');">Next <i class="fa fa-forward"></i></a>'
 			div(style='clear: both;')
 		if (pubDate)
 			hr

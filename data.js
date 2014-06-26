@@ -47,6 +47,40 @@ module.exports = function(dbconf) {
 		
 	}
 	
+	function loadOldest(cb) {
+		
+		var sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
+			'WHERE pub_date = (SELECT MIN(pub_date) FROM comic_data)';
+		pool.query(sql, function(err, rows) {
+			
+			if (err) {
+				cb(err);
+			} else {
+				
+				if (rows.length > 0) {
+					var obj = JSON.parse(rows[0].data);
+					obj.pubDate = rows[0].pd;
+					obj.id = rows[0].id;
+					obj.prevDate = null; // this is the oldest, can't have previous!
+					nextComic(rows[0].pub_date, function(err, n) {
+						if (err) {
+							cb(err);
+						} else {
+							obj.nextDate = n;
+							cb(null, obj);
+						}
+					});
+					
+				} else {
+					cb(null, null);
+				}
+				
+			}
+
+		});
+		
+	}
+	
 	return {
 		
 		loadCurrent: function (cb) {
@@ -95,45 +129,54 @@ module.exports = function(dbconf) {
 
 		loadById: function (id, cb) {
 
-			var sql = 'SELECT pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data ' +
-				'FROM comic_data WHERE id = ' + pool.escape(id);
-			pool.query(sql, function(err, rows) {
+			var idn = Number(id);
+			if (idn < 1) {
+				
+				loadOldest(cb);
+				
+			} else {
 
-				if (err) {
-					cb(err);
-				} else {
+				var sql = 'SELECT pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data ' +
+					'FROM comic_data WHERE id = ' + pool.escape(id);
+				pool.query(sql, function(err, rows) {
 
-					if (rows.length > 0) {
-						var obj = JSON.parse(rows[0].data);
-						obj.pubDate = rows[0].pd;
-						obj.id = id;
-
-						prevComic(rows[0].pub_date, function(err, p) {
-
-							if (err) {
-								cb(err);
-							} else {
-								obj.prevDate = p;
-								nextComic(rows[0].pub_date, function(err, n) {
-									if (err) {
-										cb(err);
-									} else {
-										obj.nextDate = n;
-										cb(null, obj);
-									}
-								});
-
-							}
-
-						});
-
+					if (err) {
+						cb(err);
 					} else {
-						cb(null, null);
+
+						if (rows.length > 0) {
+							var obj = JSON.parse(rows[0].data);
+							obj.pubDate = rows[0].pd;
+							obj.id = id;
+
+							prevComic(rows[0].pub_date, function(err, p) {
+
+								if (err) {
+									cb(err);
+								} else {
+									obj.prevDate = p;
+									nextComic(rows[0].pub_date, function(err, n) {
+										if (err) {
+											cb(err);
+										} else {
+											obj.nextDate = n;
+											cb(null, obj);
+										}
+									});
+
+								}
+
+							});
+
+						} else {
+							cb(null, null);
+						}
+
 					}
 
-				}
+				});
 
-			});
+			}
 
 		},
 		
