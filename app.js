@@ -107,11 +107,13 @@ app.get('/', function(req, res, next) {
 	
 });
 
-app.get('/login', function(req, res, next) {
+var loginRoute = app.route('/login');
+
+loginRoute.get(function(req, res, next) {
 	res.render('login', { message: req.session.messages });
 });
 
-app.post('/login', function(req, res, next) {
+loginRoute.post(function(req, res, next) {
 	passport.authenticate('local', function(err, user, info) {
 		if (err) { return next(err); }
 		if (!user) {
@@ -345,7 +347,9 @@ app.get('/cell/:n', function(req, res, next) {
 	
 });
 
-app.get('/images', function(req, res, next) {
+var imageRoute = app.route('/images');
+
+imageRoute.get(function(req, res, next) {
 	
 	cfact.listImages(function (err, data) {
 		if (err) {
@@ -360,7 +364,7 @@ app.get('/images', function(req, res, next) {
 	
 });
 
-app.post('/images', function(req, res, next) {
+imageRoute.post(function(req, res, next) {
 	
 	var uploadName = '';
 	var uploadType = '';
