@@ -643,7 +643,7 @@ function setupMenu(imgSelectOptions) {
 				type: 'select',
 				options: imgSelectOptions
 			},
-			addImage: {
+			changeImage: {
 				name: "Change Image",
 				callback: function(key, options) {
 					
@@ -673,7 +673,33 @@ function setupMenu(imgSelectOptions) {
 				}
 			},
 			sep3: "----------",
-			addBubble: {
+			dupImage: {
+				name: "Duplicate",
+				callback: function(key, options) {
+					
+					var sizerWidth = Number($('#sizer').css('width').replace('px', ''));
+					
+					var i = options.$trigger;
+					var c = i.parent();
+					
+					var wrapper = i.find("div.ui-wrapper");
+					var img = wrapper.find('img');
+					var isrc = img.attr('src');
+					isrc = isrc.substring(isrc.lastIndexOf('/')+1);
+					// w should be %, not pix
+					var w = Number(img.css('width').replace('px',''));
+					w = (w / sizerWidth) * 100;
+					
+					addImage(c, {
+						src: isrc,
+						width: w,
+						top: 5,
+						left: 5
+					});
+					
+				}
+			},
+			delImage: {
 				name: "Delete",
 				callback: function(key, options) {
 					$(options.$trigger).detach();
