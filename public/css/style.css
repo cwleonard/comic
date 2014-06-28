@@ -260,6 +260,12 @@ div.buy p.mtitle {
 	font-weight: bold;
 }
 
+div.buy p.ftitle {
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 0px !important;
+}
+
 /* --------- responsive media stuff ---------------------- */
 
 @media only screen and (min-width: 400px) {
