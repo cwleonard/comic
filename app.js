@@ -431,6 +431,10 @@ app.get('/images/:img', function(req, res, next) {
 	
 });
 
+app.get('/teapot', function(req, res, next) {
+	res.send(418, 'your tea is ready');
+});
+
 app.use(express.static('public'));
 
 // handle 404

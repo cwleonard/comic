@@ -7,6 +7,8 @@ function postData(d) {
 		dataType: 'json',
 		success: function(data) {
 			$('#hiddenId').val(data.id);
+			$('#saveResults').text('Successfully saved as new id ' + data.id);
+			$('#saveModal').modal('toggle');
 		}
 	});
 
@@ -21,6 +23,8 @@ function putData(id, d) {
 		dataType: 'json',
 		success: function(data) {
 			$('#hiddenId').val(data.id);
+			$('#saveResults').text('Successfully saved as existing id ' + data.id);
+			$('#saveModal').modal('toggle');
 		}
 	});
 
