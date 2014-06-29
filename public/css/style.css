@@ -234,6 +234,26 @@ div#pubdatediv {
 	margin-bottom: 10px;
 }
 
+div#loading {
+	display: none;
+	min-height: 400px;
+}
+
+div#loading p {
+	font-family: 'Gochi Hand', cursive;
+	margin: 50px 0 0 0;
+	font-size: 3em;
+	text-align: center;
+}
+
+div.pleaseWait {
+	display: block;
+}
+
+div#hiddenLinks {
+	display: none;
+}
+
 div.buy {
 	
 	padding: 20px;

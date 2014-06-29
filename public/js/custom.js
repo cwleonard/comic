@@ -28,15 +28,20 @@ function replaceComic(id, push) {
 		push = true;
 	}
 	
+	$('#comicArea').hide();
+	$('#loading').show();
+	
 	$.get('/chtml/' + id, function(data) {
 		
+		$("#comicArea").html(data);
+		
 		if (push) {
-			console.log('pushing ' + id);
-			var stateObj = { comicId: id };
-			history.pushState(stateObj, "comic " + id, id);
+			var cid = $('#sizer').attr('comicId');
+			console.log('pushing ' + cid);
+			var stateObj = { comicId: cid };
+			history.pushState(stateObj, "comic " + cid, cid);
 		}
 		
-		$("#comicArea").html(data);
 		setupAnimation();
 		
 		// may want to adjust page title
@@ -49,7 +54,10 @@ function replaceComic(id, push) {
 		
 		// build a new Pinterest button
 		build_pinterest_button($('#pin')[0]);
-		
+
+		$('#comicArea').show();
+		$('#loading').hide();
+
 	}, 'html');
 	
 }

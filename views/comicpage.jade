@@ -3,6 +3,10 @@ html
 	include head
 	body
 		include header
+		div#loading
+			p Grabbing frogs...
+			p
+				img(src='/simg/ajax-loader.gif')
 		div#comicArea
 			include comic
 		include footer

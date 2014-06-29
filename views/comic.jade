@@ -9,7 +9,7 @@ mixin makeText(txt)
 mixin makeImage(img)
 	img(animated=img.move ? 'true' : undefined,speed=img.speed ? img.speed : undefined,travel=img.travel ? img.travel : undefined,direction=img.direction ? img.direction : undefined,style='top: ' + img.top + '%; left: ' + img.left + '%;'+(img.width ? ' width: ' + img.width + '%;' : '')+(img.z ? ' z-index: ' + img.z + ';' : ''),src='/images/'+img.src,alt=img.altText ? img.altText : 'object')
 
-div#sizer
+div#sizer(comicId=id)
 	if title
 		p.cTitle= title
 	- for (var c in cells)
@@ -24,12 +24,17 @@ div#sizer
 			- for (var i in cells[c].imgs)
 				+makeImage(cells[c].imgs[i])
 	div#info(comicId=id,class='info')
+		div#hiddenLinks
+			if prevDate
+				a(href='/' + prevDate) Previous
+			if nextDate
+				a(href='/' + nextDate) Next
 		div
 			if prevDate
 				p.lnav!= '<a onclick="replaceComic(\'0\');"><i class="fa fa-fast-backward"></i></a>&nbsp;'
 				p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-backward"></i> Previous</a>'
 			if nextDate
-				p.rnav!= '&nbsp;<a href="/"><i class="fa fa-fast-forward"></i></a>'
+				p.rnav!= '&nbsp;<a onclick="replaceComic(\'-1\');"><i class="fa fa-fast-forward"></i></a>'
 				p.rnav!= '<a onclick="replaceComic(\'' + nextDate + '\');">Next <i class="fa fa-forward"></i></a>'
 			div(style='clear: both;')
 		if (pubDate)
