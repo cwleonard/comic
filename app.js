@@ -57,6 +57,26 @@ function noCache(req, res, next) {
 	next();
 }
 
+// middleware to ensure we're on the correct URL
+function correctUrl(b) {
+	
+	return function (req, res, next) {
+
+		if (req.host !== b) {
+			var port = '';
+			var hostWithPort = req.get('host');
+			if (hostWithPort.indexOf(':') != -1) {
+				port = hostWithPort.substring(hostWithPort.indexOf(':'));
+			}
+			res.redirect(req.protocol + '://' + b + port + req.originalUrl);
+		} else {
+			next();
+		}
+
+	};
+	
+}
+
 // creates static images for pinterest and facebook
 function createStaticImages(id, imageMaker, storageObj, cb) {
 	
@@ -80,6 +100,8 @@ function createStaticImages(id, imageMaker, storageObj, cb) {
 }
 
 // --------- set up routes and middleware and such
+
+app.use(correctUrl(conf.base));
 
 // logging comes first
 //   note: using the header "X-Real-IP" because I proxy this app throuh nginx

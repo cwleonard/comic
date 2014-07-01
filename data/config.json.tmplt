@@ -1,4 +1,5 @@
 {
+	"base": "example.com",
 	"secret": "hoppy frog",
 	"database": {
 		"host": "localhost",
