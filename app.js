@@ -121,6 +121,7 @@ app.get('/', function(req, res, next) {
 		if (err) {
 			next(err);
 		} else if (data) {
+			data.url = conf.base;
 			res.render('comicpage', data);
 		} else {
 			next(); // no comic found
@@ -165,6 +166,7 @@ app.get('/:n', function(req, res, next) {
 					data.prevDate = null;
 				}
 			}
+			data.url = conf.base;
 			res.render('comicpage', data);
 			
 		} else {
@@ -185,6 +187,7 @@ app.get('/basic/:n', function(req, res, next) {
 			data.pubDate = null;
 			data.prevDate = null;
 			data.nextDate = null;
+			data.url = conf.base;
 			res.render('basiccomicpage', data);
 		} else {
 			next(); // no comic found
@@ -208,6 +211,7 @@ app.get('/basic/:n/:c', function(req, res, next) {
 			data.pubDate = null;
 			data.prevDate = null;
 			data.nextDate = null;
+			data.url = conf.base;
 			res.render('basiccomicpage', data);
 		} else {
 			next(); // no comic found
@@ -223,6 +227,7 @@ app.get('/chtml/:n', function(req, res, next) {
 		if (err) {
 			next(err);
 		} else if (data) {
+			data.url = conf.base;
 			res.render('comic', data, function(err, str) {
 				if (err) {
 					next(err);
