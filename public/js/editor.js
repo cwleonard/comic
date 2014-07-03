@@ -868,7 +868,7 @@ function showComicList() {
 		dataType: 'json',
 		success: function(data) {
 			$.each(data, function(idx, val) {
-				var oval = val.id + " :: " + val.published + " :: " + val.title;
+				var oval = val.published + " - " + val.title + " - id " + val.id;
 				$('#comicSelect').append($("<option></option>").attr("value", val.id).text(oval));
 			});
 		}

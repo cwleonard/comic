@@ -354,7 +354,7 @@ module.exports = function(dbconf) {
 		
 		listComics: function(cb) {
 			
-			pool.query('SELECT id, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ORDER by id', function(err, rows) {
+			pool.query('SELECT id, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ORDER by pub_date', function(err, rows) {
 				if (err) {
 					cb(err);
 				} else {

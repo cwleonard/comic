@@ -242,7 +242,7 @@ app.get('/chtml/:n', function(req, res, next) {
 	
 });
 
-app.get('/list', function(req, res, next) {
+app.get('/list', ensureAuthenticated, function(req, res, next) {
 	
 	cfact.listComics(function (err, data) {
 		if (err) {
