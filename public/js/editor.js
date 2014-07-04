@@ -78,6 +78,38 @@ function doSaveAsNew(evt) {
 
 }
 
+function buildImageObj(iEl) {
+	
+	// sometimes, the style for 'top' and 'left' comes back as 'auto'...
+	// in these cases, we should treat these values as 0
+	var draggableTop  = isNaN(iEl.css('top').replace('px', '')) ? 0 : Number(iEl.css('top').replace('px', ''));
+	var draggableLeft = isNaN(iEl.css('left').replace('px', '')) ? 0 : Number(iEl.css('left').replace('px', ''));
+
+	var wrapper = iEl.find("div.ui-wrapper");
+	var wrapperTop = Number(wrapper.css('top').replace('px', ''));
+	var wrapperLeft = Number(wrapper.css('left').replace('px', ''));
+
+	var t = draggableTop + wrapperTop;
+	var l = draggableLeft + wrapperLeft;
+
+	var img = wrapper.find('img');
+	var a = img.attr('alt') || '';
+	var w = img.css('width');
+	var isrc = img.attr('src');
+	isrc = isrc.substring(isrc.lastIndexOf('/')+1);
+	var d = {
+		width: w,
+		top: t + 'px',
+		left: l + 'px',
+		altText: a,
+		pickImage: isrc
+	};
+	
+	return d;
+	
+}
+
+
 /**
  * Constructs a cell object from a given DOM element
  * 
@@ -199,7 +231,6 @@ function buildCellObject(elem) {
 						altText: a,
 						src: s
 					});
-
 				});
 					
 			});
@@ -477,6 +508,7 @@ function getImageAttributes(image, cb) {
 	
 }
 
+
 function toggleStemPosition(obj) {
 	
 	var t = obj.target;
@@ -716,30 +748,7 @@ function setupMenu(imgSelectOptions) {
 				
 				var $this = this;
 				
-				// sometimes, the style for 'top' and 'left' comes back as 'auto'...
-				// in these cases, we should treat these values as 0
-				var draggableTop  = isNaN($this.css('top').replace('px', '')) ? 0 : Number($this.css('top').replace('px', ''));
-				var draggableLeft = isNaN($this.css('left').replace('px', '')) ? 0 : Number($this.css('left').replace('px', ''));
-
-				var wrapper = $this.find("div.ui-wrapper");
-				var wrapperTop = Number(wrapper.css('top').replace('px', ''));
-				var wrapperLeft = Number(wrapper.css('left').replace('px', ''));
-
-				var t = draggableTop + wrapperTop;
-				var l = draggableLeft + wrapperLeft;
-
-				var img = wrapper.find('img');
-				var a = img.attr('alt') || '';
-				var w = img.css('width');
-				var isrc = img.attr('src');
-				isrc = isrc.substring(isrc.lastIndexOf('/')+1);
-				var d = {
-					width: w,
-					top: t + 'px',
-					left: l + 'px',
-					altText: a,
-					pickImage: isrc
-				};
+				var d = buildImageObj($this);
 				$.contextMenu.setInputValues(opt, d);
 				
 			},
