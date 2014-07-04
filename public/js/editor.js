@@ -78,7 +78,18 @@ function doSaveAsNew(evt) {
 
 }
 
-function buildImageObj(iEl) {
+/**
+ * Given a jQuery element for a div with class "divimg" this function will return
+ * an object that represents that image suitable for saving as part of the comic data.
+ * 
+ * Values for top, left, and width are returned as Numbers and are in pixels. Some uses
+ * require them converted to % of the cell, but that will have to be done after getting
+ * the object.
+ * 
+ * @param iEl
+ * @returns object representing the image
+ */
+function imageToObject(iEl) {
 	
 	// sometimes, the style for 'top' and 'left' comes back as 'auto'...
 	// in these cases, we should treat these values as 0
@@ -89,20 +100,29 @@ function buildImageObj(iEl) {
 	var wrapperTop = Number(wrapper.css('top').replace('px', ''));
 	var wrapperLeft = Number(wrapper.css('left').replace('px', ''));
 
+	// why am I doing this? because when the image was created, it was
+	// given a top and left value. making it draggable and resizable sets
+	// relative positioning on the ui-draggable (divimg) div and absolute
+	// positioning on the ui-wrapper div. to get the actual location of
+	// the image, we have to add those 2 values together. the values on
+	// the ui-wrapper div don't change, but the values on ui-draggable might.
 	var t = draggableTop + wrapperTop;
 	var l = draggableLeft + wrapperLeft;
 
 	var img = wrapper.find('img');
 	var a = img.attr('alt') || '';
-	var w = img.css('width');
+	var w = Number(img.css('width').replace('px', ''));
 	var isrc = img.attr('src');
 	isrc = isrc.substring(isrc.lastIndexOf('/')+1);
+	var rot = img.attr('rot');
+	
 	var d = {
+		top: t,
+		left: l,
 		width: w,
-		top: t + 'px',
-		left: l + 'px',
 		altText: a,
-		pickImage: isrc
+		r: rot,
+		src: isrc
 	};
 	
 	return d;
@@ -191,49 +211,19 @@ function buildCellObject(elem) {
 		// ====================================== IMAGES =======================
 		} else if ($(elem).hasClass("divimg")) {
 			
-			// sometimes, the style for 'top' and 'left' comes back as 'auto'...
-			// in these cases, we should treat these values as 0
-			var draggableTop  = isNaN($(elem).css('top').replace('px', '')) ? 0 : Number($(elem).css('top').replace('px', ''));
-			var draggableLeft = isNaN($(elem).css('left').replace('px', '')) ? 0 : Number($(elem).css('left').replace('px', ''));
+			var iObj = imageToObject($(elem));
 			
-			$(elem).find("div.ui-wrapper").each(function(idx, elem) {
+			// positions need converted to %
+			iObj.top = iObj.top * (1 / sizerHeight) * 100;
+			iObj.left = iObj.left * (1 / sizerWidth) * 100;
 
-				var wrapperTop = Number($(elem).css('top').replace('px', ''));
-				var wrapperLeft = Number($(elem).css('left').replace('px', ''));
+			// width needs converted to %
+			iObj.width = iObj.width * (1 / sizerWidth) * 100;
 
-				// why am I doing this? because when the image was created, it was
-				// given a top and left value. making it draggable and resizable sets
-				// relative positioning on the ui-draggable (divimg) div and absolute
-				// positioning on the ui-wrapper div. to get the actual location of
-				// the image, we have to add those 2 values together. the values on
-				// the ui-wrapper div don't change, but the values on ui-draggable might.
-				var t = draggableTop + wrapperTop;
-				var l = draggableLeft + wrapperLeft;
-				
-				// positions need converted to %
-				t = t * (1 / sizerHeight) * 100;
-				l = l * (1 / sizerWidth) * 100;
-				
-				// width needs converted to %
-				var cssWidth = $(elem).css('width');
-				var w = Number(cssWidth.replace('px', ''));
-				w = w * (1 / sizerWidth) * 100;
-				
-				$(elem).find("img").each(function(idx, elem) {
-					var a = $(elem).attr('alt');
-					var s = elem.src;
-					s = s.substring(s.lastIndexOf('/')+1);
-					b.imgs.push({
-						top: t,
-						left: l,
-						width: w,
-						z: zi++,
-						altText: a,
-						src: s
-					});
-				});
-					
-			});
+			// add z-index
+			iObj.z = zi++;
+
+			b.imgs.push(iObj);
 			
 		}
 		
@@ -284,8 +274,10 @@ function addImage(cell, img) {
 			var w = (img.width / 100) * sizerWidth;
 			var h = w / aspectRatio;
 
-			var l = (img.left / 100) * sizerWidth; 
+			var l = (img.left / 100) * sizerWidth;
 			var t = (img.top / 100) * sizerHeight;
+			
+			var rot = ( img.r ? 'rotate(' + img.r + 'deg)' : null);
 
 			$(i).css('height', h + 'px');
 			$(i).css('width', w + 'px');
@@ -294,6 +286,10 @@ function addImage(cell, img) {
 			$(i).attr('src', '/images/' + img.src);
 			$(i).attr('aspectRatio', aspectRatio);
 			$(i).attr('alt', img.altText || '');
+			if (rot) {
+				$(i).css('-webkit-transform', rot);
+				$(i).attr('rot', img.r);
+			}
 
 			$(d).addClass('divimg');
 			$(d).append(i);
@@ -304,6 +300,16 @@ function addImage(cell, img) {
 			$(d).draggable();
 			$(i).resizable({aspectRatio: true});
 
+			if (rot) {
+				$(i).css('-webkit-transform', rot);
+				// to prevent anything outside the div's square from being clipped
+				// when rotated, set the overflow to 'visible' on the ui-wrapper div
+				var wrapper = $(d).find("div.ui-wrapper");
+				$(wrapper).css('overflow', 'visible');
+			}
+
+			
+			
 		}
 
 	});
@@ -324,7 +330,7 @@ function addBubble(cell, b) {
 
 	var w = (bWidth / 100) * sizerWidth;
 
-	var l = (bLeft / 100) * sizerWidth; 
+	var l = (bLeft / 100) * sizerWidth;
 	var t = (bTop / 100) * sizerHeight;
 	
 	var p = document.createElement('p');
@@ -355,9 +361,9 @@ function addBubble(cell, b) {
 	
 }
 
-function addText(cell, t) {
+function addText(cell, text) {
 
-	var txt = t || {};
+	var txt = text || {};
 	var words = txt.words || 'This is some text.';
 	var tLeft = txt.left || 5;
 	var tTop = txt.top || 5;
@@ -368,7 +374,7 @@ function addText(cell, t) {
 
 	var w = (tWidth / 100) * sizerWidth;
 
-	var l = (tLeft / 100) * sizerWidth; 
+	var l = (tLeft / 100) * sizerWidth;
 	var t = (tTop / 100) * sizerHeight;
 	
 	var p = document.createElement('p');
@@ -654,17 +660,22 @@ function setupMenu(imgSelectOptions) {
 		selector: '.divimg',
 		items: {
 			width: {
-				name: 'Width',
+				name: 'Width (px)',
 				type: 'text',
 				value: ''
 			},
 			left: {
-				name: 'Left',
+				name: 'Left (px)',
 				type: 'text',
 				value: ''
 			},
 			top: {
-				name: 'Top',
+				name: 'Top (px)',
+				type: 'text',
+				value: ''
+			},
+			rotation: {
+				name: 'Rotation (deg)',
 				type: 'text',
 				value: ''
 			},
@@ -713,25 +724,18 @@ function setupMenu(imgSelectOptions) {
 				name: "Duplicate",
 				callback: function(key, options) {
 					
+					var c = options.$trigger.parent();
+					var d = imageToObject(this);					
+					
+					// for calling addImage(), width should be %, not pix
 					var sizerWidth = Number($('#sizer').css('width').replace('px', ''));
+					d.width = ( d.width / sizerWidth ) * 100;
+
+					// put the duplicate in the default location to start with...
+					d.top = 5;
+					d.left = 5;
 					
-					var i = options.$trigger;
-					var c = i.parent();
-					
-					var wrapper = i.find("div.ui-wrapper");
-					var img = wrapper.find('img');
-					var isrc = img.attr('src');
-					isrc = isrc.substring(isrc.lastIndexOf('/')+1);
-					// w should be %, not pix
-					var w = Number(img.css('width').replace('px',''));
-					w = (w / sizerWidth) * 100;
-					
-					addImage(c, {
-						src: isrc,
-						width: w,
-						top: 5,
-						left: 5
-					});
+					addImage(c, d);
 					
 				}
 			},
@@ -748,7 +752,9 @@ function setupMenu(imgSelectOptions) {
 				
 				var $this = this;
 				
-				var d = buildImageObj($this);
+				var d = imageToObject($this);
+				d.pickImage = d.src;
+				d.rotation = d.r;
 				$.contextMenu.setInputValues(opt, d);
 				
 			},
@@ -769,13 +775,26 @@ function setupMenu(imgSelectOptions) {
 
 				var img = $this.find('img');
 				img.attr('alt', o.altText);
-				if (img.css('width') !== o.width) {
+				
+				var rot = '';
+				if (o.rotation !== '') {
+					rot = 'rotate(' + o.rotation + 'deg)';
+					wrapper.css('overflow', 'visible');
+				}
+				img.css('-webkit-transform', rot);
+				img.attr('rot', o.rotation);
+
+				var currentWidth = img.css('width').replace('px', '');
+				if (currentWidth !== o.width) {
+					// only do this if the width was changed, because it is a more
+					// expensive operation
 					img.resizable('destroy');
 					var aspectRatio = Number(img.attr('aspectRatio'));
 					var w = Number(o.width.replace('px', ''));
 					img.css('width', w + "px");
 					img.css('height', (w / aspectRatio) + "px");
 					img.resizable({aspectRatio: true});
+					img.parent().css('overflow', 'visible');
 				}
 
 			}
