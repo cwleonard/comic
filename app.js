@@ -3,7 +3,6 @@ var fs = require('fs');
 var compress = require('compression');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var multiparty = require('multiparty');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
@@ -12,6 +11,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var cdata = require('./data');
 var staticImage = require('./staticImage');
 var userAuth = require('./userAuth');
+
+var imgRoutes = require('./imageRoutes');
 
 var app = express();
 
@@ -95,7 +96,6 @@ function createStaticImages(id, imageMaker, storageObj, cb) {
 			});
 		}
 	});
-
 	
 }
 
@@ -374,95 +374,25 @@ app.get('/cell/:n', function(req, res, next) {
 	
 });
 
-var imageRoute = app.route('/images');
+// ------------ set up routes for /images/*
 
-imageRoute.get(function(req, res, next) {
-	
-	cfact.listImages(function (err, data) {
-		if (err) {
-			next(err);
-		} else if (data) {
-			res.setHeader('Content-Type', 'application/json');
-			res.send(data);
-		} else {
-			next(new Error('missing image data!')); // this shouldn't happen
-		}
-	});
-	
-});
 
-imageRoute.post(function(req, res, next) {
-	
-	var uploadName = '';
-	var uploadType = '';
-	var chunks = [];
-	var totalLength = 0;
+app.use('/images', imgRoutes({
+	express: express,
+	auth: ensureAuthenticated,
+	dataSource: cfact
+}));
 
-	var form = new multiparty.Form();
-	
-	form.on('error', function(err) {
-		res.send(JSON.stringify({
-			success: false,
-			error: err
-		}));
-	});
-	
-	form.on('close', function() {
-		
-		var b = Buffer.concat(chunks, totalLength);
-		console.log('storing file %s (%d bytes)', uploadName, b.length);
-		cfact.storeImage(uploadName, b, uploadType, function(err, info) {
-			if (err) {
-				res.send(JSON.stringify({
-					success: false,
-					error: err
-				}));
-			} else {
-				res.send(JSON.stringify({
-					success: true
-				}));
-			}
-		});
-
-	});
-
-	form.on('part', function(part) {
-		
-		part.on('data', function(chunk) {
-			  chunks.push(chunk);
-			  totalLength += chunk.length;
-		});
-		part.on('end', function() {
-			  uploadName = part.filename;
-			  uploadType = part.headers['content-type'];
-		});
-		
-	});
-	
-    form.parse(req);
-    
-});
-
-app.get('/images/:img', function(req, res, next) {
-	
-	cfact.loadImage(req.params.img, function (err, data) {
-		if (err) {
-			next(err);
-		} else if (data) {
-			res.setHeader('Content-Type', data.contentType);
-			res.send(data.buffer);
-		} else {
-			res.send(404); // don't use the full-page 404 for missing images
-		}
-	});
-	
-});
+// ------------ teapot
 
 app.get('/teapot', function(req, res, next) {
 	res.send(418, 'your tea is ready');
 });
 
+// ------------ static content
+
 app.use(express.static('public'));
+
 
 // handle 404
 app.use(function(req, res, next){
