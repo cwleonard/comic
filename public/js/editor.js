@@ -179,7 +179,7 @@ function buildCellObject(elem) {
 						width: w,
 						z: zi++,
 						stemPos: sp,
-						text: $(elem).text()
+						text: $(elem).html()
 				});
 			});
 
@@ -204,7 +204,7 @@ function buildCellObject(elem) {
 						left: l,
 						width: w,
 						z: zi++,
-						words: $(elem).text()
+						words: $(elem).html()
 				});
 			});
 			
@@ -307,8 +307,6 @@ function addImage(cell, img) {
 				var wrapper = $(d).find("div.ui-wrapper");
 				$(wrapper).css('overflow', 'visible');
 			}
-
-			
 			
 		}
 
@@ -354,9 +352,7 @@ function addBubble(cell, b) {
 	$(s).editable({
 		type: 'text',
 		mode: 'inline',
-		success: function(response, newValue) {
-			console.log(newValue);
-		}
+		escape: false
 	});
 	
 }
@@ -395,9 +391,7 @@ function addText(cell, text) {
 	$(s).editable({
 		type: 'text',
 		mode: 'inline',
-		success: function(response, newValue) {
-			console.log(newValue);
-		}
+		escape: false
 	});
 	
 }

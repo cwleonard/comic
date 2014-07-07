@@ -8,18 +8,15 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var cdata = require('./data');
-var staticImage = require('./staticImage');
-var userAuth = require('./userAuth');
-
 var imgRoutes = require('./imageRoutes');
 
 var app = express();
 
 var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' }));
-var cfact = cdata(conf.database);
-var authorizer = userAuth(conf.database);
-var imageMaker = staticImage({
+
+var cfact = require('./data')(conf.database);
+var authorizer = require('./userAuth')(conf.database);
+var imageMaker = require('./staticImage')({
 	dir: '/temp'
 });
 
