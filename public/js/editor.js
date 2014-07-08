@@ -333,7 +333,7 @@ function addBubble(cell, b) {
 	
 	var p = document.createElement('p');
 	var s = document.createElement('span');
-	$(s).append(document.createTextNode(txt));
+	$(s).html(txt);
 	
 	$(p).css('top', t + 'px');
 	$(p).css('left', l + 'px');
@@ -352,8 +352,10 @@ function addBubble(cell, b) {
 	$(s).editable({
 		type: 'text',
 		mode: 'inline',
-		escape: false
+		escape: false,
+		value: txt
 	});
+	
 	
 }
 
@@ -375,7 +377,7 @@ function addText(cell, text) {
 	
 	var p = document.createElement('p');
 	var s = document.createElement('span');
-	$(s).append(document.createTextNode(words));
+	$(s).html(words);
 	
 	$(p).css('top', t + 'px');
 	$(p).css('left', l + 'px');
@@ -391,7 +393,8 @@ function addText(cell, text) {
 	$(s).editable({
 		type: 'text',
 		mode: 'inline',
-		escape: false
+		escape: false,
+		value: words
 	});
 	
 }
