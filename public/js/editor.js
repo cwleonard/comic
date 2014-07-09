@@ -314,88 +314,96 @@ function addImage(cell, img) {
 	
 }
 
+function createEditableParagraph(parent, contents) {
+	
+	var pText = contents.text || contents.words || 'What does the frog say?';
+	var pLeft = contents.left || 5;
+	var pTop = contents.top || 5;
+	var pWidth = contents.width || 50;
+
+	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
+	var sizerHeight = Number($(parent).css('height').replace(/\D/g, ''));
+
+	var w = (pWidth / 100) * sizerWidth;
+
+	var l = (pLeft / 100) * sizerWidth;
+	var t = (pTop / 100) * sizerHeight;
+	
+	var p = document.createElement('p');
+	var s = document.createElement('span');
+	$(s).html(pText);
+	
+	$(p).css('top', t + 'px');
+	$(p).css('left', l + 'px');
+	$(p).css('width', w + 'px');
+	$(p).css('position', 'absolute');
+
+	$(p).append(s);
+
+	$(parent).append(p);
+
+	$(p).draggable().resizable();
+	$(s).editable({
+		type: 'text',
+		mode: 'inline',
+		escape: false,
+		value: pText
+	});
+	
+	return p;
+
+}
+
+/**
+ * Adds a speech bubble to the specified cell. The parameters
+ * of the bubble can be specified via the optional parameter "b".
+ * 
+ * If specified, the "b" object can contain the following fields:
+ *   - text - the words to appear in the bubble
+ *   - left - left position, in %
+ *   - top - top position, in %
+ *   - width - bubble width, in %
+ *   - stemPos - position of the stem. valid values are 25, 50, and 75
+ * 
+ * @param cell
+ * @param b
+ */
 function addBubble(cell, b) {
 
 	var bub = b || {};
 	var stemPos = bub.stemPos || '50';
-	var txt = bub.text || 'What does the frog say?';
-	var bLeft = bub.left || 5;
-	var bTop = bub.top || 5;
-	var bWidth = bub.width || 50;
 	
-	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
-	var sizerHeight = Number($(cell).css('height').replace(/\D/g, ''));
-
-	var w = (bWidth / 100) * sizerWidth;
-
-	var l = (bLeft / 100) * sizerWidth;
-	var t = (bTop / 100) * sizerHeight;
-	
-	var p = document.createElement('p');
-	var s = document.createElement('span');
-	$(s).html(txt);
-	
-	$(p).css('top', t + 'px');
-	$(p).css('left', l + 'px');
-	$(p).css('width', w + 'px');
-	$(p).css('position', 'absolute');
+	var p = createEditableParagraph(cell, bub);
 	
 	$(p).addClass('bubble');
 	$(p).addClass('bubble-text');
 	$(p).addClass('bubble' + stemPos);
-	$(p).append(s);
 	
 	$(p).dblclick(toggleStemPosition);
 	
-	$(cell).append(p);
-	$(p).draggable().resizable();
-	$(s).editable({
-		type: 'text',
-		mode: 'inline',
-		escape: false,
-		value: txt
-	});
-	
-	
 }
 
-function addText(cell, text) {
+/**
+ * Adds a plain text area to the specified cell. The parameters
+ * of the area can be specified via the optional parameter "t".
+ * 
+ * If specified, the "t" object can contain the following fields:
+ *   - words - the words to appear in the area
+ *   - left - left position, in %
+ *   - top - top position, in %
+ *   - width - area width, in %
+ * 
+ * @param cell
+ * @param t
+ */
+function addText(cell, t) {
 
-	var txt = text || {};
-	var words = txt.words || 'This is some text.';
-	var tLeft = txt.left || 5;
-	var tTop = txt.top || 5;
-	var tWidth = txt.width || 50;
+	var txt = t || {};
 	
-	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
-	var sizerHeight = Number($(cell).css('height').replace(/\D/g, ''));
+	var p = createEditableParagraph(cell, txt);
 
-	var w = (tWidth / 100) * sizerWidth;
-
-	var l = (tLeft / 100) * sizerWidth;
-	var t = (tTop / 100) * sizerHeight;
-	
-	var p = document.createElement('p');
-	var s = document.createElement('span');
-	$(s).html(words);
-	
-	$(p).css('top', t + 'px');
-	$(p).css('left', l + 'px');
-	$(p).css('width', w + 'px');
-	$(p).css('position', 'absolute');
-	
 	$(p).addClass('free-text');
 	$(p).addClass('free-text-outline');
-	$(p).append(s);
-	
-	$(cell).append(p);
-	$(p).draggable().resizable();
-	$(s).editable({
-		type: 'text',
-		mode: 'inline',
-		escape: false,
-		value: words
-	});
 	
 }
 
@@ -406,13 +414,6 @@ function addCell(c) {
 	$(d).addClass('box');
 	$('#cellArea').append(d);
 
-	/*
-	var controlsDiv = document.createElement('div');
-	$(controlsDiv).addClass('box-controls');
-	$('#cellArea').append(controlsDiv);
-	controlsDiv.innerText = 'testing 1 2 3';
-	*/
-	
 	if (c) {
 		
 		var stuff = [];
