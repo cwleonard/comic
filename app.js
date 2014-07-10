@@ -44,6 +44,7 @@ function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
+	req.session.returnTo = req.originalUrl;
 	res.redirect('/login');
 }
 
@@ -130,10 +131,14 @@ app.get('/', function(req, res, next) {
 var loginRoute = app.route('/login');
 
 loginRoute.get(function(req, res, next) {
-	res.render('login', { message: req.session.messages });
+	res.render('login', { message: req.session.messages, returnTo: req.session.returnTo });
 });
 
 loginRoute.post(function(req, res, next) {
+	var rt = (req.body.returnto ? req.body.returnto : '');
+	if (rt.indexOf('/login') != -1 || rt == '') {
+		rt = '/';
+	}
 	passport.authenticate('local', function(err, user, info) {
 		if (err) { return next(err); }
 		if (!user) {
@@ -143,7 +148,7 @@ loginRoute.post(function(req, res, next) {
 		req.logIn(user, function(err) {
 			if (err) { return next(err); }
 			req.session.messages = null;
-			return res.redirect('/');
+			return res.redirect(rt);
 		});
 	})(req, res, next);
 });
@@ -255,7 +260,7 @@ app.get('/list', ensureAuthenticated, function(req, res, next) {
 });
 
 
-app.get('/data/:n', noCache, function(req, res, next) {
+app.get('/data/:n', ensureAuthenticated, noCache, function(req, res, next) {
 
 	cfact.loadById(req.params.n, function (err, data) {
 		if (err) {
