@@ -9,6 +9,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var imgRoutes = require('./imageRoutes');
+var dataRoutes = require('./dataRoutes');
 
 var app = express();
 
@@ -16,9 +17,6 @@ var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' })
 
 var cfact = require('./data')(conf.database);
 var authorizer = require('./userAuth')(conf.database);
-var imageMaker = require('./staticImage')({
-	dir: '/temp'
-});
 
 // --- set up login strategy
 passport.use(new LocalStrategy(authorizer));
@@ -48,14 +46,6 @@ function ensureAuthenticated(req, res, next) {
 	res.redirect('/login');
 }
 
-// middleware for resources that should not be cached
-function noCache(req, res, next) {
-	res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-	res.header('Expires', '-1');
-	res.header('Pragma', 'no-cache');
-	next();
-}
-
 // middleware to ensure we're on the correct URL
 function correctUrl(b) {
 	
@@ -73,27 +63,6 @@ function correctUrl(b) {
 		}
 
 	};
-	
-}
-
-// creates static images for pinterest and facebook
-function createStaticImages(id, imageMaker, storageObj, cb) {
-	
-	// store the static image for Pinterest
-	imageMaker.createImage(id, storageObj.storePinImage, function(err) {
-		if (err) {
-			cb(err);
-		} else {
-			// now store a static image of one cell for Facebook
-			imageMaker.createImage(id, 1, storageObj.storeFBImage, function(err) {
-				if (err) {
-					cb(err);
-				} else {
-					cb();
-				}
-			});
-		}
-	});
 	
 }
 
@@ -260,61 +229,15 @@ app.get('/list', ensureAuthenticated, function(req, res, next) {
 });
 
 
-app.get('/data/:n', ensureAuthenticated, noCache, function(req, res, next) {
+//------------ set up routes for /data/*
 
-	cfact.loadById(req.params.n, function (err, data) {
-		if (err) {
-			next(err);
-		} else if (data) {
-			res.setHeader('Content-Type', 'application/json');
-			res.send(data);
-		} else {
-			res.send(404); // don't use the full-page 404 for missing data
-		}
-	});
-	
-});
+app.use('/data', dataRoutes({
+	express: express,
+	auth: ensureAuthenticated,
+	dataSource: cfact
+}));
 
-app.post('/data', ensureAuthenticated, function(req, res, next) {
-	
-	cfact.storeData(req.body, function(err, newid) {
-		if (err) {
-			next(err);
-		} else {
-			res.setHeader('Content-Type', 'application/json');
-			res.send({
-				id: newid
-			});
-			createStaticImages(newid, imageMaker, cfact, function(err) {
-				if (err) {
-					console.log(err);
-				}
-			});
-		}
-	});
-	
-});
-
-app.put('/data/:n', ensureAuthenticated, function(req, res, next) {
-	
-	var i = isNaN(req.params.n) ? null : Number(req.params.n);
-	cfact.storeData(req.body, i, function(err, newid) {
-		if (err) {
-			next(err);
-		} else {
-			res.setHeader('Content-Type', 'application/json');
-			res.send({
-				id: newid
-			});
-			createStaticImages(newid, imageMaker, cfact, function(err) {
-				if (err) {
-					console.log(err);
-				}
-			});
-		}
-	});
-	
-});
+//------------ other routes...
 
 app.get('/editor', ensureAuthenticated, function(req, res, next) {
 	res.render('editpage', {
@@ -345,6 +268,8 @@ app.get('/games', function(req, res, next) {
 	});
 	
 });
+
+//------------
 
 app.get('/pins/:n', function(req, res, next) {
 	
