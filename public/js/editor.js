@@ -235,14 +235,14 @@ function buildCellObject(elem) {
 
 function buildComicOjbect() {
 	
-	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
-	
 	var ct = $('#ctitle').val();
 	var pd = $('#pubDate').val();
+	var et = $('#extraText').val();
 	
 	var cobj = {
 		pubDate: pd,
 		title: ct,
+		extraText: et,
 		cells: []
 	};
 	
@@ -919,6 +919,7 @@ function doLoad() {
 			var pd = moment(data.pubDate.substring(data.pubDate.indexOf(',') + 1), ['DD MMM YYYY' , 'D MMM YYYY']);
 			
 			$('#ctitle').val(data.title);
+			$('#extraText').val(data.extraText);
 			$('#pubDate').val(pd.format('YYYY-MM-DD'));
 			$('#hiddenId').val(data.id);
 

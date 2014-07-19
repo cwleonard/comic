@@ -277,7 +277,9 @@ module.exports = function(dbconf) {
 		
 		storeImage: function(fn, data, type, cb) {
 			
-			pool.query('INSERT INTO comic_img (filename, type, data) VALUES (?, ?, ?)', [fn, type, data], function(err, result) {
+			pool.query('INSERT INTO comic_img (filename, type, data) VALUES (?, ?, ?) ' +
+					'ON DUPLICATE KEY UPDATE type = VALUES(type), data = VALUES(data)',
+					[fn, type, data], function(err, result) {
 				
 				if (err) {
 					cb(err);

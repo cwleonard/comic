@@ -27,6 +27,9 @@ html
 					div#datePicker(class="input-group date",data-date-format="YYYY-MM-DD")
 						input#pubDate(type="text",class="form-control",placeholder="publish date")
 						span(class="input-group-addon")!= '<i class="fa fa-calendar"></i>'
+				div.form-group
+					label(for="extraText") Extra Text (optional)
+					textarea#extraText.form-control(rows="3",placeholder="extra text and stuff")
 				div#cellArea
 
 		include imgUpload

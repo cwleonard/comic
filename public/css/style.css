@@ -140,6 +140,18 @@ div#sizer {
 	z-index: 2;
 }
 
+div#extraText {
+	margin-bottom: 5px;
+	padding: 8px;
+	border-radius: 15px;
+	font-size: larger;
+	border: #999999 dotted 1px;
+}
+
+div#extraText a {
+    text-decoration: underline;
+}
+
 div.info {
 	width: 100%;
 	margin: auto;

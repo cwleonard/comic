@@ -28,6 +28,9 @@ div#sizer(comicId=id)
 			- for (var i in cells[c].imgs)
 				+makeImage(cells[c].imgs[i])
 	div#info(comicId=id,class='info')
+		if extraText && !basic
+			div#extraText
+				!= extraText
 		div#hiddenLinks
 			if prevDate
 				a(href='/' + prevDate) Previous
