@@ -98,6 +98,14 @@ hr{
 	background:#f22d0c;
 }
 
+.social a.blogger i {
+	background: #f9760b;
+}
+
+.social a.email i {
+	background: #FF0033;
+}
+
 .social a.linkedin i{
 	background:#2d93cf;
 }
@@ -1524,9 +1532,10 @@ footer .social{
 }
 
 footer .social a i{
-	width:35px;
-	height:35px;
-	line-height:35px;
+	width:50px;
+	height:50px;
+	line-height:50px;
+	font-size: 22px !important;
 }
 
 
