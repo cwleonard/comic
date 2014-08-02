@@ -7,9 +7,9 @@
 	font-family: Verdana, Geneva, sans-serif;
 	line-height: initial;
 	color: #000000;
-	box-sizing: initial;
-	-moz-box-sizing: initial;
-	-webkit-box-sizing: initial;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
 	
 	/* adjusted by screen size. this is the minimum  */
 	font-size: 1.0em;
@@ -34,9 +34,9 @@
 	font-family: 'Sniglet', sans-serif;
 	line-height: initial;
 	color: #000000;
-	box-sizing: initial;
-	-moz-box-sizing: initial;
-	-webkit-box-sizing: initial;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
 	
 	/* the following are adjusted by screen size. these values are the minimums.  */
 	-webkit-border-radius: 20px;
