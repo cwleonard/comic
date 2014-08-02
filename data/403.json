@@ -1,0 +1,7 @@
+{
+  "title": "403: Forbidden",
+  "cells": [
+    {"background":"#D3EEFF","bubbles":[{"top":5.357142857142857,"left":11.666666666666666,"width":45.166666666666664,"z":2,"stemPos":75,"text":"Where do you think you're going?"}],"text":[],"imgs":[{"top":37.5,"left":-10.777777777777779,"width":136.22222222222223,"altText":"","src":"grass.svg","z":1},{"top":32.14285714285714,"left":56.777777777777786,"width":33.33333333333333,"altText":"","r":"","src":"frog_open_mouth_left.svg","z":3}]},
+    {"background":"#D3EEFF","bubbles":[{"top":4.285714285714286,"left":39.44444444444444,"width":38.5,"z":2,"stemPos":25,"text":"I don't know how to answer that."}],"text":[],"imgs":[{"top":37.5,"left":-10.777777777777779,"width":136.22222222222223,"altText":"","src":"grass.svg","z":1},{"top":31.071428571428573,"left":11.444444444444445,"width":33.33333333333333,"altText":"","r":"","src":"science.svg","z":3}]}
+  ]
+}

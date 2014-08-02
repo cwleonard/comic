@@ -105,7 +105,7 @@ loginRoute.get(function(req, res, next) {
 
 loginRoute.post(function(req, res, next) {
 	var rt = (req.body.returnto ? req.body.returnto : '');
-	if (rt.indexOf('/login') != -1 || rt == '') {
+	if (rt.indexOf('/login') !== -1 || rt === '') {
 		rt = '/';
 	}
 	passport.authenticate('local', function(err, user, info) {
@@ -133,12 +133,33 @@ app.get('/:n', function(req, res, next) {
 			if (data.pubDate) {
 				var p = new Date(data.pubDate);
 				if (p > new Date()) {
-					// remove previous link, this is a comic from the future
-					data.prevDate = null;
+					if (!req.isAuthenticated()) {
+						// only authenticated users can see future comics
+						fs.readFile('data/403.json', { encoding: 'utf-8' }, function(err, data) {
+							if (err) {
+								next(err);
+							} else {
+								res.render('comicpage', JSON.parse(data), function(err, str) {
+									if (err) {
+										next(err);
+									} else {
+										res.send(403, str);
+									}
+								});
+							}
+						});
+					} else {
+						data.url = conf.base;
+						res.render('comicpage', data);
+					}
+				} else {
+					data.url = conf.base;
+					res.render('comicpage', data);
 				}
+			} else {
+				data.url = conf.base;
+				res.render('comicpage', data);
 			}
-			data.url = conf.base;
-			res.render('comicpage', data);
 			
 		} else {
 			next(); // no comic found
@@ -314,6 +335,12 @@ app.use('/images', imgRoutes({
 
 app.get('/teapot', function(req, res, next) {
 	res.send(418, 'your tea is ready');
+});
+
+//------------ test for error handling
+
+app.get('/broken', function(req, res, next) {
+	throw new Error('not a real error');
 });
 
 // ------------ static content

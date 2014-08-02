@@ -1,18 +1,7 @@
 {
-  "title": "The Missing Page",
+  "title": "404: Not Found",
   "cells": [
-    {
-      "bubble": {
-    	  "text": "Oops, can't find that comic!",
-    	  "top": 5.36,
-    	  "left": 20
-      },
-      "imgs": [{
-    	  "src": "frog.svg",
-    	  "width": 33.3333,
-    	  "top": 35.7,
-    	  "left": 57.8
-      }]
-    }
+    {"background":"#D3EEFF","bubbles":[{"top":4.642857142857143,"left":11,"width":54.72222222222223,"z":3,"stemPos":75,"text":"Sorry, can't find that one."}],"text":[],"imgs":[{"top":37.5,"left":-10.777777777777779,"width":136.22222222222223,"altText":"","src":"grass.svg","z":1},{"top":28.928571428571427,"left":54.11111111111111,"width":33.33333333333333,"altText":"","src":"frog.svg","z":2}]},
+    {"background":"#D3EEFF","bubbles":[{"top":4.642857142857143,"left":39,"width":48.05555555555556,"z":2,"stemPos":25,"text":"Did you check behind the refrigerator?"}],"text":[],"imgs":[{"top":37.5,"left":-10.777777777777779,"width":136.22222222222223,"altText":"","src":"grass.svg","z":1},{"top":31.071428571428573,"left":11.444444444444445,"width":33.33333333333333,"altText":"","r":"","src":"science.svg","z":3}]}
   ]
 }

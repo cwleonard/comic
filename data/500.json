@@ -1,17 +1,7 @@
 {
+  "title": "500: Server Error",
   "cells": [
-    {
-      "bubble": {
-    	  "text": "Something broke!!",
-    	  "top": 5.36,
-    	  "left": 20
-      },
-      "imgs": [{
-    	  "src": "frog.svg",
-    	  "width": 33.3333,
-    	  "top": 35.7,
-    	  "left": 57.8
-      }]
-    }
+    {"background":"#D3EEFF","bubbles":[{"top":4.642857142857143,"left":11,"width":54.72222222222223,"z":2,"stemPos":75,"text":"Oops, something broke!"}],"text":[],"imgs":[{"top":37.5,"left":-10.777777777777779,"width":136.22222222222223,"altText":"","src":"grass.svg","z":1},{"top":31.428571428571427,"left":56.777777777777786,"width":33.33333333333333,"altText":"","r":"","src":"frog.svg","z":3}]},
+    {"background":"#D3EEFF","bubbles":[{"top":4.642857142857143,"left":32.77777777777778,"width":48.05555555555556,"z":2,"stemPos":25,"text":"I'll get the duct tape."}],"text":[],"imgs":[{"top":37.5,"left":-10.777777777777779,"width":136.22222222222223,"altText":"","src":"grass.svg","z":1},{"top":31.071428571428573,"left":11.444444444444445,"width":33.33333333333333,"altText":"","r":"","src":"science.svg","z":3}]}
   ]
 }
