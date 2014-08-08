@@ -53,7 +53,9 @@ module.exports = function(conf) {
 		loadCurrent: function (cb) {
 			
 			//TODO: load the current comic from the dataDir
-			cb(null, null);
+			var c = cdata[dateMap[dateMap.length-1].id];
+			c.prevDate = 21;
+			cb(null, c);
 			
 		},
 
