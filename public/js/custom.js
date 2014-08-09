@@ -39,7 +39,7 @@ function replaceComic(id, push) {
 		
 		if (push) {
 			var cid = $('#sizer').attr('comicId');
-			console.log('pushing ' + cid);
+			//console.log('pushing ' + cid);
 			var stateObj = { comicId: cid };
 			history.pushState(stateObj, "comic " + cid, cid);
 		}
@@ -74,7 +74,7 @@ $(function() {
     // listen for history changes
     $(window).bind('popstate', function(event) {
     	var s = event.originalEvent.state;
-    	if (s) {
+    	if (s && s.comicId) {
     		replaceComic(s.comicId, false);
     	}
     });

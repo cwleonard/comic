@@ -1,7 +1,6 @@
 var express = require('express');
 var fs = require('fs');
 var compress = require('compression');
-var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -10,6 +9,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var imgRoutes = require('./imageRoutes');
 var dataRoutes = require('./dataRoutes');
+var logging = require('./logger');
 
 var app = express();
 
@@ -54,7 +54,7 @@ function correctUrl(b) {
 		if (req.host !== b) {
 			var port = '';
 			var hostWithPort = req.get('host');
-			if (hostWithPort.indexOf(':') != -1) {
+			if (hostWithPort.indexOf(':') !== -1) {
 				port = hostWithPort.substring(hostWithPort.indexOf(':'));
 			}
 			res.redirect(req.protocol + '://' + b + port + req.originalUrl);
@@ -72,7 +72,7 @@ app.use(correctUrl(conf.base));
 
 // logging comes first
 //   note: using the header "X-Real-IP" because I proxy this app throuh nginx
-app.use(morgan(':req[X-Real-IP] - - [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'));
+app.use(logging(conf));
 
 app.use(cookieParser()); // required before session.
 app.use(session({ secret: conf.secret }));

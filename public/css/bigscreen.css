@@ -1,0 +1,43 @@
+
+@media only screen and (min-width: 1200px) {
+
+	div#sizer {
+		width: 650px;
+	}
+	
+	p.cTitle {
+		font-size: 3.2em;
+	}
+
+	.box {
+		height: 404px;
+	}
+	
+	.bubble-text {
+		font-size: 2.3em;
+	}
+
+	.free-text {
+		font-size: 2.1em;
+	}
+
+	.bubble {
+		-webkit-border-radius: 34px;
+		-moz-border-radius: 34px;
+		border-radius: 34px;
+	}
+
+	.bubble:after {
+		border-width: 48px 20px 0;
+		bottom: -46px;
+		margin-left: -24px;
+	}
+	
+	.bubble:before {
+		border-width: 50px 22px 0;
+		bottom: -52px;
+		margin-left: -26px;
+	}
+
+}
+

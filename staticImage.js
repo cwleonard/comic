@@ -28,16 +28,21 @@ module.exports = function(conf) {
 			var imgFileName = tempDir + path.sep + "comic_" + fileId + ".png";
 			
 			var cFileData = "var page = require('webpage').create();\n" +
+				"page.viewportSize = { width: 1202, height: 5000 };\n" +
 				"page.open('http://localhost:3000/basic/" + urlId + "', function() {\n" +
-				"page.clipRect = page.evaluate(function() {\n" +  
-				"    var rect = document.getElementById('comicArea').getBoundingClientRect();\n" +
-				"    var r = JSON.parse(JSON.stringify(rect));\n" +
-				"    r.height += (r.top * 2);\n" +
-				"    r.top = 0;\n" +
-				"    return r;\n" +
-				"});\n" + 
-				"page.render('" + imgFileName.replace(/\\/g, '\\\\') + "');\n" +
-				"phantom.exit();\n" +
+				"    page.clipRect = page.evaluate(function() {\n" +
+				"        var rect = document.getElementById('comicArea').getBoundingClientRect();\n" +
+				"        var rect2 = document.getElementById('cell-0').getBoundingClientRect();\n" +
+				"        var r = JSON.parse(JSON.stringify(rect));\n" +
+				"        r.height += (r.top * 2);\n" +
+				"        r.top = 0;\n" +
+				"        r.left = rect2.left - 102;\n" +
+				"        r.right = rect2.right + 102;\n" +
+				"        r.width = rect2.width + 204;\n" +
+				"        return r;\n" +
+				"    });\n" +
+				"    page.render('" + imgFileName.replace(/\\/g, '\\\\') + "');\n" +
+				"    phantom.exit();\n" +
 				"});";
 			
 			fs.writeFile(fn, cFileData, function(err) {

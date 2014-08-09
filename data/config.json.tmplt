@@ -1,6 +1,7 @@
 {
 	"base": "example.com",
 	"secret": "hoppy frog",
+	"logToConsole": false,
 	"database": {
 		"host": "localhost",
 		"user": "user",
