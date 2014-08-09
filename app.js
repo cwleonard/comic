@@ -17,6 +17,7 @@ var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' })
 
 var cfact = require('./data')(conf.database);
 var authorizer = require('./userAuth')(conf.database);
+var stats = require('./stats')(conf.database);
 
 // --- set up login strategy
 passport.use(new LocalStrategy(authorizer));
@@ -287,6 +288,19 @@ app.get('/games', function(req, res, next) {
 	res.render('games', {
 		title: 'Games'
 	});
+	
+});
+
+//------------
+
+app.get('/stats/agents/:n', function(req, res, next) {
+	
+	stats.agents(req.params.n, function(err, data) {
+
+		res.send(200, data);
+		
+	});
+	
 	
 });
 

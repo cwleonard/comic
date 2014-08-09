@@ -5,7 +5,23 @@ div(class="modal fade",id="animateModal",tabindex="-1",role="dialog",aria-labell
 				button(type="button",class="close",data-dismiss="modal",aria-hidden="true") &times;
 				h4(class="modal-title",id="aniModalLabel") Animation Settings
 			div(class="modal-body")
-				p something something
+				
+				div.form-group(style='margin-top: 15px;')
+					label(for="speed") Speed
+					input#speed.form-control(type="text",placeholder="speed")
+				
+				div.form-group(style='margin-top: 15px;')
+					label(for="travel") Travel
+					input#travel.form-control(type="text",placeholder="travel")
+					
+				div.form-group(style='margin-top: 15px;')
+					label(for="direction") Direction
+					select#direction.form-control
+						option up
+						option down
+						option left
+						option right
+				
 			div(class="modal-footer")
 				button(type="button",class="btn btn-default",data-dismiss="modal") Cancel
 				button#confirmAnimateButton(type="button",class="btn btn-primary") OK

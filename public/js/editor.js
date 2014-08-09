@@ -125,6 +125,17 @@ function imageToObject(iEl) {
 		src: isrc
 	};
 	
+	// is it animated?
+	var spd = isNaN(iEl.attr("speed")) ? 0 : Number(iEl.attr("speed"));
+	var trvl = isNaN(iEl.attr("travel")) ? 0 : Number(iEl.attr("travel"));
+	if (spd > 0 && trvl !== 0) {
+		var dir = iEl.attr("direction");
+		d.move = true;
+		d.speed = spd;
+		d.travel = trvl;
+		d.direction = dir;
+	}
+	
 	return d;
 	
 }
@@ -718,6 +729,15 @@ function setupMenu(imgSelectOptions) {
 				}
 			},
 			sep3: "----------",
+			animation: {
+				name: "Animation...",
+				callback: function(key, options) {
+					
+					editAnimation(this);
+					
+				}
+			},
+			sep4: "----------",
 			dupImage: {
 				name: "Duplicate",
 				callback: function(key, options) {
@@ -898,6 +918,26 @@ function showComicList() {
 				$('#comicSelect').append($("<option></option>").attr("value", val.id).text(oval));
 			});
 		}
+	});
+	
+}
+
+function editAnimation(elem) {
+	
+	$('#animateModal').modal('toggle');
+	
+	$('#confirmAnimateButton').click(function() {
+		
+		var speed = $('#speed').val();
+		var travel = $('#travel').val();
+		var direction = $('#direction').val();
+		
+		$(elem).attr('speed', speed);
+		$(elem).attr('travel', travel);
+		$(elem).attr('direction', direction);
+		
+		$('#animateModal').modal('toggle');
+		
 	});
 	
 }
