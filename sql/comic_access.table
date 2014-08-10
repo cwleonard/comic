@@ -1,0 +1,15 @@
+delimiter $$
+
+CREATE TABLE `comic_access` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(45) NOT NULL,
+  `tstamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `verb` varchar(45) NOT NULL,
+  `resource` varchar(500) NOT NULL,
+  `response` int(11) NOT NULL,
+  `size` int(11) DEFAULT NULL,
+  `referer` varchar(500) DEFAULT NULL,
+  `agent` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1052 DEFAULT CHARSET=latin1$$
+

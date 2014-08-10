@@ -1,0 +1,12 @@
+delimiter $$
+
+CREATE TABLE `comic_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pub_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data` text NOT NULL,
+  `static_img` longblob,
+  `cell_img` longblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1$$
+

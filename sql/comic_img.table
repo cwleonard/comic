@@ -1,0 +1,10 @@
+delimiter $$
+
+CREATE TABLE `comic_img` (
+  `filename` varchar(100) NOT NULL,
+  `data` blob NOT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`filename`),
+  UNIQUE KEY `filename_UNIQUE` (`filename`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+
