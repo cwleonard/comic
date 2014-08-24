@@ -296,11 +296,27 @@ app.get('/games', function(req, res, next) {
 app.get('/stats/agents/:n', function(req, res, next) {
 	
 	stats.agents(req.params.n, function(err, data) {
-
 		res.send(200, data);
-		
 	});
 	
+});
+
+app.get('/stats/comics/:n', function(req, res, next) {
+	
+	stats.comicsAccessed(req.params.n, function(err, data) {
+		var c = {
+			access: data
+		};
+		res.send(200, c);
+	});
+	
+});
+
+app.get('/stats/sources/:n', function(req, res, next) {
+	
+	stats.sources(req.params.n, function(err, data) {
+		res.send(200, data);
+	});
 	
 });
 

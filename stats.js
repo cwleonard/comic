@@ -36,6 +36,43 @@ module.exports = function(dbconf) {
 			});
 			
 		},
+		
+		sources: function(hours, cb) {
+			
+			var h = isNaN(hours) ? 1 : Number(hours);
+			
+			var sql = 'SELECT count(*) as c, referer, resource FROM amphibian.comic_access ' +
+				'where (tstamp > date_sub(current_timestamp, interval ' + pool.escape(h) + ' hour)) ' +
+				'and (referer not regexp \'^http://(www\.)?amphibian.com\') ' +
+				'group by referer order by 1 desc;';
+			
+			pool.query(sql, function(err, rows) {
+				
+				if (err) {
+					cb(err);
+				} else {
+					var data = new Array();
+					for (var i = 0; i < rows.length; i++) {
+						
+						var num = rows[i].c;
+						var ref = rows[i].referer;
+						var res = rows[i].resource;
+						
+						var temp = {
+							referer: ref,
+							resource: res,
+							count: num
+						};
+						
+						data.push(temp);
+
+					}
+					cb(null, data);
+				}
+				
+			});
+			
+		},
 
 		agents: function (hours, cb) {
 
