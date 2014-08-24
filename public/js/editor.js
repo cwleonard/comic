@@ -936,6 +936,7 @@ function editAnimation(elem) {
 		$(elem).attr('travel', travel);
 		$(elem).attr('direction', direction);
 		
+		$('#confirmAnimateButton').unbind('click');
 		$('#animateModal').modal('toggle');
 		
 	});
