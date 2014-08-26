@@ -28,7 +28,7 @@ function replaceComic(id, push) {
 		push = true;
 	}
 	
-	$('body,html').animate({scrollTop: 0}, 500);
+	$('body,html').animate({scrollTop: 0}, 200);
 
 	$('#comicArea').hide();
 	$('#loading').show();
