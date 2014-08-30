@@ -291,6 +291,12 @@ app.get('/games', function(req, res, next) {
 	
 });
 
+//------------ some old links are still out there, send them to Gist now
+
+app.get('/code/:c', function(req, res, next) {
+	res.redirect('https://gist.github.com/cwleonard');
+});
+
 //------------
 
 app.get('/stats/agents/:n', function(req, res, next) {
