@@ -18,10 +18,10 @@ html
 					button#addImageButton(type='button',class='btn btn-default btn-lg')!= '<i class="fa fa-picture-o"></i>'
 		div#comicArea(style='min-height: 500px;')
 			div#sizer
-				input#hiddenId(type='hidden')
-				div.form-group(style='margin-top: 15px;')
+				div(class='form-group clearfix',style='margin-top: 15px;')
 					label(for="ctitle") Comic Title (optional)
-					input#ctitle.form-control(type="text",placeholder="comic title")
+					input#ctitle.form-control(style="width: 80%; float: left;",type="text",placeholder="comic title")
+					input#cid.form-control(disabled="true",style="text-align: right; width: 15%; float: right;",type="text",placeholder="id")
 				div.form-group
 					label(for="datePicker") Publish Date
 					div#datePicker(class="input-group date",data-date-format="YYYY-MM-DD")

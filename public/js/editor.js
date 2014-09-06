@@ -6,7 +6,7 @@ function postData(d) {
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
 		success: function(data) {
-			$('#hiddenId').val(data.id);
+			$('#cid').val(data.id);
 			$('#saveResults').text('Successfully saved as new id ' + data.id);
 			$('#saveModal').modal('toggle');
 		}
@@ -22,7 +22,7 @@ function putData(id, d) {
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
 		success: function(data) {
-			$('#hiddenId').val(data.id);
+			$('#cid').val(data.id);
 			$('#saveResults').text('Successfully saved as existing id ' + data.id);
 			$('#saveModal').modal('toggle');
 		}
@@ -51,7 +51,7 @@ function rgb2hex(rgb) {
 function doSave(evt) {
 
 	var asNew = false;
-	var existingId = $('#hiddenId').val();
+	var existingId = $('#cid').val();
 	if (existingId === '') {
 		asNew = true;
 	}
@@ -484,7 +484,7 @@ function addCell(c) {
 
 function clear() {
 	
-	$('#hiddenId').val('');
+	$('#cid').val('');
 	$('#ctitle').val('');
 	$('#pubDate').val(moment().format('YYYY-MM-DD'));
 	$('#cellArea div.box').remove();
@@ -959,10 +959,10 @@ function doLoad() {
 			
 			var pd = moment(data.pubDate.substring(data.pubDate.indexOf(',') + 1), ['DD MMM YYYY' , 'D MMM YYYY']);
 			
+			$('#cid').val(data.id);
 			$('#ctitle').val(data.title);
 			$('#extraText').val(data.extraText);
 			$('#pubDate').val(pd.format('YYYY-MM-DD'));
-			$('#hiddenId').val(data.id);
 
 			$.each(data.cells, function(idx, c) {
 				addCell(c);

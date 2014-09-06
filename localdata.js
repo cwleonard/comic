@@ -31,6 +31,7 @@ module.exports = function(conf) {
 		var data = fs.readFileSync(dataDir + path.sep + files[i]);
 		var obj = JSON.parse(data);
 		var id = path.basename(fn, path.extname(files[i]));
+		obj.id = id;
 		cdata[id] = obj;
 		dateMap.push({
 			d: obj.pubDate,
@@ -89,6 +90,10 @@ module.exports = function(conf) {
 				}
 			});
 
+		},
+		
+		storeFBImage: function(id, data, cb) {
+			cb(null);
 		},
 
 		loadImage: function(name, cb) {
@@ -182,8 +187,17 @@ module.exports = function(conf) {
 		
 		listComics: function(cb) {
 			
-			//TODO: return something
-			cb(null, []);
+			var data = new Array();
+			for (var x in cdata) {
+				var c = cdata[x];
+				var t = (c.title ? c.title : 'no title');
+				data.push({
+					id: x,
+					published: c.pubDate,
+					title: t
+				});
+			}
+			cb(null, data);
 			
 		}
 
