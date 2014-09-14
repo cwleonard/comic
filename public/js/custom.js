@@ -138,6 +138,22 @@ function moveUpDown(e) {
 	
 }
 
+function flicker(e) {
+
+	if (this.timespan === -1) {
+		// pick a new timespan value, based on speed
+		this.timespan = this.pps * 1000 * Math.random();
+	}
+	
+	this.counter += e;
+	if (this.counter > this.timespan) {
+		this.timespan = -1;
+		this.counter = 0;
+		$(this).toggle();
+	}
+	
+}
+
 
 var animated = [];
 function setupAnimation() {
@@ -180,6 +196,10 @@ function setupAnimation() {
 				elem.upperBound = elem.pos;
 				elem.lowerBound = elem.upperBound + (sizerHeight * (trvl / 100));
 				elem.moveFunction = moveUpDown;
+			} else if (dir === 'flicker') {
+				elem.counter = 0;
+				elem.timespan = -1;
+				elem.moveFunction = flicker;
 			} else {
 				// unknown direction value
 				elem.moveFunction = function() {
