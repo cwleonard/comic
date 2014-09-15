@@ -301,6 +301,11 @@ function addImage(cell, img) {
 				$(i).css('-webkit-transform', rot);
 				$(i).attr('rot', img.r);
 			}
+			if (img.move) {
+				$(d).attr('speed', img.speed);
+				$(d).attr('travel', img.travel);
+				$(d).attr('direction', img.direction);
+			}
 
 			$(d).addClass('divimg');
 			$(d).append(i);
@@ -924,6 +929,12 @@ function showComicList() {
 
 function editAnimation(elem) {
 	
+	$('#confirmAnimateButton').unbind('click');
+
+	$('#speed').val($(elem).attr('speed'));
+	$('#travel').val($(elem).attr('travel'));
+	$('#direction').val($(elem).attr('direction'));
+	
 	$('#animateModal').modal('toggle');
 	
 	$('#confirmAnimateButton').click(function() {
@@ -936,11 +947,10 @@ function editAnimation(elem) {
 		$(elem).attr('travel', travel);
 		$(elem).attr('direction', direction);
 		
-		$('#confirmAnimateButton').unbind('click');
 		$('#animateModal').modal('toggle');
 		
 	});
-	
+
 }
 
 function doLoad() {
