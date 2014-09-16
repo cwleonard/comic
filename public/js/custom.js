@@ -1,3 +1,23 @@
+/*
+ * This ensures that we will always have a requestAnimationFrame function,
+ * even in old browsers (iOS < 6 is one example).
+ */
+if ( !window.requestAnimationFrame ) {
+ 
+	window.requestAnimationFrame = ( function() {
+ 
+		return window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		function( callback, element ) {
+ 			window.setTimeout( function() { callback((new Date()).getTime()); }, 1000 / 60 );
+ 		};
+ 
+	} )();
+ 
+}
+
 /* Scroll To Top Starts */
 
 $(".totop").hide();
@@ -219,9 +239,12 @@ function setupAnimation() {
 }
 
 $(function () { 
+
 	var lastTime = null;
 	
 	function run(timestamp) {
+
+		window.requestAnimationFrame(function(e) { run(e); });
 
 		var elapsed;
 		if (lastTime === null) {
@@ -233,13 +256,9 @@ $(function () {
 		animated.forEach(function (elem, idx) {
 			elem.moveFunction(elapsed);
 		});
-			
-		var me = this;
-		window.requestAnimationFrame(function(e) { run(e); });
 		
 	}
 	
-	var me = this;
 	window.requestAnimationFrame(function(e) { run(e); });
 	
 });
