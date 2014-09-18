@@ -270,6 +270,11 @@ function buildComicOjbect() {
 
 function addImage(cell, img) {
 
+	var d = document.createElement('div');
+
+	// see http://stackoverflow.com/questions/4948582/jquery-draggable-and-resizable
+	$(cell).append(d);
+
 	getImageAttributes(img.src, function(err, imgSize) {
 
 		if (!err) {
@@ -277,7 +282,6 @@ function addImage(cell, img) {
 			var sizerWidth = Number($('#sizer').css('width').replace('px', ''));
 			var sizerHeight = Number($(cell).css('height').replace('px', ''));
 
-			var d = document.createElement('div');
 			var i = document.createElement('img');
 			
 			var aspectRatio = imgSize.width / imgSize.height;
@@ -289,7 +293,7 @@ function addImage(cell, img) {
 			var t = (img.top / 100) * sizerHeight;
 			
 			var rot = ( img.r ? 'rotate(' + img.r + 'deg)' : null);
-
+ 
 			$(i).css('height', h + 'px');
 			$(i).css('width', w + 'px');
 			$(i).css('top', t + 'px');
@@ -299,6 +303,7 @@ function addImage(cell, img) {
 			$(i).attr('alt', img.altText || '');
 			if (rot) {
 				$(i).css('-webkit-transform', rot);
+				$(i).css('-moz-transform', rot);
 				$(i).attr('rot', img.r);
 			}
 			if (img.move) {
@@ -310,8 +315,6 @@ function addImage(cell, img) {
 			$(d).addClass('divimg');
 			$(d).append(i);
 
-			// see http://stackoverflow.com/questions/4948582/jquery-draggable-and-resizable
-			$(cell).append(d);
 
 			$(d).draggable();
 			$(i).resizable({aspectRatio: true});
@@ -511,10 +514,9 @@ function getImageAttributes(image, cb) {
 		url: '/images/' + image,
 		type: 'GET',
 		dataType: 'xml',
-		async: false,
 		success: function(data) {
-			var w = data.rootElement.getAttribute('width');
-			var h = data.rootElement.getAttribute('height');
+			var w = data.documentElement.getAttribute('width');
+			var h = data.documentElement.getAttribute('height');
 			cb(null, {
 				width: w,
 				height: h

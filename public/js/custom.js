@@ -160,6 +160,14 @@ function moveUpDown(e) {
 
 function flicker(e) {
 
+	if (typeof this.timespan === 'undefined') {
+		this.timespan = -1;
+	}
+
+	if (typeof this.counter === 'undefined') {
+		this.counter = 0;
+	}
+
 	if (this.timespan === -1) {
 		// pick a new timespan value, based on speed
 		this.timespan = this.pps * 1000 * Math.random();
@@ -217,8 +225,6 @@ function setupAnimation() {
 				elem.lowerBound = elem.upperBound + (sizerHeight * (trvl / 100));
 				elem.moveFunction = moveUpDown;
 			} else if (dir === 'flicker') {
-				elem.counter = 0;
-				elem.timespan = -1;
 				elem.moveFunction = flicker;
 			} else {
 				// unknown direction value
