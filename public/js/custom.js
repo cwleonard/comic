@@ -59,12 +59,11 @@ function replaceComic(id, push) {
 		
 		if (push) {
 			var cid = $('#sizer').attr('comicId');
-			//console.log('pushing ' + cid);
 			var stateObj = { comicId: cid };
-			history.pushState(stateObj, "comic " + cid, cid);
+			if (history.pushState) {
+				history.pushState(stateObj, "comic " + cid, cid);
+			}
 		}
-		
-		setupAnimation();
 		
 		// may want to adjust page title
 		var tElem = $('.cTitle');
@@ -79,6 +78,8 @@ function replaceComic(id, push) {
 
 		$('#comicArea').show();
 		$('#loading').hide();
+
+		setupAnimation();
 
 	}, 'html');
 	
@@ -98,13 +99,16 @@ $(function() {
     		replaceComic(s.comicId, false);
     	}
     });
-
+    
     // replace current URL with the current id, so back button behavior is consistent
     var currentId = $('#info').attr('comicId');
-    history.replaceState({
-    	comicId: currentId
-    }, 'comic ' + currentId, currentId);
-    
+    if (history.replaceState) {
+    	history.replaceState({
+    		comicId: currentId
+    	}, 'comic ' + currentId, currentId);
+    } else {
+    	// don't know
+    }
 
 });
 
