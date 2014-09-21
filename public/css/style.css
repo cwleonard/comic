@@ -5,7 +5,7 @@
 	padding: 2%;
 	text-align: center;
 	font-family: Verdana, Geneva, sans-serif;
-	line-height: initial;
+	line-height: normal;
 	color: #000000;
 	box-sizing: content-box;
 	-moz-box-sizing: content-box;
@@ -32,7 +32,7 @@
 	background: #FFFFFF;
 	border: #000000 solid 3px;
 	font-family: 'Sniglet', sans-serif;
-	line-height: initial;
+	line-height: normal;
 	color: #000000;
 	box-sizing: content-box;
 	-moz-box-sizing: content-box;
@@ -144,7 +144,7 @@ div#extraText {
 	margin-bottom: 5px;
 	padding: 8px;
 	border-radius: 15px;
-	font-size: larger;
+	font-size: 16px;
 	border: #999999 dotted 1px;
 }
 
