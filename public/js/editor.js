@@ -78,6 +78,14 @@ function doSaveAsNew(evt) {
 
 }
 
+function makeOid() {
+	var n = null; 
+	while (n === null || $('#' + n).length > 0) {
+		n = 'object-' + Math.floor(((Math.random() * 100000) + 1));
+	}
+	return n;
+}
+
 /**
  * Given a jQuery element for a div with class "divimg" this function will return
  * an object that represents that image suitable for saving as part of the comic data.
@@ -115,8 +123,10 @@ function imageToObject(iEl) {
 	var isrc = img.attr('src');
 	isrc = isrc.substring(isrc.lastIndexOf('/')+1);
 	var rot = img.attr('rot');
+	var oid = img.attr('id') || makeOid();
 	
 	var d = {
+		objId: oid,
 		top: t,
 		left: l,
 		width: w,
@@ -301,6 +311,7 @@ function addImage(cell, img) {
 			$(i).attr('src', '/images/' + img.src);
 			$(i).attr('aspectRatio', aspectRatio);
 			$(i).attr('alt', img.altText || '');
+			$(i).attr('id', img.objId || makeOid());
 			if (rot) {
 				$(i).css('-webkit-transform', rot);
 				$(i).css('-moz-transform', rot);
@@ -559,7 +570,7 @@ function setupMenu(imgSelectOptions) {
 			bgcolor: {
 				name: 'Background',
 				type: 'text',
-				value: '#FFFFFF'
+				value: '#D3EEFF'
 			},
 			sep1: "----------",
 			dupCell: {
@@ -701,6 +712,11 @@ function setupMenu(imgSelectOptions) {
 				type: 'text',
 				value: ''
 			},
+			objId: {
+				name: 'Object ID',
+				type: 'text',
+				value: ''
+			},
 			pickImage: {
 				name: "Select Image",
 				type: 'select',
@@ -800,6 +816,7 @@ function setupMenu(imgSelectOptions) {
 
 				var img = $this.find('img');
 				img.attr('alt', o.altText);
+				img.attr('id', o.objId);
 				
 				var rot = '';
 				if (o.rotation !== '') {
