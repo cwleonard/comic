@@ -1,9 +1,9 @@
 mixin makeBubble(bub)
-	p(class='bubble bubble-text bubble' + (bub.stemPos ? bub.stemPos : 50),style=(bub.z ? 'z-index: ' + bub.z + ';' : '') + (bub.width ? 'width: ' + bub.width + '%;' : '') + 'top: ' + bub.top + '%; left: ' + bub.left + '%;')
+	p(id=bub.objId ? bub.objId : undefined,class='bubble bubble-text bubble' + (bub.stemPos ? bub.stemPos : 50),style=(bub.z ? 'z-index: ' + bub.z + ';' : '') + (bub.width ? 'width: ' + bub.width + '%;' : '') + 'top: ' + bub.top + '%; left: ' + bub.left + '%;')
 		!= bub.text
 
 mixin makeText(txt)
-	p(class='free-text',style=(txt.z ? 'z-index: ' + txt.z + ';' : '') + (txt.width ? 'width: ' + txt.width + '%;' : '') + 'top: ' + txt.top + '%; left: ' + txt.left + '%;')
+	p(id=txt.objId ? txt.objId : undefined,class='free-text',style=(txt.z ? 'z-index: ' + txt.z + ';' : '') + (txt.width ? 'width: ' + txt.width + '%;' : '') + 'top: ' + txt.top + '%; left: ' + txt.left + '%;')
 		!= txt.words
 
 mixin makeImage(img)

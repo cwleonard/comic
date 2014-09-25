@@ -78,12 +78,24 @@ function doSaveAsNew(evt) {
 
 }
 
-function makeOid() {
-	var n = null; 
+function makeId(pfx) {
+	var n = null;
 	while (n === null || $('#' + n).length > 0) {
-		n = 'object-' + Math.floor(((Math.random() * 100000) + 1));
+		n = pfx + '-' + Math.floor(((Math.random() * 100000) + 1));
 	}
 	return n;
+}
+
+function makeOid() {
+	return makeId('object');
+}
+
+function makeBid() {
+	return makeId('bubble');
+}
+
+function makeTid() {
+	return makeId('text');
 }
 
 /**
@@ -179,7 +191,9 @@ function buildCellObject(elem) {
 		
 		// ====================================== SPEECH BUBBLES ===============
 		if ($(elem).hasClass("bubble")) {
-			
+
+			var bid = $(elem).attr('id') || makeBid();
+
 			var cssTop = $(elem).css('top');
 			var cssLeft = $(elem).css('left');
 			var cssWidth = $(elem).css('width');
@@ -195,18 +209,21 @@ function buildCellObject(elem) {
 			
 			$(elem).find("span").each(function(idx, elem) {
 				b.bubbles.push({
-						top: t,
-						left: l,
-						width: w,
-						z: zi++,
-						stemPos: sp,
-						text: $(elem).html()
+					objId: bid, 
+					top: t,
+					left: l,
+					width: w,
+					z: zi++,
+					stemPos: sp,
+					text: $(elem).html()
 				});
 			});
 
 		// ====================================== FREE TEXT ====================
 		} else if ($(elem).hasClass("free-text")) {
-			
+
+			var tid = $(elem).attr('id') || makeTid();
+
 			var cssTop = $(elem).css('top');
 			var cssLeft = $(elem).css('left');
 			var cssWidth = $(elem).css('width');
@@ -221,11 +238,12 @@ function buildCellObject(elem) {
 			
 			$(elem).find("span").each(function(idx, elem) {
 				b.text.push({
-						top: t,
-						left: l,
-						width: w,
-						z: zi++,
-						words: $(elem).html()
+					objId: tid,
+					top: t,
+					left: l,
+					width: w,
+					z: zi++,
+					words: $(elem).html()
 				});
 			});
 			
@@ -404,7 +422,8 @@ function addBubble(cell, b) {
 	var stemPos = bub.stemPos || '50';
 	
 	var p = createEditableParagraph(cell, bub);
-	
+
+	$(p).attr('id', bub.objId || makeBid());
 	$(p).addClass('bubble');
 	$(p).addClass('bubble-text');
 	$(p).addClass('bubble' + stemPos);
@@ -432,6 +451,7 @@ function addText(cell, t) {
 	
 	var p = createEditableParagraph(cell, txt);
 
+	$(p).attr('id', txt.objId || makeTid());
 	$(p).addClass('free-text');
 	$(p).addClass('free-text-outline');
 	
@@ -865,6 +885,12 @@ function setupMenu(imgSelectOptions) {
 				value: ''
 			},
 			sep1: "----------",
+			objId: {
+				name: 'Object ID',
+				type: 'text',
+				value: ''
+			},
+			sep2: "----------",
 			moveBack: {
 				name: "Move Back",
 				callback: function(key, options) {
@@ -891,19 +917,22 @@ function setupMenu(imgSelectOptions) {
 		events: {
 			show: function(opt) {
 				var $this = this;
+				var i = $this.attr('id');
 				var w = $this.css('width');
 				var t = $this.css('top');
 				var l = $this.css('left');
 				var d = {
-						width: w,
-						top: t,
-						left: l,
-					};
+					objId: i,
+					width: w,
+					top: t,
+					left: l,
+				};
 				$.contextMenu.setInputValues(opt, d);
 			},
 			hide: function(opt) {
 				var $this = this;
 				var o = $.contextMenu.getInputValues(opt, $this.data());
+				$this.attr('id', o.objId);
 				$this.css('top', o.top);
 				$this.css('left', o.left);
 				if ($this.css('width') !== o.width) {
