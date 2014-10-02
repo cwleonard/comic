@@ -58,7 +58,6 @@ div#sizer(comicId=id)
 				p.pubdate= 'Published ' + pubDate
 			div(style='clear: both;')
 
-if scripts
-	- for (var s in scripts)
-		script(src='/js/' + scripts[s])
-	
+if dynScripts
+	- for (var s in dynScripts)
+		script(src='/js/' + dynScripts[s])

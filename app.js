@@ -221,6 +221,15 @@ app.get('/chtml/:n', function(req, res, next) {
 			next(err);
 		} else if (data) {
 			data.url = conf.base;
+			
+			// when loading comics dynamically, add a 'dynScripts' variable
+			// which is a copy of 'scripts'. this is because any extra scripts
+			// must be loaded only after jQuery, which happens at the bottom
+			// of a full page load. in the case of a partial load such as what
+			// happens at this path, the JS footer (which looks at 'scripts')
+			// is not used.
+			data.dynScripts = data.scripts;
+			
 			res.render('comic', data, function(err, str) {
 				if (err) {
 					next(err);

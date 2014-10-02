@@ -207,7 +207,7 @@ function buildCellObject(elem) {
 			l = l * (1 / sizerWidth) * 100;
 			w = w * (1 / sizerWidth) * 100;
 			
-			$(elem).find("span").each(function(idx, elem) {
+			$(elem).find("> span").each(function(idx, elem) {
 				b.bubbles.push({
 					objId: bid, 
 					top: t,
@@ -236,7 +236,7 @@ function buildCellObject(elem) {
 			l = l * (1 / sizerWidth) * 100;
 			w = w * (1 / sizerWidth) * 100;
 			
-			$(elem).find("span").each(function(idx, elem) {
+			$(elem).find("> span").each(function(idx, elem) {
 				b.text.push({
 					objId: tid,
 					top: t,
