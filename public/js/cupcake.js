@@ -51,6 +51,10 @@ $(function() {
 			$('#frog-reward').text('We\'re sending you on a paid vacation!');
 		}
 
+		if (clickCounter === 1000) {
+			$('#frog-reward').text('Stop! Your finger is tired!');
+		}
+
 	});
 	
 });
