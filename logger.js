@@ -14,10 +14,10 @@ module.exports = function(conf) {
 
 		myLogger = function(req, res, next) {
 			
-			function whatnot() {
+			function storeData() {
 
-				res.removeListener('finish', whatnot);
-				res.removeListener('close', whatnot);
+				res.removeListener('finish', storeData);
+				res.removeListener('close', storeData);
 
 				var reqIp = req.get('X-Real-IP') || req.ip;
 				var reqVerb = req.method;
@@ -40,8 +40,8 @@ module.exports = function(conf) {
 			};
 			
 			// defer logging until the end so we know the response stuff
-			res.on('finish', whatnot);
-			res.on('close', whatnot);			
+			res.on('finish', storeData);
+			res.on('close', storeData);			
 
 			next();
 			
