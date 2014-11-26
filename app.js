@@ -52,7 +52,7 @@ function correctUrl(b) {
 	
 	return function (req, res, next) {
 
-		if (req.host !== b) {
+		if (req.hostname !== b) {
 			var port = '';
 			var hostWithPort = req.get('host');
 			if (hostWithPort.indexOf(':') !== -1) {
@@ -76,8 +76,9 @@ app.use(correctUrl(conf.base));
 app.use(logging(conf));
 
 app.use(cookieParser()); // required before session.
-app.use(session({ secret: conf.secret }));
-app.use(bodyParser());
+app.use(session({ secret: conf.secret, resave: false, saveUninitialized: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compress());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -144,7 +145,7 @@ app.get('/:n', function(req, res, next) {
 									if (err) {
 										next(err);
 									} else {
-										res.send(403, str);
+										res.status(403).send(str);
 									}
 								});
 							}
@@ -311,7 +312,7 @@ app.get('/code/:c', function(req, res, next) {
 app.get('/stats/agents/:n', function(req, res, next) {
 	
 	stats.agents(req.params.n, function(err, data) {
-		res.send(200, data);
+		res.status(200).send(data);
 	});
 	
 });
@@ -322,7 +323,7 @@ app.get('/stats/comics/:n', function(req, res, next) {
 		var c = {
 			access: data
 		};
-		res.send(200, c);
+		res.status(200).send(c);
 	});
 	
 });
@@ -330,7 +331,7 @@ app.get('/stats/comics/:n', function(req, res, next) {
 app.get('/stats/sources/:n', function(req, res, next) {
 	
 	stats.sources(req.params.n, function(err, data) {
-		res.send(200, data);
+		res.status(200).send(data);
 	});
 	
 });
@@ -369,7 +370,6 @@ app.get('/cell/:n', function(req, res, next) {
 
 // ------------ set up routes for /images/*
 
-
 app.use('/images', imgRoutes({
 	express: express,
 	auth: ensureAuthenticated,
@@ -379,7 +379,7 @@ app.use('/images', imgRoutes({
 // ------------ teapot
 
 app.get('/teapot', function(req, res, next) {
-	res.send(418, 'your tea is ready');
+	res.status(419).send('your tea is ready');
 });
 
 //------------ test for error handling
@@ -403,7 +403,7 @@ app.use(function(req, res, next){
 				if (err) {
 					next(err);
 				} else {
-					res.send(404, str);
+					res.status(404).send(str);
 				}
 			});
 		}
@@ -421,7 +421,7 @@ app.use(function(err, req, res, next) {
 				if (err) {
 					console.error(err.stack);
 				} else {
-					res.send(500, str);
+					res.status(500).send(str);
 				}
 			});
 		}
