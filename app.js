@@ -11,6 +11,7 @@ var imgRoutes = require('./imageRoutes');
 var dataRoutes = require('./dataRoutes');
 var logging = require('./logger');
 
+
 var app = express();
 
 var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' }));
@@ -18,6 +19,7 @@ var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' })
 var cfact = require('./data')(conf.database);
 var authorizer = require('./userAuth')(conf.database);
 var stats = require('./stats')(conf.database);
+var weather = require('./weather')(conf);
 
 // --- set up login strategy
 passport.use(new LocalStrategy(authorizer));
@@ -382,7 +384,15 @@ app.get('/teapot', function(req, res, next) {
 	res.status(419).send('your tea is ready');
 });
 
-//------------ test for error handling
+// ------------ what's temperature here?
+
+app.get('/temperature', function(req, res, next) {
+	res.status(200).send({
+		f: weather.temperature()
+	});
+});
+
+// ------------ test for error handling
 
 app.get('/broken', function(req, res, next) {
 	throw new Error('not a real error');

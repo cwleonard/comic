@@ -2,6 +2,7 @@
 	"base": "example.com",
 	"secret": "hoppy frog",
 	"logToConsole": false,
+	"weatherApiKey": "your-key-here",
 	"database": {
 		"host": "localhost",
 		"user": "user",
