@@ -7,6 +7,8 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+var Feed = require('feed');
+
 var imgRoutes = require('./imageRoutes');
 var dataRoutes = require('./dataRoutes');
 var logging = require('./logger');
@@ -299,6 +301,50 @@ app.get('/games', function(req, res, next) {
 	
 	res.render('games', {
 		title: 'Games'
+	});
+	
+});
+
+app.get('/feeds/atom', function(req, res, next) {
+	
+	var prev = 4;
+	
+	var feed = new Feed({
+		title: "Amphibian.com",
+		description: "A web comic about frogs who run a technology company.",
+		link: "http://" + conf.base,
+		image: "http://" + conf.base + "/simg/og_logo.png",
+		copyright: "All rights reserved 2014, Casey Leonard",
+		updated: new Date(), // date of last comic?
+		author: {
+			name: "Casey Leonard",
+			email: "casey@amphibian.com",
+			link: "http://caseyleonard.com"
+		}
+	});
+	
+	cfact.loadRecent(prev, function(err, comics) {
+		if (err) {
+			next(err);
+		} else {
+			
+			for (var c in comics) {
+				
+				feed.addItem({
+					title: comics[c].title ? comics[c].title : "Untitled Comic",
+					link: "http://" + conf.base + "/" + comics[c].id,
+					description: "Amphibian.com comic for " + comics[c].pubDate,
+					date: comics[c].pd,
+					image: "http://" + conf.base + "/cell/" + comics[c].id,
+					content: "<img src='http://" + conf.base + "pins/" + comics[c].id
+				});
+				
+			}
+			
+			res.setHeader('Content-Type', 'application/atom+xml');
+			res.send(feed.render('atom-1.0'));
+			
+		}
 	});
 	
 });

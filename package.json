@@ -17,6 +17,7 @@
     "express-session": "1.9.2",
     "passport": "0.2.1",
     "passport-local": "1.0.0",
-    "ua-parser-js": "0.7.3"
+    "ua-parser-js": "0.7.3",
+    "feed": "0.2.6"
   }
 }

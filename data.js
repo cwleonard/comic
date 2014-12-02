@@ -116,7 +116,53 @@ module.exports = function(dbconf) {
 
 		});
 
+	}
+	
+	function loadRecentSet(num, cb) {
+		
+		var sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
+		'WHERE pub_date <= (SELECT MAX(pub_date) FROM comic_data WHERE DATE(pub_date) <= CURDATE()) ' +
+		'ORDER BY pub_date DESC LIMIT ' + pool.escape(num);
+		pool.query(sql, function(err, rows) {
 
+			if (err) {
+				cb(err);
+			} else {
+
+				if (rows.length > 0) {
+					
+					var comics = [];
+					
+					for(var r = 0; r < rows.length; r++) {
+						
+						var obj = JSON.parse(rows[r].data);
+						obj.pubDate = rows[r].pd;
+						obj.id = rows[r].id;
+						obj.pd = rows[r].pub_date;
+
+						if (r === 0) { // this is the newest							
+							obj.nextDate = null; // can't have next
+						} else {
+							comics[r-1].prevDate = obj.id;
+							obj.nextDate = comics[r-1].id;
+						}
+						
+						comics.push(obj);
+						
+					}
+					
+					comics[comics.length-1].prevDate = null;
+					
+					cb(null, comics);
+
+				} else {
+					cb(null, null);
+				}
+
+			}
+
+		});
+		
 	}
 	
 	return {
@@ -127,6 +173,12 @@ module.exports = function(dbconf) {
 			
 		},
 
+		loadRecent: function (num, cb) {
+
+			loadRecentSet(num, cb);
+			
+		},
+		
 		loadById: function (id, cb) {
 
 			var idn = Number(id);
