@@ -13,10 +13,15 @@ $(function() {
 		var hdeg = currentHour * 30;
 		var mdeg = currentMin * 6;
 		
+		hourHand.css('transform', 'rotate(' + hdeg + 'deg');
 		hourHand.css('-webkit-transform', 'rotate(' + hdeg + 'deg');
+		hourHand.css('-ms-transform', 'rotate(' + hdeg + 'deg');
+
+		minuteHand.css('transform', 'rotate(' + mdeg + 'deg');
 		minuteHand.css('-webkit-transform', 'rotate(' + mdeg + 'deg');
-		
-		setTimeout(setWatch, 60000);
+		minuteHand.css('-ms-transform', 'rotate(' + mdeg + 'deg');
+
+		setTimeout(setWatch, 30000);
 		
 	};
 	
