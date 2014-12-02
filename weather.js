@@ -19,8 +19,12 @@ module.exports = function(conf) {
 				wData += chunk;
 			});
 			res.on('end', function() {
-				var data = JSON.parse(wData);
-				cb(null, data);
+				try {
+					var data = JSON.parse(wData);
+					cb(null, data);
+				} catch (e) {
+					cb(e);
+				}
 			});
 			
 		}).on('error', function(e) {
