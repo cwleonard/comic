@@ -336,7 +336,7 @@ app.get('/feeds/atom', function(req, res, next) {
 					description: "Amphibian.com comic for " + comics[c].pubDate,
 					date: comics[c].pd,
 					image: "http://" + conf.base + "/cell/" + comics[c].id,
-					content: "<img src='http://" + conf.base + "/pins/" + comics[c].id
+					content: "<img src='http://" + conf.base + "/pins/" + comics[c].id + "'/>"
 				});
 				
 			}
