@@ -310,12 +310,13 @@ app.get('/feeds/atom', function(req, res, next) {
 	var prev = 4;
 	
 	var feed = new Feed({
+		id: "http://amphibian.com",
 		title: "Amphibian.com",
 		description: "A web comic about frogs who run a technology company.",
 		link: "http://" + conf.base,
-		image: "http://" + conf.base + "/simg/og_logo.png",
+		feed: "http://" + conf.base + "/feeds/atom",
+		icon: "http://" + conf.base + "/simg/og_logo.png",
 		copyright: "All rights reserved 2014, Casey Leonard",
-		updated: new Date(), // date of last comic?
 		author: {
 			name: "Casey Leonard",
 			email: "casey@amphibian.com",
@@ -335,11 +336,12 @@ app.get('/feeds/atom', function(req, res, next) {
 					link: "http://" + conf.base + "/" + comics[c].id,
 					description: "Amphibian.com comic for " + comics[c].pubDate,
 					date: comics[c].pd,
-					image: "http://" + conf.base + "/cell/" + comics[c].id,
-					content: "<img src='http://" + conf.base + "/pins/" + comics[c].id + "'/>"
+					content: "<img src=\"http://" + conf.base + "/pins/" + comics[c].id + "\"/>"
 				});
 				
 			}
+			
+			feed.updated = comics[0].pd;
 			
 			res.setHeader('Content-Type', 'application/atom+xml');
 			res.send(feed.render('atom-1.0'));
