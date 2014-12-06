@@ -378,6 +378,18 @@ app.get('/stats/comics/:n', function(req, res, next) {
 	
 });
 
+app.get('/stats', function(req, res, next) {
+	res.render('stats');
+});
+
+app.get('/stats/viewsByDay/:n', function(req, res, next) {
+	
+	stats.viewsByDay(req.params.n, function(err, data) {
+		res.status(200).send(data);
+	});
+	
+});
+
 app.get('/stats/sources/:n', function(req, res, next) {
 	
 	stats.sources(req.params.n, function(err, data) {

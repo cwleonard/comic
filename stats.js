@@ -37,6 +37,43 @@ module.exports = function(dbconf) {
 			
 		},
 		
+		viewsByDay: function(days, cb) {
+			
+			var d = isNaN(days) ? 7 : Number(days);
+			
+			if (d > 60) d = 60;
+			
+			var sql = 'SELECT date(tstamp) as d, count(*) as c FROM amphibian.comic_access where ' +
+				'(tstamp > date(date_sub(current_timestamp, interval ' + pool.escape(d) + ' day))) ' +
+				'and (resource = \'/\' or resource regexp \'^/(chtml/)?[0-9]+$\') ' +
+				'group by date(tstamp) order by 1';
+			
+			pool.query(sql, function(err, rows) {
+				
+				if (err) {
+					cb(err);
+				} else {
+					var data = [];
+					for (var r in rows) {
+						var day = rows[r].d
+						var temp = rows[r].c;
+						if (isNaN(temp)) {
+							cb(new Error('weird error!'));
+						} else {
+							var count = Number(temp);
+							data.push({
+								"day": day,
+								"count": count
+							});
+						}
+					}
+					cb(null, data);
+				}
+				
+			});
+			
+		},
+		
 		sources: function(hours, cb) {
 			
 			var h = isNaN(hours) ? 1 : Number(hours);

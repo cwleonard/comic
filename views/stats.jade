@@ -1,0 +1,38 @@
+doctype html
+html
+	head
+		title Amphibian.com Stats
+		meta(charset='utf-8')
+		link(href='/css/style.css',rel='stylesheet')
+		link(href='/css/bootstrap.min.css',rel='stylesheet')
+		link(href='/css/font-awesome.min.css',rel='stylesheet')
+		link(href='/css/style2.css',rel='stylesheet')
+		link(href='/css/xcharts.min.css',rel='stylesheet')
+		link(href='/simg/frog.ico',rel='shortcut icon')
+		if (basic)
+			link(href='/css/sniglet-webfont.css',rel='stylesheet')
+		else
+			link(href='http://fonts.googleapis.com/css?family=Sniglet',rel='stylesheet',type='text/css')
+	
+	body
+		include header
+		
+		div(class="about-us block",style="border-bottom: none;")
+			div(class="container")
+				
+				div(class="about-one")
+
+					div(class="about-one-item")
+
+						div(class="about-one-content")
+						
+							h3 Comic Views (last 7 days)
+							div#chart1(style="border: 1px solid #000000; background: #ffffff; margin: auto; margin-bottom: 10px; width: 80%; height: 400px;")
+
+					div(class="clearfix")
+		
+		include js
+		script(src="http://d3js.org/d3.v3.min.js",charset="utf-8")
+		script(src='/js/xcharts.min.js')
+		script(src='/js/stats.js')
+		
