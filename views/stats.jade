@@ -27,12 +27,23 @@ html
 						div(class="about-one-content")
 						
 							h3 Comic Views (last 7 days)
-							div#chart1(style="border: 1px solid #000000; background: #ffffff; margin: auto; margin-bottom: 10px; width: 80%; height: 400px;")
+							div(style="margin: auto; width: 80%;")
+								canvas#viewsChart(style="border: 1px solid #000000; margin-bottom: 10px; padding: 20px;",width="700",height="400")
+
+					div(class="clearfix")
+
+				div(class="about-one",style="margin-top: 10px;")
+
+					div(class="about-one-item")
+
+						div(class="about-one-content")
+						
+							h3 User Agents (last 7 days)
+							div(style="margin: auto; width: 50%;")
+								canvas#agentsChart(style="margin-bottom: 10px; padding: 20px;",width="400",height="400")
 
 					div(class="clearfix")
 		
 		include js
-		script(src="http://d3js.org/d3.v3.min.js",charset="utf-8")
-		script(src='/js/xcharts.min.js')
+		script(src='/js/Chart.min.js')
 		script(src='/js/stats.js')
-		
