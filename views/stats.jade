@@ -39,8 +39,26 @@ html
 						div(class="about-one-content")
 						
 							h3 User Agents (last 7 days)
-							div(style="margin: auto; width: 50%;")
-								canvas#agentsChart(style="margin-bottom: 10px; padding: 20px;",width="400",height="400")
+
+							div.container-fluid
+								div.row
+									div.col-sm-4
+									
+										div(style="margin: auto; width: 80%;")
+											p Browsers
+											canvas#browsersChart(style="margin-bottom: 10px; padding: 20px;",width="400",height="400")
+
+									div.col-sm-4
+
+										div(style="margin: auto; width: 80%;")
+											p Operating Systems
+											canvas#osChart(style="margin-bottom: 10px; padding: 20px;",width="400",height="400")
+
+									div.col-sm-4
+
+										div(style="margin: auto; width: 80%;")
+											p Engines
+											canvas#enginesChart(style="margin-bottom: 10px; padding: 20px;",width="400",height="400")
 
 					div(class="clearfix")
 		

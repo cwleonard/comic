@@ -7,7 +7,7 @@ function doDayChart(numDays) {
 		
 		var labels = [];
 		var values = [];
-		for (d in data) {
+		for (var d in data) {
 			
 			var l = "";
 			if (numDays > 7) {
@@ -59,46 +59,112 @@ function doAgentChart(numDays) {
 	$.get('/stats/agents/' + hours, function(data) {
 		
 
-		var chartData = [ {
-			value : data.firefox,
+		var browserChartData = [ {
+			value : data.browser.firefox,
 			color : "#F7464A",
 			highlight : "#FF5A5E",
 			label : "Firefox"
 		}, {
-			value : data.chrome,
+			value : data.browser.chrome,
 			color : "#46BFBD",
 			highlight : "#5AD3D1",
 			label : "Chrome"
 		}, {
-			value : data.ie,
-			color : "#FDB45C",
-			highlight : "#FFC870",
+			value : data.browser.ie,
+			color : "#0000FF",
+			highlight : "#6666FF",
 			label : "IE"
 		}, {
-			value : data.safari,
+			value : data.browser.safari,
 			color : "#FDB45C",
 			highlight : "#FFC870",
 			label : "Safari"
 		}, {
-			value : data.other,
+			value : data.browser.other,
 			color : "#FD045C",
 			highlight : "#FF9870",
 			label : "Other"
 		} ];
-		
-		console.log(chartData);
+
+		var osChartData = [ {
+			value : data.os.windows,
+			color : "#F7464A",
+			highlight : "#FF5A5E",
+			label : "Windows"
+		}, {
+			value : data.os.mac,
+			color : "#46BFBD",
+			highlight : "#5AD3D1",
+			label : "Mac"
+		}, {
+			value : data.os.ios,
+			color : "#FDB45C",
+			highlight : "#FFC870",
+			label : "iOS"
+		}, {
+			value : data.os.android,
+			color : "#FDB45C",
+			highlight : "#FFC870",
+			label : "Android"
+		}, {
+			value : data.os.linux,
+			color : "#3D048C",
+			highlight : "#3F9870",
+			label : "Linux"
+		}, {
+			value : data.os.other,
+			color : "#34045C",
+			highlight : "#339870",
+			label : "Other"
+		} ];
+
+		var engineChartData = [ {
+			value : data.engine.gecko,
+			color : "#F7464A",
+			highlight : "#FF5A5E",
+			label : "Gecko"
+		}, {
+			value : data.engine.khtml,
+			color : "#46BFBD",
+			highlight : "#5AD3D1",
+			label : "KHTML"
+		}, {
+			value : data.engine.trident,
+			color : "#0000FF",
+			highlight : "#6666FF",
+			label : "Trident"
+		}, {
+			value : data.engine.webkit,
+			color : "#FDB45C",
+			highlight : "#FFC870",
+			label : "Webkit"
+		}, {
+			value : data.engine.other,
+			color : "#3D048C",
+			highlight : "#3F9870",
+			label : "Other"
+		} ];
+
+		console.log(browserChartData);
+		console.log(osChartData);
+		console.log(engineChartData);
 		
 		var opts = {
 			"responsive": true
 		};
 		
-		var ctx = document.getElementById("agentsChart").getContext("2d");
-		var myChart = new Chart(ctx).Pie(chartData, opts);
+		var ctx1 = document.getElementById("browsersChart").getContext("2d");
+		var bChart = new Chart(ctx1).Pie(browserChartData, opts);
+
+		var ctx2 = document.getElementById("osChart").getContext("2d");
+		var oChart = new Chart(ctx2).Pie(osChartData, opts);
+
+		var ctx3 = document.getElementById("enginesChart").getContext("2d");
+		var eChart = new Chart(ctx3).Pie(engineChartData, opts);
 
 	}, 'json');
 
 }
-
 
 $(function() {
 	
