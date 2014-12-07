@@ -167,7 +167,7 @@ module.exports = function(dbconf) {
 						} else if (r.browser.name === 'IE') {
 							stuff.browser.ie++;
 						} else if (r.browser.name === 'Safari') {
-							stuff.brower.safari++;
+							stuff.browser.safari++;
 						} else {
 							stuff.browser.other++;
 						}
