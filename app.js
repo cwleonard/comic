@@ -409,7 +409,7 @@ app.get('/pins/:n', function(req, res, next) {
 			res.setHeader('Content-Type', 'image/png');
 			res.send(data);
 		} else {
-			res.send(404); // don't use the full-page 404 for missing images
+			res.sendStatus(404); // don't use the full-page 404 for missing images
 		}
 	});
 	
@@ -424,7 +424,7 @@ app.get('/cell/:n', function(req, res, next) {
 			res.setHeader('Content-Type', 'image/png');
 			res.send(data);
 		} else {
-			res.send(404); // don't use the full-page 404 for missing images
+			res.sendStatus(404); // don't use the full-page 404 for missing images
 		}
 	});
 	
@@ -441,7 +441,7 @@ app.use('/images', imgRoutes({
 // ------------ teapot
 
 app.get('/teapot', function(req, res, next) {
-	res.status(419).send('your tea is ready');
+	res.status(418).send('your tea is ready');
 });
 
 // ------------ what's temperature here?

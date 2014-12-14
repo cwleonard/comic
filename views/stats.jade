@@ -7,7 +7,6 @@ html
 		link(href='/css/bootstrap.min.css',rel='stylesheet')
 		link(href='/css/font-awesome.min.css',rel='stylesheet')
 		link(href='/css/style2.css',rel='stylesheet')
-		link(href='/css/xcharts.min.css',rel='stylesheet')
 		link(href='/simg/frog.ico',rel='shortcut icon')
 		if (basic)
 			link(href='/css/sniglet-webfont.css',rel='stylesheet')
@@ -28,7 +27,7 @@ html
 						
 							h3 Comic Views (last 7 days)
 							div(style="margin: auto; width: 80%;")
-								canvas#viewsChart(style="border: 1px solid #000000; margin-bottom: 10px; padding: 20px;",width="700",height="400")
+								canvas#viewsChart(style="border: 1px solid #000000; margin-bottom: 10px; padding: 20px;",width="70",height="40")
 
 					div(class="clearfix")
 
@@ -46,19 +45,19 @@ html
 									
 										div(style="margin: auto; width: 80%;")
 											p Browsers
-											canvas#browsersChart(style="margin-bottom: 10px; padding: 20px;",width="400",height="400")
+											canvas#browsersChart(style="margin-bottom: 10px; padding: 20px;",width="10",height="10")
 
 									div.col-sm-4
 
 										div(style="margin: auto; width: 80%;")
 											p Operating Systems
-											canvas#osChart(style="margin-bottom: 10px; padding: 20px;",width="400",height="400")
+											canvas#osChart(style="margin-bottom: 10px; padding: 20px;",width="10",height="10")
 
 									div.col-sm-4
 
 										div(style="margin: auto; width: 80%;")
 											p Engines
-											canvas#enginesChart(style="margin-bottom: 10px; padding: 20px;",width="400",height="400")
+											canvas#enginesChart(style="margin-bottom: 10px; padding: 20px;",width="10",height="10")
 
 					div(class="clearfix")
 		

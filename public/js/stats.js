@@ -37,8 +37,6 @@ function doDayChart(numDays) {
 			    ]
 			};		
 		
-		console.log(chartData);
-		
 		var opts = {
 			"scaleGridLineColor": "rgba(0,0,0,.08)",
 			"datasetStrokeWidth": 3,
@@ -61,13 +59,13 @@ function doAgentChart(numDays) {
 
 		var browserChartData = [ {
 			value : data.browser.firefox,
-			color : "#F7464A",
-			highlight : "#FF5A5E",
+			color : "#FF6600",
+			highlight : "#FF9966",
 			label : "Firefox"
 		}, {
 			value : data.browser.chrome,
-			color : "#46BFBD",
-			highlight : "#5AD3D1",
+			color : "#FF0000",
+			highlight : "#FF6666",
 			label : "Chrome"
 		}, {
 			value : data.browser.ie,
@@ -76,45 +74,45 @@ function doAgentChart(numDays) {
 			label : "IE"
 		}, {
 			value : data.browser.safari,
-			color : "#FDB45C",
-			highlight : "#FFC870",
+			color : "#9966CC",
+			highlight : "#CC99FF",
 			label : "Safari"
 		}, {
 			value : data.browser.other,
-			color : "#FD045C",
-			highlight : "#FF9870",
+			color : "#999999",
+			highlight : "#CCCCCC",
 			label : "Other"
 		} ];
 
 		var osChartData = [ {
 			value : data.os.windows,
-			color : "#F7464A",
-			highlight : "#FF5A5E",
+			color : "#0033FF",
+			highlight : "#99CCFF",
 			label : "Windows"
 		}, {
 			value : data.os.mac,
-			color : "#46BFBD",
-			highlight : "#5AD3D1",
+			color : "#6600CC",
+			highlight : "#CC99FF",
 			label : "Mac"
 		}, {
 			value : data.os.ios,
-			color : "#FDB45C",
-			highlight : "#FFC870",
+			color : "#990033",
+			highlight : "#FF9999",
 			label : "iOS"
 		}, {
 			value : data.os.android,
-			color : "#FDB45C",
-			highlight : "#FFC870",
+			color : "#336600",
+			highlight : "#99FF99",
 			label : "Android"
 		}, {
 			value : data.os.linux,
-			color : "#3D048C",
-			highlight : "#3F9870",
+			color : "#33FFFF",
+			highlight : "#CCFFFF",
 			label : "Linux"
 		}, {
 			value : data.os.other,
-			color : "#34045C",
-			highlight : "#339870",
+			color : "#999999",
+			highlight : "#CCCCCC",
 			label : "Other"
 		} ];
 
@@ -140,15 +138,11 @@ function doAgentChart(numDays) {
 			label : "Webkit"
 		}, {
 			value : data.engine.other,
-			color : "#3D048C",
-			highlight : "#3F9870",
+			color : "#999999",
+			highlight : "#CCCCCC",
 			label : "Other"
 		} ];
 
-		console.log(browserChartData);
-		console.log(osChartData);
-		console.log(engineChartData);
-		
 		var opts = {
 			"responsive": true
 		};
