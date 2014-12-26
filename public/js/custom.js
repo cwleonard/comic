@@ -186,6 +186,28 @@ function flicker(e) {
 	
 }
 
+function blink(e) {
+
+	if (typeof this.timespan === 'undefined') {
+		this.timespan = -1;
+	}
+
+	if (typeof this.counter === 'undefined') {
+		this.counter = 0;
+	}
+
+	if (this.timespan === -1) {
+		this.timespan = this.pps * 1000;
+	}
+	
+	this.counter += e;
+	if (this.counter > this.timespan) {
+		this.timespan = -1;
+		this.counter = 0;
+		$(this).toggle();
+	}
+	
+}
 
 var animated = [];
 function setupAnimation() {
@@ -230,6 +252,8 @@ function setupAnimation() {
 				elem.moveFunction = moveUpDown;
 			} else if (dir === 'flicker') {
 				elem.moveFunction = flicker;
+			} else if (dir === 'blink') {
+				elem.moveFunction = blink;
 			} else {
 				// unknown direction value
 				elem.moveFunction = function() {

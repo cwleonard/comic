@@ -146,6 +146,12 @@ function imageToObject(iEl) {
 		r: rot,
 		src: isrc
 	};
+
+	// is it hidden?
+	var h = img.attr('hide') || '';
+	if (h === 'true') {
+		d.hide = true;
+	}
 	
 	// is it animated?
 	var spd = isNaN(iEl.attr("speed")) ? 0 : Number(iEl.attr("speed"));
