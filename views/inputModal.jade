@@ -1,0 +1,15 @@
+div(class="modal fade",id="inputModal",tabindex="-1",role="dialog",aria-labelledby="inputModalLabel",aria-hidden="true")
+	div(class="modal-dialog")
+		div(class="modal-content")
+			div(class="modal-header")
+				button(type="button",class="close",data-dismiss="modal",aria-hidden="true") &times;
+				h4(class="modal-title",id="inputModalLabel") Amphibian Input
+			div(class="modal-body")
+				
+				div.form-group(style='margin-top: 15px;')
+					label(for="someText") Enter Some Text
+					input#someText.form-control(type="text",placeholder="some text")
+				
+			div(class="modal-footer")
+				button(type="button",class="btn btn-default",data-dismiss="modal") Cancel
+				button#confirmInputButton(type="button",class="btn btn-primary") OK
