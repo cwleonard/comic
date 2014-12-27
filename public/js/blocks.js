@@ -32,7 +32,7 @@ function stackBlocks(msg) {
 	
 	var vpos = 52.5;
 	
-	var cell = $('#cell-4');
+	var cell = $('#cell-3');
 	
 	cell.find(".letter-block").remove();
 	
