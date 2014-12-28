@@ -350,6 +350,9 @@ function addImage(cell, img) {
 				$(i).css('-moz-transform', rot);
 				$(i).attr('rot', img.r);
 			}
+			if (img.hide) {
+				$(i).attr('hide', 'true');
+			}
 			if (img.move) {
 				$(d).attr('speed', img.speed);
 				$(d).attr('travel', img.travel);
