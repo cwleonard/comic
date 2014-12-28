@@ -158,10 +158,14 @@ function imageToObject(iEl) {
 	var trvl = isNaN(iEl.attr("travel")) ? 0 : Number(iEl.attr("travel"));
 	if (spd > 0 && trvl !== 0) {
 		var dir = iEl.attr("direction");
+		var nb = iEl.attr("nobounce");
 		d.move = true;
 		d.speed = spd;
 		d.travel = trvl;
 		d.direction = dir;
+		if (nb) {
+			d.noBounce = nb;
+		}
 	}
 	
 	return d;

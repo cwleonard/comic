@@ -145,16 +145,28 @@ function moveUpDown(e) {
 	var np = this.pos + (m * this.direction);
 	
 	while (this.upperBound > np || this.lowerBound < np) {
-		
-		// reverse direction
-		this.direction *= -1;
-		
-		if (this.upperBound > np) {
-			np = this.upperBound + (this.upperBound - np);
-		} else if (this.lowerBound < np) {
-			np = this.lowerBound - (np - this.lowerBound);
+
+		if (this.noBounce) {
+			
+			if (this.upperBound > np) {
+				np = this.lowerBound;
+			} else if (this.lowerBound < np) {
+				np = this.upperBound;
+			}
+			
+		} else {
+
+			// reverse direction
+			this.direction *= -1;
+
+			if (this.upperBound > np) {
+				np = this.upperBound + (this.upperBound - np);
+			} else if (this.lowerBound < np) {
+				np = this.lowerBound - (np - this.lowerBound);
+			}
+
 		}
-		
+
 	}
 	
 	$(this).css('top', np + 'px');
@@ -223,6 +235,7 @@ function setupAnimation() {
 			var sizerHeight = Number($(elem).parent().css('height').replace(/\D/g, ''));
 			
 			var dir = $(elem).attr('direction');
+			var nb = ($(elem).attr('nobounce') === 'true' ? true : false);
 
 			if (dir === 'left') {
 				// when moving left, right bound is starting location, left bound is trvl less than that
@@ -231,6 +244,7 @@ function setupAnimation() {
 				elem.rightBound = elem.pos;
 				elem.leftBound = elem.rightBound - (sizerWidth * (trvl / 100));
 				elem.moveFunction = moveLeftRight;
+				elem.noBounce = nb;
 			} else if (dir === 'right') {
 				// when moving right, left bound is starting location, right bound is trvl more than that
 				elem.pos = Number($(elem).css('left').replace('px', ''));
@@ -238,18 +252,21 @@ function setupAnimation() {
 				elem.leftBound = elem.pos;
 				elem.rightBound = elem.leftBound + (sizerWidth * (trvl / 100));
 				elem.moveFunction = moveLeftRight;
+				elem.noBounce = nb;
 			} else if (dir === 'up') {
 				elem.pos = Number($(elem).css('top').replace('px', ''));
 				elem.direction = -1;
 				elem.lowerBound = elem.pos;
 				elem.upperBound = elem.lowerBound - (sizerHeight * (trvl / 100));
 				elem.moveFunction = moveUpDown;
+				elem.noBounce = nb;
 			} else if (dir === 'down') {
 				elem.pos = Number($(elem).css('top').replace('px', ''));
 				elem.direction = 1;
 				elem.upperBound = elem.pos;
 				elem.lowerBound = elem.upperBound + (sizerHeight * (trvl / 100));
 				elem.moveFunction = moveUpDown;
+				elem.noBounce = nb;
 			} else if (dir === 'flicker') {
 				elem.moveFunction = flicker;
 			} else if (dir === 'blink') {

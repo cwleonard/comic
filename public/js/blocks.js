@@ -1,4 +1,4 @@
-function wordWrap(text, len) {
+function lineWrap(text, len) {
 
 	var lineWidth = len || 10; // if line length not specified, default is 10
 	var spaceLeft = lineWidth;
@@ -7,14 +7,14 @@ function wordWrap(text, len) {
 	for (var w in words) {
 		var word = words[w];
 	    if ((word.length + 1) > spaceLeft) {
-	    	words[w] = '\n' + word;
+	    	words[w] = "\n" + word;
 	        spaceLeft = lineWidth - word.length;
 	    } else {
 	        spaceLeft = spaceLeft - (word.length + 1);
 	    }
 	}
 	
-	return words.join(' ').trim();
+	return words.join(" ").trim();
 	
 }
 
@@ -28,7 +28,7 @@ function attachBlockClick() {
 
 function stackBlocks(msg) {
 	
-	var lines = wordWrap(msg).split("\n");
+	var lines = lineWrap(msg).split("\n");
 	
 	var vpos = 52.5;
 	
