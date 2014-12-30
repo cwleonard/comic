@@ -22,15 +22,18 @@ html
 					label(for="ctitle") Comic Title (optional)
 					input#ctitle.form-control(style="width: 80%; float: left;",type="text",placeholder="comic title")
 					input#cid.form-control(disabled="true",style="text-align: right; width: 15%; float: right;",type="text",placeholder="id")
-				div.form-group
-					label(for="datePicker") Publish Date
-					div#datePicker(class="input-group date",data-date-format="YYYY-MM-DD")
-						input#pubDate(type="text",class="form-control",placeholder="publish date")
-						span(class="input-group-addon")!= '<i class="fa fa-calendar"></i>'
-				div.form-group
+				div
+					div.form-group(style="width: 50%; float: left;")
+						label(for="datePicker") Publish Date
+						div#datePicker.input-group(data-date-format="YYYY-MM-DD")
+							input#pubDate.form-control(type="text",placeholder="publish date")
+							span(class="input-group-addon")!= '<i class="fa fa-calendar"></i>'
+					div.form-group(style="width: 45%; float: right;")
+						label(for="extraJs") Custom JavaScript (optional)
+						input#extraJs.form-control(type="text",placeholder="whatnot.js")
+				div(class='form-group clearfix')
 					label(for="extraText") Extra Text (optional)
 					textarea#extraText.form-control(rows="3",placeholder="extra text and stuff")
-				input#extraJs.form-control(type="hidden")
 				div#cellArea
 
 		include imgUpload

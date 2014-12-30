@@ -61,6 +61,7 @@ module.exports = function(dbconf) {
 					var obj = JSON.parse(rows[0].data);
 					obj.pubDate = rows[0].pd;
 					obj.id = rows[0].id;
+					obj.pd = rows[0].pub_date;
 					obj.prevDate = null; // this is the oldest, can't have previous!
 					nextComic(rows[0].pub_date, function(err, n) {
 						if (err) {
@@ -95,6 +96,7 @@ module.exports = function(dbconf) {
 					var obj = JSON.parse(rows[0].data);
 					obj.pubDate = rows[0].pd;
 					obj.id = rows[0].id;
+					obj.pd = rows[0].pub_date;
 
 					prevComic(rows[0].pub_date, function(err, p) {
 
@@ -204,6 +206,7 @@ module.exports = function(dbconf) {
 							var obj = JSON.parse(rows[0].data);
 							obj.pubDate = rows[0].pd;
 							obj.id = id;
+							obj.pd = rows[0].pub_date;
 
 							prevComic(rows[0].pub_date, function(err, p) {
 

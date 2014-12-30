@@ -352,6 +352,7 @@ function addImage(cell, img) {
 			}
 			if (img.hide) {
 				$(i).attr('hide', 'true');
+				$(i).css('opacity', 0.5);
 			}
 			if (img.move) {
 				$(d).attr('speed', img.speed);
@@ -756,6 +757,11 @@ function setupMenu(imgSelectOptions) {
 				type: 'text',
 				value: ''
 			},
+			hideThis: {
+				name: "Hidden",
+				type: "checkbox",
+				selected: false
+			},
 			pickImage: {
 				name: "Select Image",
 				type: 'select',
@@ -835,6 +841,7 @@ function setupMenu(imgSelectOptions) {
 				var d = imageToObject($this);
 				d.pickImage = d.src;
 				d.rotation = d.r;
+				d.hideThis = d.hide ? true : false;
 				$.contextMenu.setInputValues(opt, d);
 				
 			},
@@ -865,6 +872,14 @@ function setupMenu(imgSelectOptions) {
 				img.css('-webkit-transform', rot);
 				img.attr('rot', o.rotation);
 
+				if (o.hideThis) {
+					img.attr('hide', 'true');
+					img.css('opacity', 0.5);
+				} else {
+					img.removeAttr('hide');
+					img.css('opacity', '');
+				}
+				
 				var currentWidth = img.css('width').replace('px', '');
 				if (currentWidth !== o.width) {
 					// only do this if the width was changed, because it is a more
