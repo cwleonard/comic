@@ -36,15 +36,16 @@ div#sizer(comicId=id)
 				a(href='/' + prevDate) Previous
 			if nextDate
 				a(href='/' + nextDate) Next
-		div
-			if prevDate
-				p.lnav!= '<a onclick="replaceComic(\'0\');"><i class="fa fa-fast-backward"></i></a>&nbsp;'
-				p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-backward"></i> Previous</a>'
-			if nextDate
-				p.rnav!= '&nbsp;<a onclick="replaceComic(\'-1\');"><i class="fa fa-fast-forward"></i></a>'
-				p.rnav!= '<a onclick="replaceComic(\'' + nextDate + '\');">Next <i class="fa fa-forward"></i></a>'
-			div(style='clear: both;')
-		if (pubDate)
+		if !toads
+			div
+				if prevDate
+					p.lnav!= '<a onclick="replaceComic(\'0\');"><i class="fa fa-fast-backward"></i></a>&nbsp;'
+					p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-backward"></i> Previous</a>'
+				if nextDate
+					p.rnav!= '&nbsp;<a onclick="replaceComic(\'-1\');"><i class="fa fa-fast-forward"></i></a>'
+					p.rnav!= '<a onclick="replaceComic(\'' + nextDate + '\');">Next <i class="fa fa-forward"></i></a>'
+				div(style='clear: both;')
+		if (pubDate && !toads)
 			hr
 			div#social-buttons
 				div#tweet(class='share')
