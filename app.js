@@ -56,7 +56,52 @@ function correctUrl(b) {
 	
 	return function (req, res, next) {
 
-		if (req.hostname !== b) {
+		if (req.hostname.indexOf('toads.co') !== -1) {
+		
+			cfact.loadById(116, function (err, data) {
+				if (err) {
+					next(err);
+				} else if (data) {
+					
+					data.toads = true;
+					
+					if (data.pubDate) {
+						var p = new Date(data.pubDate);
+						if (p > new Date()) {
+							if (!req.isAuthenticated()) {
+								// only authenticated users can see future comics
+								fs.readFile('data/403.json', { encoding: 'utf-8' }, function(err, data) {
+									if (err) {
+										next(err);
+									} else {
+										res.render('comicpage', JSON.parse(data), function(err, str) {
+											if (err) {
+												next(err);
+											} else {
+												res.status(403).send(str);
+											}
+										});
+									}
+								});
+							} else {
+								data.url = conf.base;
+								res.render('comicpage', data);
+							}
+						} else {
+							data.url = conf.base;
+							res.render('comicpage', data);
+						}
+					} else {
+						data.url = conf.base;
+						res.render('comicpage', data);
+					}
+					
+				} else {
+					next(); // no comic found
+				}
+			});
+			
+		} else if (req.hostname !== b) {
 			var port = '';
 			var hostWithPort = req.get('host');
 			if (hostWithPort.indexOf(':') !== -1) {
