@@ -146,7 +146,8 @@ module.exports = function(dbconf) {
 			};
 			
 			var sql = 'SELECT agent FROM amphibian.comic_access where ' +
-					'(tstamp > date_sub(current_timestamp, interval ' + pool.escape(h) + ' hour))';
+					'(tstamp > date_sub(current_timestamp, interval ' + pool.escape(h) + ' hour))' +
+					'and (resource = \'/\' or resource regexp \'^/(chtml/)?[0-9]+$\')';
 
 			pool.query(sql, function(err, rows) {
 				
