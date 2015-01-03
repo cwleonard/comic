@@ -1,9 +1,10 @@
-- var pageTitle = (title ? 'Amphibian.com - ' + title : 'Amphibian.com')
+- var domain = (toads? 'Toads.co' : 'Amphibian.com')
+- var pageTitle = (title ? domain + ' - ' + title : domain)
 head
 	title= pageTitle
 	meta(charset='utf-8')
 	meta(name='viewport',content='width=device-width,user-scalable=1')
-	meta(property='og:site_name',content='Amphibian.com')
+	meta(property='og:site_name',content=domain)
 	meta(property='og:type',content='website')
 	if id
 		meta(property='og:title',content=( title ? title : 'Today\'s Comic'))
@@ -18,8 +19,8 @@ head
 		meta(property='twitter:card',content='photo')
 		meta(property='twitter:site',content='@frogcomics')
 		if pubDate
-			meta(property='og:description',content='Amphibian.com webcomic for ' + pubDate)
-			meta(property='twitter:description',content='Amphibian.com webcomic for ' + pubDate)
+			meta(property='og:description',content=domain + ' webcomic for ' + pubDate)
+			meta(property='twitter:description',content=domain + ' webcomic for ' + pubDate)
 		else
 			meta(property='og:description',content='The ongoing story of what happens when frogs start a technology company...')
 			meta(property='twitter:description',content='The ongoing story of what happens when frogs start a technology company...')
@@ -28,9 +29,10 @@ head
 	link(href='/css/font-awesome.min.css',rel='stylesheet')
 	if toads
 		link(href='/css/toads-style.css',rel='stylesheet')
+		link(href='/simg/toad.ico',rel='shortcut icon')
 	else
 		link(href='/css/style2.css',rel='stylesheet')
-	link(href='/simg/frog.ico',rel='shortcut icon')
+		link(href='/simg/frog.ico',rel='shortcut icon')
 	link(href="http://" + url + "/feeds/atom",rel="alternate",type="application/atom+xml",title="Amphibian.com")
 	if (basic)
 		link(href='/css/sniglet-webfont.css',rel='stylesheet')

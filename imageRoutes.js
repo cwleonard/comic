@@ -82,7 +82,7 @@ module.exports = function(conf) {
 					res.setHeader('Content-Type', data.contentType);
 					res.send(data.buffer);
 				} else {
-					res.send(404); // don't use the full-page 404 for missing images
+					res.sendStatus(404); // don't use the full-page 404 for missing images
 				}
 			});
 			
