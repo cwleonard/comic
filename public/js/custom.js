@@ -102,7 +102,7 @@ $(function() {
     
     // replace current URL with the current id, so back button behavior is consistent
     var currentId = $('#info').attr('comicId');
-    if (history.replaceState) {
+    if (history.replaceState && window.location.href.indexOf("toads.co") === -1) {
     	history.replaceState({
     		comicId: currentId
     	}, 'comic ' + currentId, currentId);

@@ -93,17 +93,34 @@ app.use(passport.session());
 // if nothing explicit requested, send most recent comic
 app.get('/', function(req, res, next) {
 	
-	cfact.loadCurrent(function (err, data) {
-		if (err) {
-			next(err);
-		} else if (data) {
-			data.url = conf.base;
-			data.toads = req.toads;
-			res.render('comicpage', data);
-		} else {
-			next(); // no comic found
-		}
-	});
+	if (req.toads) {
+		
+		cfact.loadById(116, function (err, data) {
+			if (err) {
+				next(err);
+			} else if (data) {
+				data.url = conf.base;
+				data.toads = true;
+				res.render('comicpage', data);
+			} else {
+				next(); // no comic found
+			}
+		});
+		
+	} else {
+
+		cfact.loadCurrent(function (err, data) {
+			if (err) {
+				next(err);
+			} else if (data) {
+				data.url = conf.base;
+				res.render('comicpage', data);
+			} else {
+				next(); // no comic found
+			}
+		});
+
+	}
 	
 });
 
@@ -464,8 +481,13 @@ app.get('/broken', function(req, res, next) {
 
 // ------------ static content
 
-app.use(express.static('public'));
-
+app.use(express.static('public', {
+	'setHeaders': function(res, path, stat) {
+			if (path.match(/\.(ttf|ttc|otf|eot|woff|font.css|css)$/)) {
+				res.setHeader('Access-Control-Allow-Origin', '*');
+			}
+		}
+	}));
 
 // handle 404
 app.use(function(req, res, next){
