@@ -484,7 +484,7 @@ app.get('/broken', function(req, res, next) {
 app.use(express.static('public', {
 	'setHeaders': function(res, path, stat) {
 			if (path.match(/\.(ttf|ttc|otf|eot|woff|font.css|css)$/)) {
-				res.setHeader('Access-Control-Allow-Origin', '*');
+				res.setHeader('Access-Control-Allow-Origin', 'http://toads.co');
 			}
 		}
 	}));
