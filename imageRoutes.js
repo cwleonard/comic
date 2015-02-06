@@ -8,19 +8,16 @@ module.exports = function(conf) {
 		
 		myRouter.get('/', function(req, res, next) {
 			
-			conf.dataSource.listImages(function (err, data) {
-				if (err) {
-					next(err);
-				} else if (data) {
-					res.setHeader('Content-Type', 'application/json');
-					res.send(data);
-				} else {
-					next(new Error('missing image data!')); // this shouldn't happen
-				}
+			conf.dataSource.listImages()
+			.then(function(data) {
+				res.setHeader('Content-Type', 'application/json');
+				res.send(data);
+			}, function(error) {
+				next(error.error);
 			});
 			
 		});
-		
+
 		myRouter.post('/', conf.auth, function(req, res, next) {
 			
 			var uploadName = '';

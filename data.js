@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var q = require('q');
 
 module.exports = function(dbconf) {
 	
@@ -386,29 +387,40 @@ module.exports = function(dbconf) {
 			
 		},
 		
-		listImages: function(cb) {
+		listImages: function() {
+			
+			var deferred = q.defer();
 			
 			pool.query('SELECT filename, type FROM comic_img', function(err, rows) {
+				
 				if (err) {
-					cb(err);
+					
+					deferred.reject({
+						message: 'database query failed',
+						error: err
+					});
+					
 				} else {
+					
+					var data = [];
 					if (rows.length > 0) {
-						var data = [];
 						for (var i = 0; i < rows.length; i++) {
 							data.push({
 								filename: rows[i].filename,
 								type: rows[i].type
 							});
 						}
-						cb(null, data);
-					} else {
-						cb(null, []);
 					}
+					
+					deferred.resolve(data);
+					
 				}
 			});
 			
+			return deferred.promise;
+			
 		},
-		
+
 		listComics: function(cb) {
 			
 			pool.query('SELECT id, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ORDER by pub_date', function(err, rows) {
