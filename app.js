@@ -310,6 +310,14 @@ app.get('/about', function(req, res, next) {
 	
 });
 
+app.get('/promo', function(req, res, next) {
+	
+	res.render('promoFeb2015', {
+		title: 'Free Sticker Promotion'
+	});
+	
+});
+
 app.get('/merch', function(req, res, next) {
 	
 	res.render('merch', {

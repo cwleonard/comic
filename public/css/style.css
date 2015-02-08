@@ -298,6 +298,41 @@ div.buy p.ftitle {
 	margin-bottom: 0px !important;
 }
 
+.promo {
+	
+	padding: 5px;
+	
+	background-color: #003300;
+	
+	border-bottom: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+
+	-webkit-border-top-left-radius: 0;
+	-moz-border-top-left-radius: 0;
+	border-top-left-radius: 0;
+
+	-webkit-border-top-right-radius: 0;
+	-moz-border-top-right-radius: 0;
+	border-top-right-radius: 0;
+
+}
+
+.promo p {
+	font-size: 1.5em; 
+	color: #ffffff;
+	font-weight: bold;
+	text-align: center;
+}
+
+.promo p a {
+	color: #ffffff;
+}
+
 /* --------- responsive media stuff ---------------------- */
 
 @media only screen and (min-width: 400px) {
