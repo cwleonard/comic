@@ -1,0 +1,11 @@
+doctype html
+html
+	include head
+	body
+		div#comicArea
+			img(src='/pins/'+id)
+		div#info(comicId=id,class='info')
+			if extraText
+				div#extraText
+					!= extraText
+			
