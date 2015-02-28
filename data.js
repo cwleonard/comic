@@ -421,14 +421,23 @@ module.exports = function(dbconf) {
 			
 		},
 
-		listComics: function(cb) {
-			
+		listComics: function() {
+
+			var deferred = q.defer();
+
 			pool.query('SELECT id, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ORDER by pub_date', function(err, rows) {
+
 				if (err) {
-					cb(err);
+					
+					deferred.reject({
+						message: 'database query failed',
+						error: err
+					});
+					
 				} else {
+					
+					var data = [];
 					if (rows.length > 0) {
-						var data = [];
 						for (var i = 0; i < rows.length; i++) {
 							var c = JSON.parse(rows[i].data);
 							var t = (c.title ? c.title : 'no title');
@@ -438,13 +447,15 @@ module.exports = function(dbconf) {
 								title: t
 							});
 						}
-						cb(null, data);
-					} else {
-						cb(null, []);
 					}
+					
+					deferred.resolve(data);
+					
 				}
 			});
-			
+
+			return deferred.promise;
+
 		}
 
 	};

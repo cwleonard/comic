@@ -182,7 +182,7 @@ module.exports = function(dbconf) {
 						} else if (r.os.name === 'Android') {
 							stuff.os.android++;
 						} else if (r.os.name === 'Linux') {
-							stuff.os.linus++;
+							stuff.os.linux++;
 						} else {
 							stuff.os.other++;
 						}
@@ -210,7 +210,127 @@ module.exports = function(dbconf) {
 			
 			
 
+		},
+		
+		browsers: function (hours, cb) {
+
+			var h = isNaN(hours) ? 1 : Number(hours);
+
+			var stuff = {
+					firefox: {},
+					chrome: {},
+					ie: {},
+					safari: {}
+			};
+			
+			var sql = 'SELECT agent FROM amphibian.comic_access where ' +
+					'(tstamp > date_sub(current_timestamp, interval ' + pool.escape(h) + ' hour))' +
+					'and (resource = \'/\' or resource regexp \'^/(chtml/)?[0-9]+$\')';
+
+			pool.query(sql, function(err, rows) {
+				
+				if (err) {
+					cb(err);
+				} else {
+					
+					for (var i = 0; i < rows.length; i++) {
+						
+						var ua = rows[i].agent;
+						var parser = new UAParser();
+						var r = parser.setUA(ua).getResult();
+						
+						var ver = 'v' + r.browser.major;
+						var f = null;
+						if (r.browser.name === 'Chrome') {
+							f = 'chrome';
+						} else if (r.browser.name === 'Firefox') {
+							f = 'firefox'
+						} else if (r.browser.name === 'IE') {
+							f = 'ie';
+						} else if (r.browser.name === 'Safari') {
+							f = 'safari';
+						}
+						
+						if (f) {
+							if (stuff[f][ver]) {
+								stuff[f][ver]++;
+							} else {
+								stuff[f][ver] = 1;
+							}
+						}
+						
+					}
+					
+					cb(null, stuff);
+					
+				}
+				
+			});
+
+		},
+		
+		oses: function (hours, cb) {
+
+			var h = isNaN(hours) ? 1 : Number(hours);
+
+			var stuff = {
+					windows: {},
+					mac: {},
+					ios: {},
+					android: {},
+					linux: {}
+			};
+			
+			var sql = 'SELECT agent FROM amphibian.comic_access where ' +
+					'(tstamp > date_sub(current_timestamp, interval ' + pool.escape(h) + ' hour))' +
+					'and (resource = \'/\' or resource regexp \'^/(chtml/)?[0-9]+$\')';
+
+			pool.query(sql, function(err, rows) {
+				
+				if (err) {
+					cb(err);
+				} else {
+					
+					for (var i = 0; i < rows.length; i++) {
+						
+						var ua = rows[i].agent;
+						var parser = new UAParser();
+						var r = parser.setUA(ua).getResult();
+						
+						var ver = 'v' + r.os.version;
+						var f = null;
+
+						if (r.os.name === 'Windows') {
+							f = 'windows';
+						} else if (r.os.name === 'Mac OS') {
+							f = 'mac';
+						} else if (r.os.name === 'iOS') {
+							f = 'ios';
+						} else if (r.os.name === 'Android') {
+							f = 'android';
+						} else if (r.os.name === 'Linux') {
+							f = 'linux';
+						}
+						
+						if (f) {
+							if (stuff[f][ver]) {
+								stuff[f][ver]++;
+							} else {
+								stuff[f][ver] = 1;
+							}
+						}
+						
+					}
+					
+					cb(null, stuff);
+					
+				}
+				
+			});
+
 		}
+		
+		
 
 	};
 	

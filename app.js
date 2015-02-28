@@ -272,15 +272,12 @@ app.get('/chtml/:n', function(req, res, next) {
 
 app.get('/list', ensureAuthenticated, function(req, res, next) {
 	
-	cfact.listComics(function (err, data) {
-		if (err) {
-			next(err);
-		} else if (data) {
-			res.setHeader('Content-Type', 'application/json');
-			res.send(data);
-		} else {
-			next(new Error('missing comic data!')); // this shouldn't happen
-		}
+	cfact.listComics()
+	.then(function(data) {
+		res.setHeader('Content-Type', 'application/json');
+		res.send(data);
+	}, function(error) {
+		next(error.error);
 	});
 	
 });
@@ -345,7 +342,7 @@ app.get('/feeds/atom', function(req, res, next) {
 		link: "http://" + conf.base,
 		feed: "http://" + conf.base + "/feeds/atom",
 		icon: "http://" + conf.base + "/simg/og_logo.png",
-		copyright: "All rights reserved 2014, Casey Leonard",
+		copyright: "All rights reserved 2015, Casey Leonard",
 		author: {
 			name: "Casey Leonard",
 			email: "casey@amphibian.com",
@@ -360,13 +357,18 @@ app.get('/feeds/atom', function(req, res, next) {
 			
 			for (var c in comics) {
 				
-				feed.addItem({
-					title: comics[c].title ? comics[c].title : "Untitled Comic",
-					link: "http://" + conf.base + "/" + comics[c].id,
-					description: "Amphibian.com comic for " + comics[c].pubDate,
-					date: comics[c].pd,
-					content: "<img src=\"http://" + conf.base + "/pins/" + comics[c].id + "\"/>"
+				res.render('atomcomicpage', comics[c], function(err, html) {
+					
+					feed.addItem({
+						title: comics[c].title ? comics[c].title : "Untitled Comic",
+								link: "http://" + conf.base + "/" + comics[c].id,
+								description: "Amphibian.com comic for " + comics[c].pubDate,
+								date: comics[c].pd,
+								content: html
+					});
+					
 				});
+				
 				
 			}
 			
@@ -379,6 +381,109 @@ app.get('/feeds/atom', function(req, res, next) {
 	});
 	
 });
+
+//render basic (no header, footer, animation, etc) comic pages by id
+app.get('/feedtest/:n', function(req, res, next) {
+
+	cfact.loadById(req.params.n, function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			res.render('atomcomicpage', data);
+		} else {
+			next(); // no comic found
+		}
+	});
+	
+});
+
+//------------ color voting
+
+var frogColors = {
+	actual: {
+		orange: 0,
+		green: 0,
+		total: function() {
+			return this.orange + this.green;
+		}
+	},
+	votes: {
+		orange: 0,
+		green: 0,
+		tartan: 0,
+		total: function() {
+			return this.orange + this.green + this.tartan;
+		}
+	}
+};
+
+app.post('/vote/:c', function(req, res, next) {
+
+	if (req.params.c === 'green') {
+		frogColors.votes.green++;
+	} else if (req.params.c === 'orange') {
+		frogColors.votes.orange++;
+	} else if (req.params.c === 'tartan') {
+		frogColors.votes.tartan++;
+	}
+	res.sendStatus(200);
+	
+});
+
+app.post('/colorShown/:c', function(req, res, next) {
+
+	if (req.params.c === 'green') {
+		frogColors.actual.green++;
+	} else if (req.params.c === 'orange') {
+		frogColors.actual.orange++;
+	}
+	res.sendStatus(200);
+	
+});
+
+app.get('/colorVotes', function(req, res, next) {
+	
+	var total = frogColors.votes.total();
+	res.status(200).send((function(t) {
+		
+		var ret = {
+			orange: "0%",
+			green: "0%",
+			tartan: "0%"
+		};
+		if (t > 0) {
+			ret.orange = Number((frogColors.votes.orange / t) * 100).toFixed(1) + "%";
+			ret.green = Number((frogColors.votes.green / t) * 100).toFixed(1) + "%";
+			ret.tartan = Number((frogColors.votes.tartan / t) * 100).toFixed(1) + "%";
+		}
+		return ret;
+		
+	}(total)));
+	
+});
+
+app.get('/colorActuals', function(req, res, next) {
+	
+	var total = frogColors.actual.total();
+	res.status(200).send((function(t) {
+
+		var ret = {
+			orange: "0%",
+			green: "0%"
+		};
+		if (t > 0) {
+			ret.orange = Number((frogColors.actual.orange / t) * 100).toFixed(1) + "%";
+			ret.green = Number((frogColors.actual.green / t) * 100).toFixed(1) + "%";
+		}
+		return ret;
+		
+	}(total)));
+	
+});
+
+
+//------------ end color voting
+
 
 //------------ some old links are still out there, send them to Gist now
 
@@ -422,6 +527,22 @@ app.get('/stats/viewsByDay/:n', function(req, res, next) {
 app.get('/stats/sources/:n', function(req, res, next) {
 	
 	stats.sources(req.params.n, function(err, data) {
+		res.status(200).send(data);
+	});
+	
+});
+
+app.get('/stats/browsers/:n', function(req, res, next) {
+	
+	stats.browsers(req.params.n, function(err, data) {
+		res.status(200).send(data);
+	});
+	
+});
+
+app.get('/stats/os/:n', function(req, res, next) {
+	
+	stats.oses(req.params.n, function(err, data) {
 		res.status(200).send(data);
 	});
 	
