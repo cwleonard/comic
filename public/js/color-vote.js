@@ -3,11 +3,12 @@ $(function() {
 	var GREEN = 'green';
 	var ORANGE = 'orange';
 	var TARTAN = 'tartan';
-	
-	var frogImg = $('#color-test-frog');
-	var dispColor = ( Math.random() < 0.5 ? GREEN : ORANGE );
-	frogImg.attr('src', '/images/generic_frog_right_' + dispColor + '_color.svg');
-	recordDisplay(dispColor);
+
+	getDisplay(function(dispColor) {
+		var frogImg = $('#color-test-frog');
+		frogImg.attr('src', '/images/generic_frog_right_' + dispColor + '_color.svg');
+		frogImg.show();
+	});
 	
 	$('#text-vote-green').css('cursor', 'pointer');
 	$('#text-vote-orange').css('cursor', 'pointer');
@@ -79,12 +80,8 @@ function recordVote(color) {
 	});
 }
 
-function recordDisplay(color) {
-	$.ajax({
-		url: '/colorShown/' + color,
-		type: 'POST',
-		success: function(data) {
-			console.log('displayed ' + color);
-		}
-	});
+function getDisplay(cb) {
+	$.get('/colorShown', function(data) {
+		cb(data.color);
+	}, 'json');
 }

@@ -430,14 +430,22 @@ app.post('/vote/:c', function(req, res, next) {
 	
 });
 
-app.post('/colorShown/:c', function(req, res, next) {
+app.get('/colorShown', function(req, res, next) {
 
-	if (req.params.c === 'green') {
+	var dispColor = ( Math.random() < 0.5 ? 'green' : 'orange' );
+	
+	if (dispColor === 'green') {
 		frogColors.actual.green++;
-	} else if (req.params.c === 'orange') {
+	} else if (dispColor === 'orange') {
 		frogColors.actual.orange++;
 	}
-	res.sendStatus(200);
+
+	res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+	res.header('Expires', '-1');
+	res.header('Pragma', 'no-cache');
+	res.status(200).send({
+		color: dispColor
+	});
 	
 });
 
