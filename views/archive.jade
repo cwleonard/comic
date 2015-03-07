@@ -1,0 +1,30 @@
+doctype html
+html
+	include head
+	body
+		include header
+		
+		div(class="about-us block",style="border-bottom: none;")
+			div(class="container")
+				
+				div(class="about-one")
+					div(class="about-one-item")
+						div(class="about-one-content")
+
+						- var cMon = -1;
+						- var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+						- for (var c in comics)
+
+							if (cMon != comics[c].pdate.getMonth())
+								- cMon = comics[c].pdate.getMonth()
+								h3(style='margin-bottom: 20px !important;')= monthNames[comics[c].pdate.getMonth()] + ' ' + comics[c].pdate.getFullYear()
+								p(style='margin-left: 50px !important;')
+									a(href='/' + comics[c].id)= comics[c].published + ' - ' + comics[c].title
+							else
+								p(style='margin-left: 50px !important;')
+									a(href='/' + comics[c].id)= comics[c].published + ' - ' + comics[c].title
+
+				div(class="clearfix")
+
+		include footer
+		include js

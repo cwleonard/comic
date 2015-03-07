@@ -421,11 +421,18 @@ module.exports = function(dbconf) {
 			
 		},
 
-		listComics: function() {
+		listComics: function(noFuture) {
 
 			var deferred = q.defer();
 
-			pool.query('SELECT id, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ORDER by pub_date', function(err, rows) {
+			var sql;
+			if (noFuture) {
+				sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data WHERE DATE(pub_date) <= CURDATE() ORDER by pub_date';
+			} else {
+				sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ORDER by pub_date';
+			}
+			
+			pool.query(sql, function(err, rows) {
 
 				if (err) {
 					
@@ -443,6 +450,7 @@ module.exports = function(dbconf) {
 							var t = (c.title ? c.title : 'no title');
 							data.push({
 								id: rows[i].id,
+								pdate: rows[i].pub_date,
 								published: rows[i].pd,
 								title: t
 							});

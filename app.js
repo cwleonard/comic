@@ -282,6 +282,19 @@ app.get('/list', ensureAuthenticated, function(req, res, next) {
 	
 });
 
+app.get('/archive', function(req, res, next) {
+	
+	cfact.listComics(true) // no future comics
+	.then(function(data) {
+		res.render('archive', {
+			title: 'Archive',
+			comics: data
+		});
+	}, function(error) {
+		next(error.error);
+	});
+	
+});
 
 //------------ set up routes for /data/*
 
