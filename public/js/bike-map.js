@@ -1,18 +1,25 @@
 function initialize() {
 	
   var mapOptions = {
-    zoom: 14,
-    center: new google.maps.LatLng(40.791686, -77.856176),
+    zoom: 15,
+    center: new google.maps.LatLng(40.789936, -77.856348),
     disableDefaultUI: true
   };
 
-  $('#map-placeholder').css('width', '55%');
-  $('#map-placeholder').css('height', '50%');
-
-
-  var map = new google.maps.Map(document.getElementById('map-placeholder'),
-      mapOptions);
+  var pos = $('#map-placeholder').position();
+  var cell = $('#map-placeholder').parent();
+  cell.append("<div id='real-map'></div>");
   
+  $('#real-map').css('left', pos.left + 'px');
+  $('#real-map').css('top', pos.top + 'px');
+  $('#real-map').css('width', '58.5%');
+  $('#real-map').css('height', '56%');
+  $('#real-map').css('z-index', '5');
+
+  $('#map-placeholder').html('');
+
+  var map = new google.maps.Map(document.getElementById('real-map'),
+      mapOptions);
   
   var hc1 = new google.maps.LatLng(40.790232, -77.855726);
   
