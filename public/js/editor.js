@@ -297,7 +297,7 @@ function buildComicOjbect() {
 	};
 	
 	if (js !== '') {
-		cobj.scripts = [ js ];
+		cobj.scripts = js.split(/\s*,\s*/);
 	}
 	
 	$('#cellArea div.box').each(function(idx, elem) {
