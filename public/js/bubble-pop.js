@@ -19,14 +19,14 @@ function fallDown(elapsed) {
 
 function popBubble(e) {
 	
+	if (popSound) {
+		popSound.play();
+	}
+
 	var bub = e.target;
 
 	if ($(bub).attr("id") === "bubble3") {
 		$("#shadow3")[0].moveFunction = function() {};
-	}
-	
-	if (popSound) {
-		popSound.play();
 	}
 	
 	var sizerHeight = Number($(bub).parent().css('height').replace(/\D/g, ''));
@@ -61,8 +61,6 @@ $(function() {
 			  console.log("could not start soundmanager!");
 		  }
 		});	
-	
-	
 	
 	$('#bubble1').click(popBubble);
 	$('#bubble2').click(popBubble);
