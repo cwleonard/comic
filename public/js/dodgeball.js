@@ -1,5 +1,7 @@
 var hitSound = null;
 
+var agility = 0;
+
 var f1 = new Image();
 var f2 = new Image();
 var f3 = new Image();
@@ -19,7 +21,19 @@ f3r.src = "/images/generic_frog_jump_3r.svg";
 var aniFrames  = [  f1,  f2,  f3 ];
 var aniFramesR = [ f1r, f2r, f3r ];
 
+function updateScore() {
+	$('#score').html("Agility: " + agility);
+}
 
+function moreAgile() {
+	agility++;
+	updateScore();
+}
+
+function lessAgile() {
+	agility--;
+	updateScore();
+}
 
 function frameCycler(elem, initialFrames) {
 	
@@ -48,6 +62,7 @@ function frameCycler(elem, initialFrames) {
 		} else {
 			me.frameArray = aniFrames;
 		}
+		moreAgile();
 	});
 	
 }
@@ -60,31 +75,31 @@ function ballHit(elemArray) {
 
 	$(this).removeClass("collision");
 
-	//console.log("ball hit: " + elemArray[0]);
-	
 	$(elemArray[0]).css("opacity", "0.5");
 	setTimeout(function() {
 		$(elemArray[0]).css("opacity", "1");
 	}, 500);
 	
+	lessAgile();
+	
 }
 
 $(function() {
-	
-	soundManager.setup({
-		  url: '/swf/',
-		  onready: function() {
-		    hitSound = soundManager.createSound({
-		      id: 'hitSound',
-		      url: '/audio/bonk.mp3'
-		    });
-		  },
-		  ontimeout: function() {
-		    // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
-			  console.log("could not start soundmanager!");
-		  }
-		});	
 
+	soundManager.setup({
+		url : '/swf/',
+		onready : function() {
+			hitSound = soundManager.createSound({
+				id : 'hitSound',
+				url : '/audio/bonk.mp3'
+			});
+		},
+		ontimeout : function() {
+			console.log("could not start soundmanager!");
+		}
+	});	
+
+	updateScore();
 	
 	frameCycler($('#dodge-frog-1'), aniFrames);
 	frameCycler($('#dodge-frog-2'), aniFramesR);
@@ -98,9 +113,9 @@ $(function() {
 		var x;
 		
 		if (e.target === this) {
-			x = e.offsetX;
+			x = e.offsetX ? e.offsetX : e.originalEvent.layerX;
 		} else {
-			x = e.offsetX + $(e.target).position().left;
+			x = (e.offsetX ? e.offsetX : e.originalEvent.layerX) + $(e.target).position().left;
 		}
 		
 		//console.log(x);
