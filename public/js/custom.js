@@ -291,6 +291,70 @@ function setupAnimation() {
 	});
 }
 
+function checkCollisions() {
+	
+	$("img.collision").each(function(idx, elem) {
+		
+		if (elem.collidesWith) {
+			
+			var cx1 = Number($(elem).css('left').replace('px', ''));
+			var ox1 = cx1 + ($(elem).width() / 2);
+
+			var cy1 = Number($(elem).css('top').replace('px', ''));
+			var oy1 = cy1 + ($(elem).height() / 2);
+
+			var hits = [];
+			$("img." + elem.collidesWith).each(function(idx2, elem2) {
+			
+				var cx2 = Number($(elem2).css('left').replace('px', ''));
+				var ox2 = cx2 + ($(elem2).width() / 2);
+				
+				var cy2 = Number($(elem2).css('top').replace('px', ''));
+				var oy2 = cy2 + ($(elem2).height() / 2);
+
+				var distX = (ox2) - (ox1);
+				var distY = (oy2) - (oy1);
+				var magSq = distX * distX + distY * distY;
+				if (magSq < (elem.collisionRadius + elem2.collisionRadius) * (elem.collisionRadius + elem2.collisionRadius)) {
+					hits.push(elem2);
+				}
+				
+			});
+
+			//console.log(hits);
+			if (hits.length > 0) {
+				if (elem.hit) {
+					elem.hit(hits);
+				}
+			}
+			
+			/*
+			this.intersect = function(sprite1, sprite2) {
+				
+				var ox1 = 0;
+				var ox2 = 0;
+				if (sprite1.intOffsetX) {
+					ox1 = sprite1.intOffsetX;
+				}
+				if (sprite2.intOffsetX) {
+					ox2 = sprite2.intOffsetX;
+				}
+				
+				var distX = (sprite2.position.x + ox2) - (sprite1.position.x + ox1);
+				var distY = sprite2.position.y - sprite1.position.y;
+				var magSq = distX * distX + distY * distY;
+				return magSq < (sprite1.radius + sprite2.radius) * (sprite1.radius + sprite2.radius);
+				
+			}
+			*/
+			
+			
+		}
+		
+	});
+	
+}
+
 $(function () { 
 
 	var lastTime = null;
@@ -309,6 +373,8 @@ $(function () {
 		animated.forEach(function (elem, idx) {
 			elem.moveFunction(elapsed);
 		});
+		
+		checkCollisions();
 		
 	}
 	
