@@ -126,8 +126,8 @@ $(function() {
 		$(newBall).attr("id", "ball-" + (Math.random() * 1000));
 		
 		$(newBall).attr("animated", "true");
-		$(newBall).attr("speed", "400");
-		$(newBall).attr("travel", "125");
+		$(newBall).attr("speed", "145");
+		$(newBall).attr("travel", "155");
 		$(newBall).attr("direction", "up");
 		$(newBall).addClass("collision");
 
@@ -144,7 +144,7 @@ $(function() {
 		var sizerHeight = Number($(this).css('height').replace(/\D/g, ''));
 		
 		var trvl = 155;
-		var speed = 175;
+		var speed = 145;
 		
 		newBall.pos = Number($(newBall).css('top').replace('px', ''));
 		newBall.direction = -1;
