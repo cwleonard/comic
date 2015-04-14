@@ -1055,7 +1055,7 @@ function doLoad() {
 			$('#ctitle').val(data.title);
 			$('#extraText').val(data.extraText);
 			if (data.scripts && data.scripts.length > 0) {
-				$('#extraJs').val(data.scripts[0]);
+				$('#extraJs').val(data.scripts.join());
 			}
 			$('#pubDate').val(pd.format('YYYY-MM-DD'));
 
