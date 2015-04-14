@@ -143,8 +143,8 @@ $(function() {
 		
 		var sizerHeight = Number($(this).css('height').replace(/\D/g, ''));
 		
-		var trvl = 125;
-		var speed = 400;
+		var trvl = 155;
+		var speed = 175;
 		
 		newBall.pos = Number($(newBall).css('top').replace('px', ''));
 		newBall.direction = -1;
@@ -152,7 +152,7 @@ $(function() {
 		newBall.upperBound = newBall.lowerBound - (sizerHeight * (trvl / 100));
 		newBall.moveFunction = moveUpDown;
 		newBall.noBounce = false;
-		newBall.pps = speed;
+		newBall.pps = speed * (sizerHeight / 100);
 
 		$(newBall).on("reverse", function() {
 			// stop the insanity

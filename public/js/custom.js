@@ -239,6 +239,10 @@ function setupAnimation() {
 			var dir = $(elem).attr('direction');
 			var nb = ($(elem).attr('nobounce') === 'true' ? true : false);
 
+			var speed = $(elem).attr('speed');
+			speed = speed || '0';
+			speed = Number(speed);
+
 			if (dir === 'left') {
 				// when moving left, right bound is starting location, left bound is trvl less than that
 				elem.pos = Number($(elem).css('left').replace('px', ''));
@@ -247,6 +251,7 @@ function setupAnimation() {
 				elem.leftBound = elem.rightBound - (sizerWidth * (trvl / 100));
 				elem.moveFunction = moveLeftRight;
 				elem.noBounce = nb;
+				speed = speed * (sizerWidth / 100);
 			} else if (dir === 'right') {
 				// when moving right, left bound is starting location, right bound is trvl more than that
 				elem.pos = Number($(elem).css('left').replace('px', ''));
@@ -255,6 +260,7 @@ function setupAnimation() {
 				elem.rightBound = elem.leftBound + (sizerWidth * (trvl / 100));
 				elem.moveFunction = moveLeftRight;
 				elem.noBounce = nb;
+				speed = speed * (sizerWidth / 100);
 			} else if (dir === 'up') {
 				elem.pos = Number($(elem).css('top').replace('px', ''));
 				elem.direction = -1;
@@ -262,6 +268,7 @@ function setupAnimation() {
 				elem.upperBound = elem.lowerBound - (sizerHeight * (trvl / 100));
 				elem.moveFunction = moveUpDown;
 				elem.noBounce = nb;
+				speed = speed * (sizerHeight / 100);
 			} else if (dir === 'down') {
 				elem.pos = Number($(elem).css('top').replace('px', ''));
 				elem.direction = 1;
@@ -269,6 +276,7 @@ function setupAnimation() {
 				elem.lowerBound = elem.upperBound + (sizerHeight * (trvl / 100));
 				elem.moveFunction = moveUpDown;
 				elem.noBounce = nb;
+				speed = speed * (sizerHeight / 100);
 			} else if (dir === 'flicker') {
 				elem.moveFunction = flicker;
 			} else if (dir === 'blink') {
@@ -280,9 +288,7 @@ function setupAnimation() {
 				};
 			}
 
-			var speed = $(elem).attr('speed');
-			speed = speed || '0';
-			elem.pps = Number(speed);
+			elem.pps = speed;
 
 			animated.push(elem);
 
@@ -321,33 +327,11 @@ function checkCollisions() {
 				
 			});
 
-			//console.log(hits);
 			if (hits.length > 0) {
 				if (elem.hit) {
 					elem.hit(hits);
 				}
 			}
-			
-			/*
-			this.intersect = function(sprite1, sprite2) {
-				
-				var ox1 = 0;
-				var ox2 = 0;
-				if (sprite1.intOffsetX) {
-					ox1 = sprite1.intOffsetX;
-				}
-				if (sprite2.intOffsetX) {
-					ox2 = sprite2.intOffsetX;
-				}
-				
-				var distX = (sprite2.position.x + ox2) - (sprite1.position.x + ox1);
-				var distY = sprite2.position.y - sprite1.position.y;
-				var magSq = distX * distX + distY * distY;
-				return magSq < (sprite1.radius + sprite2.radius) * (sprite1.radius + sprite2.radius);
-				
-			}
-			*/
-			
 			
 		}
 		
