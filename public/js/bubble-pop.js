@@ -44,6 +44,8 @@ function popBubble(e) {
 	
 	$(bub).attr("src", "/images/generic_frog_bubble_popped.svg");
 	
+	$(bub).unbind("click");
+	
 }
 
 $(function() {

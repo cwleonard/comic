@@ -123,6 +123,7 @@ function moveLeftRight(e) {
 		
 		// reverse direction
 		this.direction *= -1;
+		$(this).trigger("reverse");
 		
 		if (this.leftBound > np) {
 			np = this.leftBound + (this.leftBound - np);
@@ -158,6 +159,7 @@ function moveUpDown(e) {
 
 			// reverse direction
 			this.direction *= -1;
+			$(this).trigger("reverse");
 
 			if (this.upperBound > np) {
 				np = this.upperBound + (this.upperBound - np);
