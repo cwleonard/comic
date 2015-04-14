@@ -4,25 +4,51 @@ var f1 = new Image();
 var f2 = new Image();
 var f3 = new Image();
 
+var f1r = new Image();
+var f2r = new Image();
+var f3r = new Image();
+
 f1.src = "/images/generic_frog_jump_1.svg";
 f2.src = "/images/generic_frog_jump_2.svg";
 f3.src = "/images/generic_frog_jump_3.svg";
 
-var aniFrames = [ f1, f2, f3 ];
-var f = 0;
+f1r.src = "/images/generic_frog_jump_1r.svg";
+f2r.src = "/images/generic_frog_jump_2r.svg";
+f3r.src = "/images/generic_frog_jump_3r.svg";
+
+var aniFrames  = [  f1,  f2,  f3 ];
+var aniFramesR = [ f1r, f2r, f3r ];
 
 
-function cycleFrame() {
+
+function frameCycler(elem, initialFrames) {
 	
-	$('#dodge-frog-1').attr("src", aniFrames[f].src);
-	f++;
-	if (f === aniFrames.length) {
-		f = 0;
-	}
+	var me = elem[0];
+	me.frameArray = initialFrames;
+	me.f = 0;
+	me.changeFrame = function() {
+		
+		$(me).attr("src", me.frameArray[me.f].src);
+		me.f++;
+		if (me.f === me.frameArray.length) {
+			me.f = 0;
+		}
+		setTimeout(me.changeFrame, 250);
+		
+	};
+	me.changeFrame();
 	
-	setTimeout(cycleFrame, 250);
+	elem.on("reverse", function() {
+		//console.log("frog reversing direction");
+		if (me.frameArray === aniFrames) {
+			me.frameArray = aniFramesR;
+		} else {
+			me.frameArray = aniFrames;
+		}
+	});
 	
 }
+
 
 $(function() {
 	
@@ -40,11 +66,10 @@ $(function() {
 //		  }
 //		});	
 
-	$('#dodge-frog-1').on("reverse", function() {
-		
-		console.log("frog reversing direction");
-		
-	});
+	
+	frameCycler($('#dodge-frog-1'), aniFrames);
+	frameCycler($('#dodge-frog-2'), aniFramesR);
+	
 	
 	$('#cell-2').unbind();
 	$('#cell-2').click(function(e) {
@@ -60,16 +85,16 @@ $(function() {
 		//console.log(x);
 		
 		var ball = $('#ball');
-		var newBall = ball.clone();
-		newBall.attr("id", "ball-" + (Math.random() * 1000));
+		var newBall = ball.clone()[0];
+		$(newBall).attr("id", "ball-" + (Math.random() * 1000));
 		
-		newBall.attr("animated", "true");
-		newBall.attr("speed", "250");
-		newBall.attr("travel", "80");
-		newBall.attr("direction", "down");
+		$(newBall).attr("animated", "true");
+		$(newBall).attr("speed", "400");
+		$(newBall).attr("travel", "125");
+		$(newBall).attr("direction", "up");
 		
 		
-		newBall.css("left", (x - (ball.width()/2)) + "px");
+		$(newBall).css("left", (x - (ball.width()/2)) + "px");
 		$(this).append(newBall);
 
 		
@@ -77,17 +102,22 @@ $(function() {
 		
 		var sizerHeight = Number($(this).css('height').replace(/\D/g, ''));
 		
-		var trvl = 80;
-		var speed = 250;
+		var trvl = 125;
+		var speed = 400;
 		
 		newBall.pos = Number($(newBall).css('top').replace('px', ''));
-		newBall.direction = 1;
-		newBall.upperBound = newBall.pos;
-		newBall.lowerBound = newBall.upperBound + (sizerHeight * (trvl / 100));
+		newBall.direction = -1;
+		newBall.lowerBound = newBall.pos;
+		newBall.upperBound = newBall.lowerBound - (sizerHeight * (trvl / 100));
 		newBall.moveFunction = moveUpDown;
 		newBall.noBounce = false;
 		newBall.pps = speed;
 
+		$(newBall).on("reverse", function() {
+			// stop the insanity
+			this.moveFunction = function() { };
+		});
+		
 		animated.push(newBall);
 		
 		// ---------------
@@ -95,7 +125,5 @@ $(function() {
 		
 	});	
 	
-	
-	setTimeout(cycleFrame, 250);
 	
 });
