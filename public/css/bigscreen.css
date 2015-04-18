@@ -17,8 +17,12 @@
 		font-size: 2.3em;
 	}
 
-	.free-text {
+	.standard-text {
 		font-size: 2.1em;
+	}
+
+	.olde-text {
+		font-size: 2.7em;
 	}
 
 	.bubble {
