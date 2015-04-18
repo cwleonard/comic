@@ -237,7 +237,8 @@ function buildCellObject(elem) {
 			var cssTop = $(elem).css('top');
 			var cssLeft = $(elem).css('left');
 			var cssWidth = $(elem).css('width');
-			
+			var stdText = $(elem).hasClass('standard-text');
+
 			// positions need converted to %
 			var t = Number(cssTop.replace('px', ''));
 			var l = Number(cssLeft.replace('px', ''));
@@ -246,15 +247,19 @@ function buildCellObject(elem) {
 			l = l * (1 / sizerWidth) * 100;
 			w = w * (1 / sizerWidth) * 100;
 			
+			var fs = (stdText ? 'standard-text' : 'olde-text');
+			
 			$(elem).find("> span").each(function(idx, elem) {
-				b.text.push({
-					objId: tid,
-					top: t,
-					left: l,
-					width: w,
-					z: zi++,
-					words: $(elem).html()
-				});
+				var tempObj = {
+						objId: tid,
+						top: t,
+						left: l,
+						width: w,
+						z: zi++,
+						words: $(elem).html()
+					};
+				if (!stdText) tempObj.fstyle = "olde-text";
+				b.text.push(tempObj);
 			});
 			
 		// ====================================== IMAGES =======================
@@ -460,6 +465,7 @@ function addBubble(cell, b) {
  *   - left - left position, in %
  *   - top - top position, in %
  *   - width - area width, in %
+ *   - fstyle - text style (defaults to "standard-text")
  * 
  * @param cell
  * @param t
@@ -472,7 +478,15 @@ function addText(cell, t) {
 
 	$(p).attr('id', txt.objId || makeTid());
 	$(p).addClass('free-text');
+	if (txt.fstyle) {
+		$(p).addClass(txt.fstyle);
+	} else {
+		$(p).addClass('standard-text');
+	}
 	$(p).addClass('free-text-outline');
+	
+	$(p).dblclick(toggleFontStyle);
+
 	
 }
 
@@ -594,6 +608,19 @@ function toggleStemPosition(obj) {
 	} else if ($(t).hasClass('bubble25')) {
 		$(t).removeClass('bubble25');
 		$(t).addClass('bubble50');
+	}
+	
+}
+
+function toggleFontStyle(obj) {
+	
+	var t = obj.target;
+	if ($(t).hasClass('standard-text')) {
+		$(t).removeClass('standard-text');
+		$(t).addClass('olde-text');
+	} else if ($(t).hasClass('olde-text')) {
+		$(t).removeClass('olde-text');
+		$(t).addClass('standard-text');
 	}
 	
 }

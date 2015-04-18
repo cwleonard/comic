@@ -3,7 +3,7 @@ mixin makeBubble(bub)
 		!= bub.text
 
 mixin makeText(txt)
-	p(id=txt.objId ? txt.objId : undefined,class='free-text',style=(txt.z ? 'z-index: ' + txt.z + ';' : '') + (txt.width ? 'width: ' + txt.width + '%;' : '') + 'top: ' + txt.top + '%; left: ' + txt.left + '%;')
+	p(id=txt.objId ? txt.objId : undefined,class='free-text ' + (txt.fstyle ? txt.fstyle : 'standard-text'),style=(txt.z ? 'z-index: ' + txt.z + ';' : '') + (txt.width ? 'width: ' + txt.width + '%;' : '') + 'top: ' + txt.top + '%; left: ' + txt.left + '%;')
 		!= txt.words
 
 mixin makeImage(img)
