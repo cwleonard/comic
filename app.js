@@ -99,6 +99,9 @@ app.get('/', function(req, res, next) {
 			if (err) {
 				next(err);
 			} else if (data) {
+				if (req.isAuthenticated()) {
+					data.admin = true;
+				}
 				data.url = conf.base;
 				data.toads = true;
 				res.render('comicpage', data);
@@ -113,6 +116,9 @@ app.get('/', function(req, res, next) {
 			if (err) {
 				next(err);
 			} else if (data) {
+				if (req.isAuthenticated()) {
+					data.admin = true;
+				}
 				data.url = conf.base;
 				res.render('comicpage', data);
 			} else {
@@ -156,6 +162,10 @@ app.get('/:n', function(req, res, next) {
 		if (err) {
 			next(err);
 		} else if (data) {
+			
+			if (req.isAuthenticated()) {
+				data.admin = true;
+			}
 			
 			if (data.pubDate) {
 				var p = new Date(data.pubDate);
