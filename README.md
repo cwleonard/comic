@@ -1,20 +1,8 @@
+## Comic
 
+This is the webcomic framework for Amphibian.com. 
 
-# Comic
+## About Me
 
-The Amphibian.com web comic. If frogs started a technology company...
-
-## Usage
-
-
-
-## Developing
-
-
-
-### Tools
-
-Created with [Nodeclipse](https://github.com/Nodeclipse/nodeclipse-1)
- ([Eclipse Marketplace](http://marketplace.eclipse.org/content/nodeclipse), [site](http://www.nodeclipse.org))   
-
-Nodeclipse is free open-source project that grows with your contributions.
+This comic framework was created by me, Casey Leonard. I make software for a living and I write the [Amphibian.com web comic](http://amphibian.com) about
+frogs who run a technology company. For more information, see [my web site](http://caseyleonard.com).
