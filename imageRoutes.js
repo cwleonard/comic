@@ -1,4 +1,7 @@
 var multiparty = require('multiparty');
+var imageMaker = require('./staticImage')({
+	dir: '/temp'
+});
 
 module.exports = function(conf) {
 	
@@ -83,6 +86,20 @@ module.exports = function(conf) {
 				}
 			});
 			
+		});
+
+		myRouter.get('/cell/:id/:cell', conf.auth, function(req, res, next) {
+
+			var imageData = null;
+			imageMaker.createImage(req.params.id, req.params.cell, function(id, data, cb) {
+				imageData = data;
+				cb(); // we "stored" it ok
+			}, function(err) {
+				res.setHeader('Content-Type', 'image/png');
+				res.setHeader('Content-Disposition', 'attachment; filename="amphibian-comic-cell-' + req.params.id + '.' + req.params.cell + '.png"');
+				res.send(imageData);
+			});
+
 		});
 
 		return myRouter;
