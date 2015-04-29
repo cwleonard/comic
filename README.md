@@ -1,6 +1,7 @@
 ## Comic
 
-This is the webcomic framework for Amphibian.com. 
+This is the webcomic framework for Amphibian.com. Amphibian.com is a web comic built for the
+web, using the browser as more than just a way to deliver images.
 
 ## About Me
 
