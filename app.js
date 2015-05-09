@@ -11,6 +11,7 @@ var Feed = require('feed');
 
 var imgRoutes = require('./imageRoutes');
 var dataRoutes = require('./dataRoutes');
+var coinRoutes = require('./coinRoutes');
 var logging = require('./logger');
 
 
@@ -617,6 +618,13 @@ app.use('/images', imgRoutes({
 	express: express,
 	auth: ensureAuthenticated,
 	dataSource: cfact
+}));
+
+//------------ set up routes for /coin/*
+
+app.use('/coin', coinRoutes({
+	express: express,
+	config: conf.coin
 }));
 
 // ------------ teapot
