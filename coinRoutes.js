@@ -1,8 +1,14 @@
 var Client = require('coinbase').Client;
+var intformat = require('biguint-format');
+var FlakeId = require('flake-idgen');
 
 module.exports = function(stuff) {
 
+	var addresses = {};
+	var purchases = {};
+	
 	var client = new Client({'apiKey': stuff.config.key, 'apiSecret': stuff.config.secret});
+	var flakeIdGen = new FlakeId();
 	
 	var accountId = stuff.config.account;
 
@@ -23,10 +29,11 @@ module.exports = function(stuff) {
 //		  
 //	});
 	
+	var myRouter = null;
 	
 	if (stuff.express) {
 		
-		var myRouter = stuff.express.Router();
+		myRouter = stuff.express.Router();
 		
 
 		myRouter.get('/address', function(req, res, next) {
@@ -37,8 +44,8 @@ module.exports = function(stuff) {
 			});
 
 			var args = {
-					"callback_url": "http://www.example.com/callback",
-					"label": "paywall test"
+					"callback_url": "http://example.com/coin/callback",
+					"label": "comic paywall"
 			};
 			
 			myBtcAcct.createAddress(args, function(err, data) {
@@ -51,6 +58,19 @@ module.exports = function(stuff) {
 				} else {
 					
 					console.log(data);
+					
+					var purchaseId = intformat(flakeIdGen.next(), 'hex');
+					
+					console.log("purchase-id: " + purchaseId);
+					
+					var a = {
+						paid: false,
+						purchaseId: purchaseId
+					};
+					addresses[data.address] = a;
+					purchases[purchaseId] = a;
+					
+					res.cookie('paywall-purchase', purchaseId, { maxAge: ((new Date()).getTime() + (365*24*60*60000*10)), httpOnly: true });
 					res.setHeader('Content-Type', 'text/plain');
 					res.send(data.address);
 				
@@ -61,8 +81,26 @@ module.exports = function(stuff) {
 
 		myRouter.post('/callback', function(req, res, next) {
 
-			console.log("paid to address: " + req.body.address);
-			console.log("amount: " + req.body.amount);
+			var addr = req.body.address;
+			if (addr) {
+				
+				if (addresses[addr]) {
+					
+					addresses[addr].paid = true;
+					
+					console.log("paid to address: " + addr);
+					console.log("amount: " + req.body.amount);
+
+				} else {
+					console.log("unknown address got payment: " + addr);
+				}
+				
+			} else {
+
+				console.log("something went wrong: " + req.body);
+				
+			}
+			
 			
 			res.sendStatus(200);
 
@@ -94,12 +132,23 @@ module.exports = function(stuff) {
 //		
 //		});
 
-		return myRouter;
+	}
+	
+	function isPaid(req) {
 		
-	} else {
+		var pid = req.cookies["paywall-purchase"];
 		
-		return null;
+		if (purchases[pid]) {
+			return purchases[pid].paid;
+		} else {
+			return false;
+		}
 		
 	}
+	
+	return {
+		router: myRouter,
+		paymentCheck: isPaid
+	};
 	
 };

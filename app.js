@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var qr = require('qr-image');
 
 var Feed = require('feed');
 
@@ -13,7 +14,6 @@ var imgRoutes = require('./imageRoutes');
 var dataRoutes = require('./dataRoutes');
 var coinRoutes = require('./coinRoutes');
 var logging = require('./logger');
-
 
 var app = express();
 
@@ -23,6 +23,11 @@ var cfact = require('./data')(conf.database);
 var authorizer = require('./userAuth')(conf.database);
 var stats = require('./stats')(conf.database);
 var weather = require('./weather')(conf);
+
+var coin = coinRoutes({
+	express: express,
+	config: conf.coin
+});
 
 // --- set up login strategy
 passport.use(new LocalStrategy(authorizer));
@@ -622,10 +627,18 @@ app.use('/images', imgRoutes({
 
 //------------ set up routes for /coin/*
 
-app.use('/coin', coinRoutes({
-	express: express,
-	config: conf.coin
-}));
+app.use('/coin', coin.router);
+app.get('/paidContent/:id', function(req, res, next) {
+	
+	if (coin.paymentCheck(req)) {
+		
+		res.send("here is your paid data!");
+		
+	} else {
+		res.sendStatus(402);
+	}
+	
+});
 
 // ------------ teapot
 
@@ -639,6 +652,16 @@ app.get('/temperature', function(req, res, next) {
 	res.status(200).send({
 		f: weather.temperature()
 	});
+});
+
+//------------ QR Code generator
+
+app.get('/qrc', function(req, res, next) {
+
+	var text = req.query.text;
+	res.setHeader('Content-Type', 'image/png');
+	res.send(qr.imageSync(text, {type: 'png'}));
+	
 });
 
 // ------------ test for error handling
