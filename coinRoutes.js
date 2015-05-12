@@ -7,6 +7,8 @@ module.exports = function(stuff) {
 	var addresses = {};
 	var purchases = {};
 	
+	var datastore = stuff.db;
+	
 	var client = new Client({'apiKey': stuff.config.key, 'apiSecret': stuff.config.secret});
 	var flakeIdGen = new FlakeId();
 	
@@ -29,23 +31,36 @@ module.exports = function(stuff) {
 //		  
 //	});
 	
+	function makeSecretCode() {
+	    var text = "";
+	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	    for( var i=0; i < 15; i++ ) {
+	        text += possible.charAt(Math.floor(Math.random() * possible.length));
+	    }
+	    return text;
+	}
+	
 	var myRouter = null;
 	
 	if (stuff.express) {
 		
 		myRouter = stuff.express.Router();
-		
 
-		myRouter.get('/address', function(req, res, next) {
+		myRouter.get('/address/:code', function(req, res, next) {
 
+			var pCode = req.params.code;
+
+			var callbackSecret = makeSecretCode();
+			var purchaseId = intformat(flakeIdGen.next(), 'hex');
+			
 			var Account   = require('coinbase').model.Account;
 			var myBtcAcct = new Account(client, {
 				'id' : accountId
 			});
 
 			var args = {
-					"callback_url": "http://example.com/coin/callback",
-					"label": "comic paywall"
+					"callback_url": "http://amphibian.com/coin/callback?secret=" + callbackSecret,
+					"label": "comic " + pCode
 			};
 			
 			myBtcAcct.createAddress(args, function(err, data) {
@@ -59,49 +74,73 @@ module.exports = function(stuff) {
 					
 					console.log(data);
 					
-					var purchaseId = intformat(flakeIdGen.next(), 'hex');
-					
-					console.log("purchase-id: " + purchaseId);
-					
 					var a = {
 						paid: false,
-						purchaseId: purchaseId
+						code: pCode,
+						purchaseId: purchaseId,
+						address: data.address,
+						secret: callbackSecret
 					};
-					addresses[data.address] = a;
-					purchases[purchaseId] = a;
-					
-					res.cookie('paywall-purchase', purchaseId, { maxAge: ((new Date()).getTime() + (365*24*60*60000*10)), httpOnly: true });
-					res.setHeader('Content-Type', 'text/plain');
-					res.send(data.address);
+					console.log(a);
+
+					datastore.createPurchaseRecord(a, function(err) {
+						
+						if (err) {
+							
+							console.log(err);
+							res.sendStatus(500);
+							
+						} else {
+							res.cookie(pCode + "-purchase", purchaseId, { maxAge: ((new Date()).getTime() + (365*24*60*60000*10)), httpOnly: true });
+							res.setHeader('Content-Type', 'text/plain');
+							res.send(data.address);
+						}
+						
+					});
 				
 				}
+
 			});
 
 		});
 
 		myRouter.post('/callback', function(req, res, next) {
 
+			var secretCode = req.query.secret;
 			var addr = req.body.address;
 			if (addr) {
 				
-				if (addresses[addr]) {
+				datastore.recordPayment({
+					secret: secretCode,
+					address: addr,
+					amount: req.body.amount
+				}, function(err) {
 					
-					addresses[addr].paid = true;
+					if (err) {
+						console.log("error in callback: " + err);
+						console.log(req.body);
+					}
 					
-					console.log("paid to address: " + addr);
-					console.log("amount: " + req.body.amount);
-
-				} else {
-					console.log("unknown address got payment: " + addr);
-				}
+				});
+				
+//				if (addresses[addr]) {
+//					
+//					addresses[addr].paid = true;
+//					
+//					console.log("paid to address: " + addr);
+//					console.log("amount: " + req.body.amount);
+//
+//				} else {
+//					console.log("unknown address got payment: " + addr);
+//				}
 				
 			} else {
 
 				console.log("something went wrong: " + req.body);
 				
 			}
-			
-			
+
+			// always give coinbase a 200
 			res.sendStatus(200);
 
 		});
@@ -134,21 +173,31 @@ module.exports = function(stuff) {
 
 	}
 	
-	function isPaid(req) {
+	function checkPaid(code, req, cb) {
 		
-		var pid = req.cookies["paywall-purchase"];
+		var pid = req.cookies[code + "-purchase"];
+		datastore.checkPaidStatus(pid, function(err, p) {
+			
+			if (err) {
+				console.log(err);
+				cb(false);
+			} else {
+				cb(p);
+			}
+			
+		});
 		
-		if (purchases[pid]) {
-			return purchases[pid].paid;
-		} else {
-			return false;
-		}
+//		if (purchases[pid]) {
+//			return purchases[pid].paid;
+//		} else {
+//			return false;
+//		}
 		
 	}
 	
 	return {
 		router: myRouter,
-		paymentCheck: isPaid
+		paymentCheck: checkPaid
 	};
 	
 };

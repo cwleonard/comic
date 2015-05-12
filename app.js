@@ -26,6 +26,7 @@ var weather = require('./weather')(conf);
 
 var coin = coinRoutes({
 	express: express,
+	db: cfact,
 	config: conf.coin
 });
 
@@ -628,15 +629,17 @@ app.use('/images', imgRoutes({
 //------------ set up routes for /coin/*
 
 app.use('/coin', coin.router);
-app.get('/paidContent/:id', function(req, res, next) {
+app.get('/paidContent/:code/:id', function(req, res, next) {
 	
-	if (coin.paymentCheck(req)) {
+	coin.paymentCheck(req.params.code, req, function(ok) {
 		
-		res.send("here is your paid data!");
+		if (ok) {
+			res.send("here is your paid data!");
+		} else {
+			res.sendStatus(402);
+		}
 		
-	} else {
-		res.sendStatus(402);
-	}
+	});
 	
 });
 

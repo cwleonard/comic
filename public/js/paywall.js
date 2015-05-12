@@ -4,7 +4,7 @@ function getBitcoinAddress() {
 	
 	if (!paymentAddress) {
 		
-		$.get("/coin/address", function(data) {
+		$.get("/coin/address/removeWall", function(data) {
 			
 			paymentAddress = data;
 			

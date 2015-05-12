@@ -464,7 +464,86 @@ module.exports = function(dbconf) {
 
 			return deferred.promise;
 
-		}
+		},
+		
+		// ------------------------ paid content stuff -----------------
+		
+		createPurchaseRecord: function(record, callback) {
+			
+//			var a = {
+//					paid: false,
+//					code: pCode,
+//					purchaseId: purchaseId,
+//					address: data.address,
+//					secret: callbackSecret
+//				};
+			
+			var sql = 'INSERT INTO purchases (purchaseId, bitcoinAddress, secret, productCode) VALUES (?, ?, ?, ?)';
+			var params = [record.purchaseId, record.address, record.secret, record.code];
+			
+			pool.query(sql, params, function(err, result) {
+				
+				if (err) {
+					callback(err);
+				} else {
+					callback(null);
+				}
+				
+			});
+			
+		},
+		
+		recordPayment: function(data, callback) {
+			
+//			{
+//				secret: secretCode,
+//				address: addr,
+//				amount: req.body.amount
+//			}			
+			
+			var sql = 'UPDATE purchases SET paid = 1, amount = ? WHERE bitcoinAddress = ? AND secret = ?';
+			var params = [data.amount, data.address, data.secret];
+			
+			pool.query(sql, params, function(err, result) {
+				
+				if (err) {
+					callback(err);
+				} else {
+					if (result.affectedRows === 0) {
+						console.log("no record found to update: " + JSON.stringify(data));
+					} else if (result.affectedRows > 1) {
+						console.log("updated too many records: " + JSON.stringify(data));
+					}
+					callback(null);
+				}
+				
+			});
+			
+		},
+		
+		checkPaidStatus: function(purchaseId, callback) {
+			
+			var sql = 'SELECT paid FROM purchases WHERE purchaseId = ?';
+			var params = [purchaseId];
+			
+			pool.query(sql, params, function(err, rows) {
+				
+				if (err) {
+					callback(err);
+				} else {
+					if (rows.length > 0) {
+						callback(null, (rows[0].paid == 1 ? true : false));
+					} else {
+						callback(null, false);
+					}
+
+				}
+				
+			});
+			
+		},
+		
+		
 
 	};
 	
