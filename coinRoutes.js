@@ -1,6 +1,4 @@
 var Client = require('coinbase').Client;
-var intformat = require('biguint-format');
-var FlakeId = require('flake-idgen');
 
 module.exports = function(stuff) {
 
@@ -10,34 +8,89 @@ module.exports = function(stuff) {
 	var datastore = stuff.db;
 	
 	var client = new Client({'apiKey': stuff.config.key, 'apiSecret': stuff.config.secret});
-	var flakeIdGen = new FlakeId();
 	
 	var accountId = stuff.config.account;
 
-//	client.getAccounts(function(err, accounts) {
-//
-//		if (err) {
-//			console.log("unable to get primary account id: " + err.response.body);
-//		} else {
-//
-//			for (var i = 0; i < accounts.length && primaryAccountId == null; i++) {
-//				  if (accounts[i].primary) {
-//					  primaryAccountId = accounts[i].id;
-//				  }
-//			}
-//			console.log("set primary account id");
-//				  
-//		}
-//		  
-//	});
-	
-	function makeSecretCode() {
+	function makeSecretCode(len) {
 	    var text = "";
 	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	    for( var i=0; i < 15; i++ ) {
+	    for( var i=0; i < len; i++ ) {
 	        text += possible.charAt(Math.floor(Math.random() * possible.length));
 	    }
 	    return text;
+	}
+	
+	function newBitcoinAddress(productId, cb) {
+
+		// this function will throw an error if no such product exists
+		datastore.lookupPrice(productId, function(err, record) {
+			
+			if (err) {
+				
+				console.log(err);
+				cb(err);
+				
+			} else {
+				
+				var price = record.cost;
+
+				var callbackSecret = makeSecretCode(15);
+				var purchaseId = makeSecretCode(10);
+				
+				var Account   = require('coinbase').model.Account;
+				var myBtcAcct = new Account(client, {
+					'id' : accountId
+				});
+
+				var args = {
+						"callback_url": "http://amphibian.com/coin/callback?secret=" + callbackSecret,
+						"label": "product-id: " + productId
+				};
+				
+				myBtcAcct.createAddress(args, function(err, data) {
+
+					if (err) {
+						
+						console.log("unable to create address: " + err.response.body);
+						cb(err);
+						
+					} else {
+						
+						console.log(data);
+						
+						var a = {
+							paid: false,
+							code: productId,
+							cost: price,
+							purchaseId: purchaseId,
+							address: data.address,
+							secret: callbackSecret
+						};
+						console.log(a);
+
+						datastore.createPurchaseRecord(a, function(err, record) {
+							
+							if (err) {
+								
+								console.log(err);
+								cb(err);
+								
+							} else {
+								
+								cb(null, record);
+								
+							}
+							
+						});
+					
+					}
+
+				});
+				
+			}
+		
+		});
+		
 	}
 	
 	var myRouter = null;
@@ -45,64 +98,6 @@ module.exports = function(stuff) {
 	if (stuff.express) {
 		
 		myRouter = stuff.express.Router();
-
-		myRouter.get('/address/:code', function(req, res, next) {
-
-			var pCode = req.params.code;
-
-			var callbackSecret = makeSecretCode();
-			var purchaseId = intformat(flakeIdGen.next(), 'hex');
-			
-			var Account   = require('coinbase').model.Account;
-			var myBtcAcct = new Account(client, {
-				'id' : accountId
-			});
-
-			var args = {
-					"callback_url": "http://amphibian.com/coin/callback?secret=" + callbackSecret,
-					"label": "comic " + pCode
-			};
-			
-			myBtcAcct.createAddress(args, function(err, data) {
-
-				if (err) {
-					
-					console.log("unable to create address: " + err.response.body);
-					res.sendStatus(500);
-					
-				} else {
-					
-					console.log(data);
-					
-					var a = {
-						paid: false,
-						code: pCode,
-						purchaseId: purchaseId,
-						address: data.address,
-						secret: callbackSecret
-					};
-					console.log(a);
-
-					datastore.createPurchaseRecord(a, function(err) {
-						
-						if (err) {
-							
-							console.log(err);
-							res.sendStatus(500);
-							
-						} else {
-							res.cookie(pCode + "-purchase", purchaseId, { maxAge: ((new Date()).getTime() + (365*24*60*60000*10)), httpOnly: true });
-							res.setHeader('Content-Type', 'text/plain');
-							res.send(data.address);
-						}
-						
-					});
-				
-				}
-
-			});
-
-		});
 
 		myRouter.post('/callback', function(req, res, next) {
 
@@ -123,17 +118,6 @@ module.exports = function(stuff) {
 					
 				});
 				
-//				if (addresses[addr]) {
-//					
-//					addresses[addr].paid = true;
-//					
-//					console.log("paid to address: " + addr);
-//					console.log("amount: " + req.body.amount);
-//
-//				} else {
-//					console.log("unknown address got payment: " + addr);
-//				}
-				
 			} else {
 
 				console.log("something went wrong: " + req.body);
@@ -145,59 +129,71 @@ module.exports = function(stuff) {
 
 		});
 
-//		myRouter.get('/account', function(req, res, next) {
-//
-//			client.getAccounts(function(err, accounts) {
-//
-//				if (err) {
-//					console.log(err.response.body);
-//					next(err);
-//				} else {
-//
-//					var pAccount = null;
-//					for (var i = 0; i < accounts.length && pAccount == null; i++) {
-//						  if (accounts[i].primary) {
-//							  pAccount = accounts[i].id;
-//						  }
-//					}
-//					
-//					res.setHeader('Content-Type', 'text/plain');
-//					res.send(pAccount);
-//						  
-//				}
-//				  
-//			});
-//
-//		
-//		});
-
 	}
 	
-	function checkPaid(code, req, cb) {
+	function paywallMiddleware(req, res, next) {
+
+		var productCode = req.path.substring(1);
+
+		//console.log(req.path.substring(1));
+		var cookieName = "product-" + productCode + "-purchase";
 		
-		var pid = req.cookies[code + "-purchase"];
-		datastore.checkPaidStatus(pid, function(err, p) {
+		
+		var pid = req.cookies[cookieName];
+		if (pid) {
 			
-			if (err) {
-				console.log(err);
-				cb(false);
-			} else {
-				cb(p);
-			}
+			// user already has a cookie, indicating that they've tried to
+			// access this item before. check to see if they've paid yet.
+
+			datastore.checkPaidStatus(pid, function(err, data) {
+				
+				if (err) {
+					console.log(err);
+					next(err);
+				} else {
+					
+					if (data.paid) {
+						next();
+					} else {
+						// show the payment address that already exists
+						res.setHeader("X-Payment-Types-Accepted", "Bitcoin");
+						res.setHeader("X-Payment-Address-Bitcoin", data.address);
+						res.setHeader("X-Payment-Amount-Bitcoin", data.cost);
+						res.sendStatus(402);
+					}
+					
+				}
+				
+			});
 			
-		});
-		
-//		if (purchases[pid]) {
-//			return purchases[pid].paid;
-//		} else {
-//			return false;
-//		}
-		
+		} else {
+			
+			// need to create a new payment address
+
+			newBitcoinAddress(productCode, function(err, data) {
+
+				if (err) {
+					next(err);
+				} else {
+
+					res.cookie(cookieName, data.purchaseId, { maxAge: ((new Date()).getTime() + (365*24*60*60000*10)), httpOnly: true });
+					res.setHeader("X-Payment-Types-Accepted", "Bitcoin");
+					res.setHeader("X-Payment-Address-Bitcoin", data.address);
+					res.setHeader("X-Payment-Amount-Bitcoin", data.cost);
+					res.sendStatus(402);
+
+				}
+
+			});
+
+		}
+
 	}
+
 	
 	return {
 		router: myRouter,
-		paymentCheck: checkPaid
+		middleware: paywallMiddleware
 	};
 	
 };

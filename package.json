@@ -20,8 +20,6 @@
     "ua-parser-js": "0.7.3",
     "feed": "0.2.6",
     "q": "1.1.2",
-    "flake-idgen": "1.0.0",
-    "biguint-format": "1.0.0",
     "qr-image": "3.1.0",
     "coinbase": "1.0.2"
   }

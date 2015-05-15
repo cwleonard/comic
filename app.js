@@ -629,19 +629,30 @@ app.use('/images', imgRoutes({
 //------------ set up routes for /coin/*
 
 app.use('/coin', coin.router);
-app.get('/paidContent/:code/:id', function(req, res, next) {
+
+var paidContentRouter = express.Router();
+paidContentRouter.get("/:id", coin.middleware, function(req, res, next) {
 	
-	coin.paymentCheck(req.params.code, req, function(ok) {
-		
-		if (ok) {
-			res.send("here is your paid data!");
+	cfact.loadPaidById(req.params.id, function (err, data) {
+		if (err) {
+			next(err);
+		} else if (data) {
+			data.url = conf.base;
+			data.dynScripts = data.scripts;
+			res.render('comic', data, function(err, str) {
+				if (err) {
+					next(err);
+				} else {
+					res.send(str);
+				}
+			});
 		} else {
-			res.sendStatus(402);
+			next(); // no comic found
 		}
-		
 	});
 	
 });
+app.use('/paidContent', paidContentRouter);
 
 // ------------ teapot
 
