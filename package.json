@@ -19,6 +19,8 @@
     "passport-local": "1.0.0",
     "ua-parser-js": "0.7.3",
     "feed": "0.2.6",
-    "q": "1.1.2"
+    "q": "1.1.2",
+    "qr-image": "3.1.0",
+    "coinbase": "1.0.2"
   }
 }

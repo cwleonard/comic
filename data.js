@@ -464,7 +464,153 @@ module.exports = function(dbconf) {
 
 			return deferred.promise;
 
+		},
+		
+		// ------------------------ paid content stuff -----------------
+
+		lookupPrice: function(productId, callback) {
+			
+			var sql = 'SELECT cost FROM products WHERE id = ?';
+			var params = [productId];
+			
+			pool.query(sql, params, function(err, rows) {
+				
+				if (err) {
+					callback(err);
+				} else {
+					if (rows.length > 0) {
+						callback(null, {
+							cost: rows[0].cost
+						});
+					} else {
+						callback(new Error('no product found with id ' + productId + '!'));
+					}
+
+				}
+				
+			});
+			
+		},
+
+		createPurchaseRecord: function(record, callback) {
+			
+//			record = {
+//					paid: false,
+//					code: pCode,
+//					cost: cost,
+//					purchaseId: purchaseId,
+//					address: data.address,
+//					secret: callbackSecret
+//				};
+			
+			var sql = 'INSERT INTO purchases (purchaseId, bitcoinAddress, secret, productCode, cost) VALUES (?, ?, ?, ?, ?)';
+			var params = [record.purchaseId, record.address, record.secret, record.code, record.cost];
+
+			pool.query(sql, params, function(err, result) {
+
+				if (err) {
+					callback(err);
+				} else {
+					callback(null, record);
+				}
+
+			});
+			
+		},
+
+		recordPayment: function(data, callback) {
+			
+//			{
+//				secret: secretCode,
+//				address: addr,
+//				amount: req.body.amount
+//			}			
+			
+			var sql = 'UPDATE purchases SET amount = ? WHERE bitcoinAddress = ? AND secret = ?';
+			var params = [data.amount, data.address, data.secret];
+			
+			pool.query(sql, params, function(err, result) {
+				
+				if (err) {
+					callback(err);
+				} else {
+					if (result.affectedRows === 0) {
+						console.log("no record found to update: " + JSON.stringify(data));
+					} else if (result.affectedRows > 1) {
+						console.log("updated too many records: " + JSON.stringify(data));
+					}
+					callback(null);
+				}
+				
+			});
+			
+		},
+		
+		checkPaidStatus: function(purchaseId, callback) {
+			
+			var sql = 'SELECT cost, amount, bitcoinaddress, amount FROM purchases WHERE purchaseId = ?';
+			var params = [purchaseId];
+			
+			pool.query(sql, params, function(err, rows) {
+				
+				if (err) {
+					callback(err);
+				} else {
+					if (rows.length > 0) {
+						callback(null, {
+							paid: (rows[0].amount >= rows[0].cost),
+							address: rows[0].bitcoinaddress,
+							cost: (rows[0].cost - rows[0].amount)
+						});
+					} else {
+						callback(null, {
+							paid: false
+						});
+					}
+
+				}
+				
+			});
+			
+		},
+		
+		loadPaidById: function (id, cb) {
+
+			var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+			var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			
+			var sql = 'SELECT data FROM products WHERE id = ' + pool.escape(id);
+			pool.query(sql, function(err, rows) {
+
+				if (err) {
+					cb(err);
+				} else {
+
+					if (rows.length > 0) {
+						
+						var obj = JSON.parse(rows[0].data);
+						
+						var objDate = new Date(obj.pubDate);
+												
+						obj.pubDate = days[objDate.getUTCDay()] + ", " + objDate.getUTCDate() + " " + months[objDate.getUTCMonth()] + ", " + objDate.getUTCFullYear();
+						obj.pd = null;
+
+						obj.prevDate = null;
+						obj.nextDate = null;
+
+						cb(null, obj);
+
+					} else {
+						cb(null, null);
+					}
+
+				}
+
+			});
+
+
 		}
+		
 
 	};
 	
