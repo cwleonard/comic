@@ -17,13 +17,14 @@ $(function() {
 	
 	$('#play-button').click(function() {
 		if (guitarSound) {
-			guitarSound.play();
+				guitarSound.play();
+			}
 		}
 	});
 
 	$('#pause-button').click(function() {
 		if (guitarSound) {
-			guitarSound.pause();
+			guitarSound.togglePause();
 		}
 	});
 
