@@ -17,6 +17,7 @@ $(function() {
 	
 	$('#play-button').click(function() {
 		if (guitarSound) {
+			if (guitarSound.playState === 0 || guitarSound.paused) {
 				guitarSound.play();
 			}
 		}
