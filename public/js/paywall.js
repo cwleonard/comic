@@ -12,7 +12,9 @@ function checkForPayment() {
 		dataType: "html",
 		success: function(data) {
 			
-			$("#comicArea").html(data);
+			var saveNav = $('#comicNav').html();
+			$('#comicArea').html(data);
+			$('#comicNav').html(saveNav);
 			
 			$('#inputModal').modal('hide');
 			

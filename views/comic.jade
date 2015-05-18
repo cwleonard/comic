@@ -37,7 +37,7 @@ div#sizer(comicId=id)
 			if nextDate
 				a(href='/' + nextDate) Next
 		if !toads
-			div
+			div#comicNav
 				if prevDate
 					p.lnav!= '<a onclick="replaceComic(\'0\');"><i class="fa fa-fast-backward"></i></a>&nbsp;'
 					p.lnav!= '<a onclick="replaceComic(\'' + prevDate + '\');"><i class="fa fa-backward"></i> Previous</a>'
