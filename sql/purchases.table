@@ -1,0 +1,12 @@
+delimiter $$
+
+CREATE TABLE `purchases` (
+  `purchaseId` varchar(50) NOT NULL,
+  `bitcoinAddress` varchar(100) NOT NULL,
+  `secret` varchar(100) NOT NULL,
+  `productCode` varchar(100) NOT NULL,
+  `cost` float NOT NULL,
+  `amount` float NOT NULL DEFAULT '0',
+  PRIMARY KEY (`purchaseId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+

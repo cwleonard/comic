@@ -1,0 +1,10 @@
+delimiter $$
+
+CREATE TABLE `products` (
+  `id` varchar(100) NOT NULL,
+  `description` varchar(500) NOT NULL,
+  `cost` float NOT NULL,
+  `data` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+
