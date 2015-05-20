@@ -51,7 +51,7 @@ module.exports = function(stuff) {
 
 					if (err) {
 						
-						console.log("unable to create address: " + err.response.body);
+						console.log("unable to create address: " + err);
 						cb(err);
 						
 					} else {
