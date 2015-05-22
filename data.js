@@ -526,7 +526,7 @@ module.exports = function(dbconf) {
 //				amount: req.body.amount
 //			}			
 			
-			var sql = 'UPDATE purchases SET amount = ? WHERE bitcoinAddress = ? AND secret = ?';
+			var sql = 'UPDATE purchases SET amount = amount + ? WHERE bitcoinAddress = ? AND secret = ?';
 			var params = [data.amount, data.address, data.secret];
 			
 			pool.query(sql, params, function(err, result) {

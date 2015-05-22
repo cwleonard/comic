@@ -26,10 +26,11 @@ function checkForPayment() {
 				var addr = xhr.getResponseHeader("X-Payment-Address-Bitcoin");
 				var cost = xhr.getResponseHeader("X-Payment-Amount-Bitcoin");
 
-				var bcqr = encodeURIComponent("bitcoin:" + addr + "?amount=" + cost);
+				var bcurl = "bitcoin:" + addr + "?amount=" + cost;
+				var bcqr = encodeURIComponent(bcurl);
 				
 				if ($('#inputModal .modal-body').html() === "") {
-					$('#inputModal .modal-body').html("<p style='text-align: center'>Pay with Bitcoin!<br><img src='/qrc?text=" + bcqr + "'><br>Send " + cost + " BTC to<br>" + addr + "</p><p style='margin-top: 10px; font-weight: bold; text-align: center'>Waiting for payment...<br><img src=\"/simg/wait-for-payment.gif\"></p>");
+					$('#inputModal .modal-body').html("<p style='text-align: center'>Pay with Bitcoin!<br><a href='" + bcurl + "'><img src='/qrc?text=" + bcqr + "'></a><br>Send " + cost + " BTC to<br>" + addr + "</p><p style='margin-top: 10px; font-weight: bold; text-align: center'>Waiting for payment...<br><img src=\"/simg/wait-for-payment.gif\"></p>");
 				}
 				
 				if ($('#inputModal').css("display") == "block") {
