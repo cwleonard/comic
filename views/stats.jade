@@ -60,6 +60,30 @@ html
 											canvas#enginesChart(style="margin-bottom: 10px; padding: 20px;",width="10",height="10")
 
 					div(class="clearfix")
+
+				div(class="about-one",style="margin-top: 10px;")
+
+					div(class="about-one-item")
+
+						div(class="about-one-content")
+						
+							div.container-fluid
+								div.row
+									div.col-sm-6
+
+										h3 Top Sources (last day)
+									
+										div(style="margin: auto; width: 80%;")
+											div#topSources
+
+									div.col-sm-6
+
+										h3 Top Comics (last day)
+
+										div(style="margin: auto; width: 80%;")
+											div#topComics
+
+					div(class="clearfix")
 		
 		include js
 		script(src='/js/Chart.min.js')

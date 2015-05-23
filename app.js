@@ -586,6 +586,22 @@ app.get('/stats/os/:n', function(req, res, next) {
 	
 });
 
+app.get('/stats/topSources/:n', function(req, res, next) {
+	
+	stats.topSources(req.params.n, function(err, data) {
+		res.status(200).send(data);
+	});
+	
+});
+
+app.get('/stats/topComics/:n', function(req, res, next) {
+	
+	stats.topComics(req.params.n, function(err, data) {
+		res.status(200).send(data);
+	});
+	
+});
+
 //------------
 
 app.get('/pins/:n', function(req, res, next) {

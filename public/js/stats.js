@@ -160,9 +160,80 @@ function doAgentChart(numDays) {
 
 }
 
+function doSourcesTable(numHours) {
+
+	$.get('/stats/topSources/' + numHours, function(data) {
+		
+		console.log(data);
+
+		var tbl = "<table class=\"table\">";
+		tbl += "<thead>";
+		tbl += "<tr style=\"font-weight: bold;\">";
+		tbl += "<td style=\"text-align: right;\">#</td>";
+		tbl += "<td>Source</td>";
+		tbl += "<td>Comic</td>";
+		tbl += "</tr>"
+		tbl += "</thead>";
+		tbl += "<tbody class=\"table-striped\">";
+		for (var i = 0; i < data.length; i++) {
+			
+			var src = data[i].referer;
+			src = src.replace("http://", "");
+			
+			if (src.length > 25) {
+				src = src.substring(0, 25);
+				src += "...";
+				src = "<span title=\"" + data[i].referer + "\">" + src + "</span>";
+			}
+			
+			tbl += "<tr>";
+			tbl += "<td style=\"text-align: right;\">" + data[i].count + "</td>";
+			tbl += "<td>" + src + "</td>";
+			tbl += "<td>" + data[i].resource + "</td>";
+			tbl += "</tr>"
+		}
+		tbl += "</tbody>";
+		tbl += "</table>"
+		$('#topSources').html(tbl);
+
+	}, 'json');
+
+}
+
+function doComicsTable(numHours) {
+
+	$.get('/stats/topComics/' + numHours, function(data) {
+
+		var tbl = "<table class=\"table\">";
+		tbl += "<thead>";
+		tbl += "<tr style=\"font-weight: bold;\">";
+		tbl += "<td>Comic</td>";
+		tbl += "<td style=\"text-align: right;\">Views</td>";
+		tbl += "</tr>"
+		tbl += "</thead>";
+		tbl += "<tbody class=\"table-striped\">";
+		for (var i = 0; i < data.length; i++) {
+			tbl += "<tr>";
+			tbl += "<td>" + data[i].resource + "</td>";
+			tbl += "<td style=\"text-align: right;\">" + data[i].count + "</td>";
+			tbl += "</tr>"
+		}
+		tbl += "</tbody>";
+		tbl += "</table>"
+		$('#topComics').html(tbl);
+		
+	}, 'json');
+
+}
+
+
+
 $(function() {
 	
 	doDayChart(7);
 	doAgentChart(7);
+	
+	doSourcesTable(24);
+	doComicsTable(24);
 	
 });
