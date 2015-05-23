@@ -217,6 +217,8 @@ function buildCellObject(elem) {
 			l = l * (1 / sizerWidth) * 100;
 			w = w * (1 / sizerWidth) * 100;
 			
+			var rot = $(elem).attr('rot');
+
 			$(elem).find("> span").each(function(idx, elem) {
 				b.bubbles.push({
 					objId: bid, 
@@ -224,6 +226,7 @@ function buildCellObject(elem) {
 					left: l,
 					width: w,
 					z: zi++,
+					r: rot,
 					stemPos: sp,
 					text: $(elem).html()
 				});
@@ -249,6 +252,8 @@ function buildCellObject(elem) {
 			
 			var fs = (stdText ? 'standard-text' : 'olde-text');
 			
+			var rot = $(elem).attr('rot');
+			
 			$(elem).find("> span").each(function(idx, elem) {
 				var tempObj = {
 						objId: tid,
@@ -256,6 +261,7 @@ function buildCellObject(elem) {
 						left: l,
 						width: w,
 						z: zi++,
+						r: rot,
 						words: $(elem).html()
 					};
 				if (!stdText) tempObj.fstyle = "olde-text";
@@ -447,11 +453,19 @@ function addBubble(cell, b) {
 	
 	var p = createEditableParagraph(cell, bub);
 
+	var rot = ( bub.r ? 'rotate(' + bub.r + 'deg)' : null);
+
 	$(p).attr('id', bub.objId || makeBid());
 	$(p).addClass('bubble');
 	$(p).addClass('bubble-text');
 	$(p).addClass('bubble' + stemPos);
-	
+
+	if (rot) {
+		$(p).css('-webkit-transform', rot);
+		$(p).css('-moz-transform', rot);
+		$(p).attr('rot', bub.r);
+	}
+
 	$(p).dblclick(toggleStemPosition);
 	
 }
@@ -476,6 +490,8 @@ function addText(cell, t) {
 	
 	var p = createEditableParagraph(cell, txt);
 
+	var rot = ( txt.r ? 'rotate(' + txt.r + 'deg)' : null);
+
 	$(p).attr('id', txt.objId || makeTid());
 	$(p).addClass('free-text');
 	if (txt.fstyle) {
@@ -484,6 +500,14 @@ function addText(cell, t) {
 		$(p).addClass('standard-text');
 	}
 	$(p).addClass('free-text-outline');
+
+	if (rot) {
+		$(p).css('-webkit-transform', rot);
+		$(p).css('-moz-transform', rot);
+		$(p).attr('rot', txt.r);
+	}
+	
+	
 	
 	$(p).dblclick(toggleFontStyle);
 
@@ -945,6 +969,11 @@ function setupMenu(imgSelectOptions) {
 				type: 'text',
 				value: ''
 			},
+			rotation: {
+				name: 'Rotation (deg)',
+				type: 'text',
+				value: ''
+			},
 			sep1: "----------",
 			objId: {
 				name: 'Object ID',
@@ -979,6 +1008,7 @@ function setupMenu(imgSelectOptions) {
 			show: function(opt) {
 				var $this = this;
 				var i = $this.attr('id');
+				var r = $this.attr("rot");
 				var w = $this.css('width');
 				var t = $this.css('top');
 				var l = $this.css('left');
@@ -987,6 +1017,7 @@ function setupMenu(imgSelectOptions) {
 					width: w,
 					top: t,
 					left: l,
+					rotation: r
 				};
 				$.contextMenu.setInputValues(opt, d);
 			},
@@ -1001,6 +1032,12 @@ function setupMenu(imgSelectOptions) {
 					$this.css('width', o.width);
 					$this.resizable();
 				}
+				var rot = '';
+				if (o.rotation !== '') {
+					rot = 'rotate(' + o.rotation + 'deg)';
+				}
+				$this.css('-webkit-transform', rot);
+				$this.attr('rot', o.rotation);
 			}
 		}
 		
