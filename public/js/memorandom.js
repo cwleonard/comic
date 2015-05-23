@@ -2,7 +2,7 @@ var verbs = [ "add", "assist", "bake", "call", "chase", "compare", "damage",
 		"drop", "end", "escape", "fasten", "fix", "gather", "grab",
 		"hug", "imagine", "jog", "jump", "kick", "knit", "land",
 		"lock", "march", "mix", "name", "obey", "open", "pass",
-		"promise", "question", "reach", "rinse", "scatter", "stay", "talk",
+		"promise", "question", "reach", "rinse", "scatter", "toss", "talk",
 		"transcribe", "turn", "unfasten", "use", "visit", "walk", "weave",
 		"work", "yawn", "yell", "zip", "zoom" ];
 
@@ -27,10 +27,15 @@ var nouns = [ "cabbages", "cables", "cactus", "cakes", "calculators",
 		"sacks", "sails", "scissors", "shades", "shakes", "sheep", "ships",
 		"shirts", "signs", "skates", "snails", "snakes", "socks", "songs",
 		"sounds", "sparks", "spiders", "sponges", "spoons", "squirrels",
-		"stations", "sticks", "stones", "stores", "story", "stoves",
+		"stations", "sticks", "stones", "stores", "stories", "stoves",
 		"strangers", "streams", "streets", "strings", "structures",
 		"substances", "supports", "surprises", "sweaters", "swings", "systems" ];
 
+var punctuation = [".", ".", ".", ".", ".", ".", ".", "!", "!", "!", "?"];
+
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
 
 function getRandomWord(list) {
 	return list[Math.floor(Math.random() * list.length)];
@@ -38,7 +43,7 @@ function getRandomWord(list) {
 
 function makeMemo() {
 
-	var memo = getRandomWord(verbs) + " " + getRandomWord(adjectives) + " " + getRandomWord(nouns);
+	var memo = toTitleCase(getRandomWord(verbs)) + " " + getRandomWord(adjectives) + " " + getRandomWord(nouns) + getRandomWord(punctuation);
 	console.log(memo);
 	return memo;
 
