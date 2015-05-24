@@ -218,6 +218,10 @@ p.pubdate {
 	text-align: right;
 }
 
+#tips {
+	text-align: right;
+}
+
 p.cTitle {
 	font-family: 'Sniglet', sans-serif;
 	text-align: center;
@@ -355,6 +359,14 @@ div.buy p.ftitle {
 
 .promo p a {
 	color: #ffffff;
+}
+
+#tipModal .modal-body p {
+	text-align: center;
+}
+
+#tipModal .modal-body h4 {
+	text-align: center;
 }
 
 /* --------- responsive media stuff ---------------------- */

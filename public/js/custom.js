@@ -85,6 +85,10 @@ function replaceComic(id, push) {
 	
 }
 
+function showTipModal() {
+	$('#tipModal').modal('show');
+}
+
 $(function() {
 
 	// set the mailto address in this way so it's not easy for robots to find

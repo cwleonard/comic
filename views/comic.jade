@@ -57,9 +57,9 @@ div#sizer(comicId=id)
 						img(src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png")
 			div#pubdatediv
 				p.pubdate= 'Published ' + pubDate
-				div#tips(class='share',style='margin-top: 5px; margin-left: 20%;')
-					div(id="changetip_tipme_button",data-bid="Ekn7ixc33EBLNQ2ncCfreB",data-uid="DA6ELqgCWRfzDmGC4i2UCo")
-						script!= "(function(document,script,id){var js,r=document.getElementsByTagName(script)[0],protocol=/^http:/.test(document.location)?'http':'https';if(!document.getElementById(id)){js=document.createElement(script);js.id=id;js.src=protocol+'://widgets.changetip.com/public/js/widgets.js';r.parentNode.insertBefore(js,r)}}(document,'script','changetip_w_0'));"
+				div#tips(style='margin-top: 5px; margin-left: 20%;')
+					a(href="javascript:showTipModal();")
+						img(src='/simg/tipjar.png')
 			div(style='clear: both;')
 
 if dynScripts

@@ -1,0 +1,16 @@
+div(class="modal fade",id="tipModal",tabindex="-1",role="dialog",aria-labelledby="tipModalLabel",aria-hidden="true")
+	div(class="modal-dialog")
+		div(class="modal-content")
+			div(class="modal-header")
+				button(type="button",class="close",data-dismiss="modal",aria-hidden="true") &times;
+				h4(class="modal-title",id="tipModalLabel") The Tip Jar
+			div(class="modal-body")
+				
+				h4 Like this Comic? Tip me with Bitcoin!
+				p
+					a(href="bitcoin:1PHXYjcG4Cc9E6xgCpkY9qD4RToSPwtRuQ")
+						img(src="/qrc?text=bitcoin%3A1PHXYjcG4Cc9E6xgCpkY9qD4RToSPwtRuQ")
+				p!= 'Send a few bits to:<br/><a href="bitcoin:1PHXYjcG4Cc9E6xgCpkY9qD4RToSPwtRuQ">1PHXYjcG4Cc9E6xgCpkY9qD4RToSPwtRuQ</a>'
+				
+			div(class="modal-footer")
+				button(type="button",class="btn btn-primary",data-dismiss="modal") Close
