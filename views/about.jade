@@ -7,7 +7,7 @@ html
 		div(class="about-us block",style="border-bottom: none;")
 			div(class="container")
 				
-				div(class="about-one")
+				div(class="about-one",style="margin-bottom: 20px;")
 
 					div(class="about-one-item")
 
@@ -29,27 +29,54 @@ html
 
 					div(class="clearfix")
 				
-				div(class="about-three")
-					div(class="row")
-						div(class="col-md-4 col-sm-4")
-							div(class="about-three-item")
-								a(href="#") <img src="/simg/ceo.png" alt="CEO Frog" class="img-responsive" />
-								h3 Frog
-								h5 President & CEO
-								p He discovered the Internet and introduced it to the other frogs. Now he tries to run a corporation.  
-						div(class="col-md-4 col-sm-4")
-							div(class="about-three-item")
-								a(href="#") <img src="/simg/chief_scientist.png" alt="Science Frog" class="img-responsive" />
-								h3 Science Frog
-								h5 Chief Scientist
-								p With thick glasses and a lab coat, he sure looks like he knows science. He may have graduated from Harvard.
-						div(class="col-md-4 col-sm-4")
-							div(class="about-three-item")
-								a(href="#") <img src="/simg/coo.png" alt="Business Frog" class="img-responsive" />
-								h3 Business Frog
-								h5 Vice President
-								p He's always chasing the latest trends in business. New markets, new tools, new products, and new mistakes.
+				div(class="about-one")
 
+					div(class="about-one-item")
+
+						div(class="about-one-content")
+							h3!= '<span style="text-decoration: line-through;">Cast of Characters</span>&nbsp;<span style="font-size: 40px; font-family: Gochi Hand">Employees</span>'
+							p These are the frogs of Amphibian.com.
+
+							div.container-fluid
+								div.row
+									div(class="col-sm-4 character")
+										img(src="/simg/ceo.png",alt="CEO Frog",class="img-responsive")
+										h3 CEO Frog
+										h5 Founder
+										p He discovered the Internet and introduced it to the other frogs. Now he tries to run a corporation.  
+									
+									div(class="col-sm-4 character")
+										img(src="/simg/science.png",alt="Science Frog",class="img-responsive")
+										h3 Science Frog
+										h5 Chief Scientist
+										p With thick glasses and a lab coat, he sure looks like he knows science. He may have graduated from Harvard.
+									
+									div(class="col-sm-4 character")
+										img(src="/simg/business.png",alt="Business Frog",class="img-responsive")
+										h3 Business Frog
+										h5 Vice President
+										p He's always chasing the latest trends in business. New markets, new tools, new products, and new mistakes.
+
+								div.row
+									div(class="col-sm-4 character")
+										img(src="/simg/generic_frog.png",alt="Worker Frog",class="img-responsive")
+										h3 Worker Frog
+										h5 Just a Number
+										p We've got a whole army of these generic, interchangeable workers. Don't worry about their names.
+									
+									div(class="col-sm-4 character")
+										img(src="/simg/toad.png",alt="Toad",class="img-responsive")
+										h3 Toad
+										h5 Not Even a Frog
+										p He's not really an employee, and he is possibly evil.
+									
+									div(class="col-sm-4 character")
+										img(src="/simg/orange_frog.png",alt="Consultant",class="img-responsive")
+										h3 Consultant
+										h5 Outside Help
+										p Sometimes we need some temporary specialist help, or we need workers and don't want to provide benefits.
+
+					div(class="clearfix")
 		
 		include footer
 		include js
