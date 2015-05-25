@@ -161,9 +161,8 @@ hr{
 
 
 .top{
-	background:#555 url('/simg/palm.jpg') repeat;
+	background:#555 url('/simg/4.png') repeat;
 	border-bottom:1px solid #000;
-	background-size:2880px 330px;
 }
 
 .inner-page{
@@ -217,7 +216,7 @@ header .navigation a {
 	color:#fff;
 	text-decoration:none;
 	font-weight:bold;
-	margin-right:16px;
+	margin-right:6px;
 	background:rgba(0,0,0,0.3);
 	border-radius:5px;
 	-webkit-transition: background 1s ease;
@@ -229,7 +228,7 @@ header .navigation a {
 	/* these values are adjusted based on screen width. these are the minimums. */
 	font-size: 1em;
 	line-height: 60px;
-	padding: 5px 10px;
+	padding: 5px 8px;
 	
 }
 
@@ -1588,8 +1587,8 @@ footer .copy{
 	header .navigation a {
 		font-size: 1.2em;
 		padding: 10px 15px;
-		margin-right: 7px;
-		margin-left: 7px;
+		margin-right: 5px;
+		margin-left: 5px;
 		line-height: 80px;
 	}
 	

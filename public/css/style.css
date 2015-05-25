@@ -145,10 +145,10 @@ div#sizer {
 .box {
 	
 	width: 100%;
-	border: #BBBBBB solid 3px;
+	border: none;
 	position: relative;
 	overflow: hidden;
-	box-shadow: 5px 5px 10px #CCCCCC;
+	box-shadow: 5px 5px 10px #666666;
 	border-radius: 7px;
 	margin-bottom: 5px;
 	margin-top: 10px;
@@ -167,9 +167,8 @@ div#sizer {
 div#extraText {
 	margin-bottom: 5px;
 	padding: 8px;
-	border-radius: 15px;
+	border-radius: 5px;
 	font-size: 16px;
-	border: #999999 dotted 1px;
 }
 
 div#extraText a {
