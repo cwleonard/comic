@@ -39,10 +39,33 @@ function frameCycler(elem, initialFrames) {
 	
 }
 
+function bubbleSpinner(elem) {
+	
+	var me = elem[0];
+	me.r = 1;
+	me.d = -1;
+	
+	me.spin = function() {
+		
+		$(me).css("transform", "scaleX(" + me.r + ")");
+		me.r = me.r + (me.d * 0.01);
+		if (Math.abs(me.r) > 1) {
+			me.d = me.d * -1;
+		}
+		setTimeout(me.spin, 20);
+		
+	};
+	me.spin();
+	
+	
+}
+
 $(function() {
 
 	frameCycler($('#spinner-1'), aniFrames);
 	frameCycler($('#spinner-2'), aniFrames);
 	frameCycler($('#spinner-3'), aniFrames);
+	
+	bubbleSpinner($('#bubble-dizzy'));
 	
 });
