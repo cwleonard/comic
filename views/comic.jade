@@ -58,7 +58,7 @@ div#sizer(comicId=id)
 			div#pubdatediv
 				p.pubdate= 'Published ' + pubDate
 				div#tips(style='margin-top: 5px; margin-left: 20%;')
-					a(href="javascript:showTipModal();")
+					a(href="#",onclick="showTipModal();return false;")
 						img(src='/simg/tipjar.png')
 			div(style='clear: both;')
 
