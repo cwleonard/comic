@@ -1,5 +1,7 @@
 var express = require('express');
 var fs = require('fs');
+var http = require('http');
+var https = require('https');
 var compress = require('compression');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -18,6 +20,22 @@ var logging = require('./logger');
 var app = express();
 
 var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' }));
+
+var sslOptions = null;
+if (conf.ssl) {
+
+	try {
+		
+		sslOptions = {
+			key: fs.readFileSync(conf.ssl.key),
+			cert: fs.readFileSync(conf.ssl.cert)
+		};
+	
+	} catch (e) {
+		console.log("unable to use SSL: " + e);
+	}
+	
+}
 
 var cfact = require('./data')(conf.database);
 var authorizer = require('./userAuth')(conf.database);
@@ -745,6 +763,12 @@ app.use(function(err, req, res, next) {
 	});
 });
 
-var server = app.listen(3000, function() {
+var server = http.createServer(app).listen(conf.port, function() {
 	console.log('listening on port %d', server.address().port);
 });
+
+if (sslOptions) {
+	var secureServer = https.createServer(sslOptions, app).listen(conf.ssl.port, function() {
+		console.log('listening securely on port %d', secureServer.address().port);
+	});
+}

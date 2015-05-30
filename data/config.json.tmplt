@@ -1,5 +1,6 @@
 {
 	"base": "example.com",
+	"port": 80,
 	"secret": "hoppy frog",
 	"logToConsole": false,
 	"weatherApiKey": "your-key-here",
@@ -13,5 +14,10 @@
 	    "key": "api-key",
 	    "secret": "api-secret",
 	    "account": "account-id"
+	},
+	"ssl": {
+		"port": 443,
+		"key": "path/to/key.pem",
+		"cert": "path/to/cert.pem"
 	}
 }
