@@ -1,0 +1,15 @@
+div(class="modal fade",id="importModal",tabindex="-1",role="dialog",aria-labelledby="importModalLabel",aria-hidden="true")
+	div(class="modal-dialog")
+		div(class="modal-content")
+			div(class="modal-header")
+				button(type="button",class="close",data-dismiss="modal",aria-hidden="true") &times;
+				h4(class="modal-title",id="importModalLabel") Comic Data Import
+			div(class="modal-body")
+				
+				div.form-group(style='margin-top: 15px;')
+					label(for="jsonData") Enter Some Text
+					textarea#jsonData.form-control(rows="8",placeholder="some comic json")
+				
+			div(class="modal-footer")
+				button(type="button",class="btn btn-default",data-dismiss="modal") Cancel
+				button#confirmImportButton(type="button",class="btn btn-primary") OK

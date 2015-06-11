@@ -1099,6 +1099,28 @@ function editAnimation(elem) {
 
 }
 
+function dataToComic(data) {
+	
+	clear();
+	
+	var pd = moment(data.pubDate.substring(data.pubDate.indexOf(',') + 1), ['DD MMM YYYY' , 'D MMM YYYY']);
+	
+	if (data.id) {
+		$('#cid').val(data.id);
+	}
+	$('#ctitle').val(data.title);
+	$('#extraText').val(data.extraText);
+	if (data.scripts && data.scripts.length > 0) {
+		$('#extraJs').val(data.scripts.join());
+	}
+	$('#pubDate').val(pd.format('YYYY-MM-DD'));
+
+	$.each(data.cells, function(idx, c) {
+		addCell(c);
+	});
+	
+}
+
 function doLoad() {
 	
 	var id = $('#comicSelect').val();
@@ -1109,28 +1131,29 @@ function doLoad() {
 		dataType: 'json',
 		success: function(data) {
 			
-			clear();
-			
+			dataToComic(data);
 			$('#loadModal').modal('toggle');
-			
-			var pd = moment(data.pubDate.substring(data.pubDate.indexOf(',') + 1), ['DD MMM YYYY' , 'D MMM YYYY']);
-			
-			$('#cid').val(data.id);
-			$('#ctitle').val(data.title);
-			$('#extraText').val(data.extraText);
-			if (data.scripts && data.scripts.length > 0) {
-				$('#extraJs').val(data.scripts.join());
-			}
-			$('#pubDate').val(pd.format('YYYY-MM-DD'));
-
-			$.each(data.cells, function(idx, c) {
-				addCell(c);
-			});
 			
 		}
 	});
 	
 }
+
+function showImport() {
+	
+	$('#importModal').modal('show');
+	
+}
+
+function doImport() {
+	
+	var data = JSON.parse($('#jsonData').val());
+	data.id = null; // clear id if it was supplied
+	dataToComic(data);
+	$('#importModal').modal('hide');
+	
+}
+
 
 $(function() {
 	
@@ -1140,6 +1163,8 @@ $(function() {
 	$('#saveAsNewButton').click(doSaveAsNew);
 	$('#addImageButton').click(toggleImgUpload);
 	$('#loadButton').click(showComicList);
+	$('#importButton').click(showImport);
+	$('#confirmImportButton').click(doImport);
 	$('#confirmLoadButton').click(doLoad);
 	
 });
