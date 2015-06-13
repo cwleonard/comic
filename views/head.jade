@@ -8,19 +8,18 @@ head
 	meta(property='og:type',content='website')
 	if id
 		meta(property='og:title',content=( title ? title : 'Today\'s Comic'))
-		meta(property='twitter:title',content=( title ? title : 'Today\'s Comic'))
 		meta(property='og:url',content='http://' + url + '/' + id)
-		meta(property='twitter:url',content='http://' + url + '/' + id)
 		meta(property='og:image',content='http://' + url + '/cell/' + id + '.png')
-		meta(property='twitter:image',content='http://' + url + '/cell/' + id + '.png')
 		meta(property='og:image:type',content='image/png')
 		meta(property='og:image:width',content='400')
 		meta(property='og:image:height',content='232')
-		meta(property='twitter:card',content='photo')
+		meta(property='twitter:card',content='summary_large_image')
 		meta(property='twitter:site',content='@frogcomics')
+		meta(property='twitter:title',content=( title ? title : 'Today\'s Comic'))
+		meta(property='twitter:image',content='http://' + url + '/cell/' + id + '.png')
 		if pubDate
 			meta(property='og:description',content=domain + ' webcomic for ' + pubDate)
-			meta(property='twitter:description',content=domain + ' webcomic for ' + pubDate)
+			meta(property='twitter:description',content=domain + ' webcomic for ' + pubDate + '. ' + extraText)
 		else
 			meta(property='og:description',content='The ongoing story of what happens when frogs start a technology company...')
 			meta(property='twitter:description',content='The ongoing story of what happens when frogs start a technology company...')
