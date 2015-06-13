@@ -1195,6 +1195,53 @@ $(function() {
 	
 });
 
+$(function() {
+	
+	// set up the data import to allow drag-n-drop of a file
+	
+	$(window).on(
+			"dragenter",
+			function(e) {
+				$("#jsonData").addClass("droptarget");
+				e.preventDefault();
+				e.stopPropagation();
+			}
+	);
+
+	$("#jsonData").on("drop", function (evt) {
+
+		$(this).removeClass("droptarget");
+		
+		if (evt.originalEvent.dataTransfer) {
+
+			if (evt.originalEvent.dataTransfer.files.length) {
+
+				evt.preventDefault();
+				evt.stopPropagation();
+
+				var file = evt.originalEvent.dataTransfer.files[0];
+
+				if (file.type !== "text/plain") {
+					console.log("wrong file type");
+				} else {
+
+					var reader = new FileReader();
+					reader.onload = function(fevent) {
+						var txt = fevent.target.result;
+						$("#jsonData").val(txt);
+					};
+					reader.readAsText(file);
+
+				}
+
+			}
+
+		}
+
+	});
+	
+});
+
 function buildMenu() {
 	
 	$.ajax({
