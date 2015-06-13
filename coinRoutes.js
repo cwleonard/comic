@@ -43,7 +43,7 @@ module.exports = function(stuff) {
 				});
 
 				var args = {
-						"callback_url": "http://amphibian.com/coin/callback?secret=" + callbackSecret,
+						"callback_url": "https://amphibian.com/coin/callback?secret=" + callbackSecret,
 						"label": "product-id: " + productId
 				};
 				
