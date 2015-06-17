@@ -47,7 +47,7 @@ function bubbleSpinner(elem) {
 	
 	me.spin = function() {
 		
-		$(me).css("transform", "scaleX(" + me.r + ")");
+		$(me).css("transform", "scaleX(" + me.r.toFixed(5) + ")");
 		me.r = me.r + (me.d * 0.01);
 		if (Math.abs(me.r) > 1) {
 			me.d = me.d * -1;
