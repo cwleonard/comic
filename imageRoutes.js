@@ -1,7 +1,12 @@
+var svgo = require('svgo');
+var xmldom = require("xmldom");
 var multiparty = require('multiparty');
 var imageMaker = require('./staticImage')({
 	dir: '/temp'
 });
+
+var DOMParser = xmldom.DOMParser;
+var XMLSerializer = xmldom.XMLSerializer;
 
 module.exports = function(conf) {
 	
@@ -40,19 +45,41 @@ module.exports = function(conf) {
 			form.on('close', function() {
 				
 				var b = Buffer.concat(chunks, totalLength);
-				console.log('storing file %s (%d bytes)', uploadName, b.length);
-				conf.dataSource.storeImage(uploadName, b, uploadType, function(err, info) {
-					if (err) {
-						res.send(JSON.stringify({
-							success: false,
-							error: err
-						}));
-					} else {
-						res.send(JSON.stringify({
-							success: true
-						}));
+				
+				var optimizer = new svgo();
+				optimizer.optimize(b.toString('utf8'), function(result) {
+					
+					var o = result.data;
+					
+					var svgDoc = new DOMParser().parseFromString(o);
+					var root = svgDoc.documentElement;
+					
+					var svgWidth = root.getAttribute("width");
+					var svgHeight = root.getAttribute("height");
+					var svgBox = root.getAttribute("viewBox");
+
+					if (svgBox === "") {
+						root.setAttribute("viewBox", "0 0 " + svgWidth + " " + svgHeight);
+						o = new XMLSerializer().serializeToString(svgDoc);
 					}
+
+					console.log('storing file %s (%d bytes)', uploadName, o.length);
+					conf.dataSource.storeImage(uploadName, o, uploadType, function(err, info) {
+						if (err) {
+							res.send(JSON.stringify({
+								success: false,
+								error: err
+							}));
+						} else {
+							res.send(JSON.stringify({
+								success: true
+							}));
+						}
+					});
+					
+					
 				});
+				
 
 			});
 
