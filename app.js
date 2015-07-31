@@ -15,6 +15,7 @@ var Feed = require('feed');
 var imgRoutes = require('./imageRoutes');
 var dataRoutes = require('./dataRoutes');
 var coinRoutes = require('./coinRoutes');
+var memeRoutes = require('./memeRoutes');
 var logging = require('./logger');
 
 var app = express();
@@ -337,6 +338,13 @@ app.use('/data', dataRoutes({
 	express: express,
 	auth: ensureAuthenticated,
 	dataSource: cfact
+}));
+
+//------------ set up routes for /memeGen/*
+
+app.use('/memeGen', memeRoutes({
+	express: express,
+	auth: conf.memes
 }));
 
 //------------ other routes...

@@ -15,6 +15,10 @@
 	    "secret": "api-secret",
 	    "account": "account-id"
 	},
+	"memes": {
+	    "username": "username",
+	    "password": "password"
+	},
 	"ssl": {
 		"port": 443,
 		"key": "path/to/key.pem",

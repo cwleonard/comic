@@ -23,6 +23,7 @@
     "qr-image": "3.1.0",
     "coinbase": "1.0.2",
     "svgo": "0.5.3",
-    "xmldom": "0.1.19"
+    "xmldom": "0.1.19",
+    "request": "2.60.0"
   }
 }
