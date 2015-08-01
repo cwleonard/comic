@@ -537,6 +537,10 @@ function addCell(c) {
 				'object': obj
 			});
 		});
+		
+		if (c.extraStyle) {
+			$(d).attr("extraStyle", c.extraStyle);
+		}
 
 		$.each(c.text || [], function(idx, obj) {
 			stuff.push({
