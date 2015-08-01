@@ -42,6 +42,7 @@ var cfact = require('./data')(conf.database);
 var authorizer = require('./userAuth')(conf.database);
 var stats = require('./stats')(conf.database);
 var weather = require('./weather')(conf);
+var twcRank = require('./twc')();
 
 var coin = coinRoutes({
 	express: express,
@@ -708,6 +709,13 @@ app.get('/temperature', function(req, res, next) {
 	res.status(200).send({
 		f: weather.temperature()
 	});
+});
+
+//------------ what's my TWC ranking?
+
+app.get('/twc', function(req, res, next) {
+	res.setHeader('Content-Type', 'text/plain');
+	res.status(200).send(twcRank.rank());
 });
 
 //------------ QR Code generator

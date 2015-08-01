@@ -386,6 +386,14 @@ div.buy p.ftitle {
 	
 }
 
+#twc {
+	text-align: center;
+}
+
+#twc a {
+	text-decoration: underline;
+}
+
 /* --------- responsive media stuff ---------------------- */
 
 @media only screen and (min-width: 400px) {

@@ -113,6 +113,11 @@ $(function() {
     } else {
     	// don't know
     }
+    
+    // get current TWC ranking
+	$.get('/twc', function(data) {
+		$("#twc-rank-num").html(data);
+	}, 'text');
 
 });
 

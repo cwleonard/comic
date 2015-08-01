@@ -61,6 +61,10 @@ div#sizer(comicId=id)
 					a(href="#",onclick="showTipModal();return false;")
 						img(src='/simg/tipjar.png')
 			div(style='clear: both;')
+		div#twc
+			a(href="http://topwebcomics.com/vote/18931/default.aspx")
+				!= 'Vote for us on TopWebComics.com!'
+			div(id='twc-rank') Our Current Rank is: <span id="twc-rank-num">0</span>
 
 if dynScripts
 	- for (var s in dynScripts)
