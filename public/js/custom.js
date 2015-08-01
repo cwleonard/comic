@@ -80,6 +80,11 @@ function replaceComic(id, push) {
 		$('#loading').hide();
 
 		setupAnimation();
+		
+	    // get current TWC ranking
+		$.get('/twc', function(data) {
+			$("#twc-rank-num").html(data);
+		}, 'text');
 
 	}, 'html');
 	
