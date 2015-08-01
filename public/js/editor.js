@@ -183,17 +183,22 @@ function buildCellObject(elem) {
 	var sizerWidth = Number($('#sizer').css('width').replace(/\D/g, ''));
 	var sizerHeight = Number($(elem).css('height').replace(/\D/g, ''));
 	
-	var bgc =$(elem).css('background-color');
+	var bgc = $(elem).css('background-color');
 	if (bgc.search("rgb") != -1) {
 		bgc = rgb2hex(bgc);
 	}
 	
 	var b = {
-		background: bgc,
-		bubbles: [],
-		text: [],
-		imgs: []
+			background: bgc,
+			bubbles: [],
+			text: [],
+			imgs: []
 	};
+
+	var es = $(elem).attr("extraStyle") || '';
+	if (es != '') {
+		b.extraStyle = es;
+	}
 	
 	var zi = 1;
 	

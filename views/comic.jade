@@ -17,7 +17,7 @@ div#sizer(comicId=id)
 	if title
 		p.cTitle= title
 	- for (var c in cells)
-		div.box(style=(cells[c].background ? 'background-color: ' + cells[c].background : undefined),id='cell-' + c)
+		div.box(style=(cells[c].background ? 'background-color: ' + cells[c].background + ( cells[c].extraStyle ? ';' + cells[c].extraStyle : '') : undefined ),id='cell-' + c)
 			if cells[c].bubble
 				+makeBubble(cells[c].bubble)
 			if cells[c].bubbles
