@@ -10,6 +10,9 @@
 		"password": "12345",
 		"database": "dbname"
 	},
+	"fb": {
+	    "token": "app-token"
+	},
 	"coin": {
 	    "key": "api-key",
 	    "secret": "api-secret",

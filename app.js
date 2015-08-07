@@ -16,6 +16,7 @@ var imgRoutes = require('./imageRoutes');
 var dataRoutes = require('./dataRoutes');
 var coinRoutes = require('./coinRoutes');
 var memeRoutes = require('./memeRoutes');
+var fbRoutes = require('./fb');
 var logging = require('./logger');
 
 var app = express();
@@ -346,6 +347,13 @@ app.use('/data', dataRoutes({
 app.use('/memeGen', memeRoutes({
 	express: express,
 	auth: conf.memes
+}));
+
+//------------ set up routes for /fb/*
+
+app.use('/fb', fbRoutes({
+	express: express,
+	auth: conf.fb
 }));
 
 //------------ other routes...
@@ -722,7 +730,10 @@ app.get('/twc', function(req, res, next) {
 
 app.get('/qrc', function(req, res, next) {
 
-	var text = req.query.text;
+	var text = req.query.text || '';
+	if (text === '') {
+		text = "https://amphibian.com";
+	}
 	res.setHeader('Content-Type', 'image/png');
 	res.send(qr.imageSync(text, {type: 'png'}));
 	
