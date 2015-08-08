@@ -1,0 +1,35 @@
+doctype html
+html
+	
+	head
+		title= pageTitle
+		meta(charset='utf-8')
+		meta(name='viewport',content='width=device-width,user-scalable=1')
+		meta(property='og:site_name',content=domain)
+		meta(property='og:type',content='website')
+		link(href='/css/style.css',rel='stylesheet')
+		link(href='/css/bootstrap.min.css',rel='stylesheet')
+		link(href='/css/font-awesome.min.css',rel='stylesheet')
+		link(href='/css/style2.css',rel='stylesheet')
+		link(href='/simg/frog.ico',rel='shortcut icon')
+		link(href='//fonts.googleapis.com/css?family=Sniglet',rel='stylesheet',type='text/css')
+	
+	body
+		include header
+		
+		div
+			p.cTitle No Comic Found - But Here's a Game!
+		
+		div#gameArea
+		
+		include footer
+		include js
+		
+		script
+			!= 'var width = 800;'
+			!= 'var height = 600;'
+
+		script(src="//ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js")
+		script(src="js/phaser.min.js")
+		script(src="js/game2.js")
+		

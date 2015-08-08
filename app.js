@@ -586,7 +586,9 @@ app.get('/stats/comics/:n', function(req, res, next) {
 });
 
 app.get('/stats', function(req, res, next) {
-	res.render('stats');
+	res.render('stats', {
+		title: 'Stats'
+	});
 });
 
 app.get('/stats/viewsByDay/:n', function(req, res, next) {
@@ -755,21 +757,48 @@ app.use(express.static('public', {
 		}
 	}));
 
-// handle 404
-app.use(function(req, res, next){
-	fs.readFile('data/404.json', { encoding: 'utf-8' }, function(err, data) {
-		if (err) {
-			next(err);
-		} else {
-			res.render('comicpage', JSON.parse(data), function(err, str) {
-				if (err) {
-					next(err);
-				} else {
-					res.status(404).send(str);
-				}
-			});
-		}
+
+
+// -------------- 404 soccer
+
+var soccerRoutes = express.Router();
+
+soccerRoutes.get('/', function(req, res, next) {
+
+	res.render('missing', {
+		title: '404'
 	});
+
+});
+
+soccerRoutes.use(express.static('soccer'));
+
+app.use('/404', soccerRoutes);
+
+// --------------------------
+
+// handle 404
+app.use(function(req, res, next) {
+	
+//	res.render('missing', {
+//		title: '404'
+//	});
+	
+	res.redirect("/404/");
+	
+//	fs.readFile('data/404.json', { encoding: 'utf-8' }, function(err, data) {
+//		if (err) {
+//			next(err);
+//		} else {
+//			res.render('comicpage', JSON.parse(data), function(err, str) {
+//				if (err) {
+//					next(err);
+//				} else {
+//					res.status(404).send(str);
+//				}
+//			});
+//		}
+//	});
 });
 
 // handle 500
