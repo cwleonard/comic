@@ -40,16 +40,22 @@ $(function() {
 						
 					}, 4000);
 					
-					console.log("boom!");
+					//console.log("boom!");
 					
 				} else {
-					console.log("sorry, not enough shares!");
+					
+					$("#science-bubble").html("There's no way this thing gets 100 shares on Facebook. We're safe.");
+					//console.log("sorry, not enough shares!");
+					
 				}
 				
 			}, "json");
 			
 		} else {
-			console.log("sorry, not wednesday!");
+			
+			$("#science-bubble").html("It's not Wednesday. Computers start counting at zero. Day 3 is Wednesday.");
+			//console.log("sorry, not wednesday!");
+			
 		}
 	
 	});
