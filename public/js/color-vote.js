@@ -59,20 +59,20 @@ function disableVoting() {
 }
 
 function getVotes(cb) {
-	$.get('/colorVotes', function(data) {
+	$.get('/colors/votes', function(data) {
 		cb(data);
 	}, 'json');
 }
 
 function getActuals(cb) {
-	$.get('/colorActuals', function(data) {
+	$.get('/colors/actuals', function(data) {
 		cb(data);
 	}, 'json');
 }
 
 function recordVote(color) {
 	$.ajax({
-		url: '/vote/' + color,
+		url: '/colors/vote/' + color,
 		type: 'POST',
 		success: function(data) {
 			console.log('voted for ' + color);
@@ -81,7 +81,7 @@ function recordVote(color) {
 }
 
 function getDisplay(cb) {
-	$.get('/colorShown', function(data) {
+	$.get('/colors/shown', function(data) {
 		cb(data.color);
 	}, 'json');
 }
