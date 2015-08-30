@@ -1,6 +1,8 @@
-
+var fs = require('fs');
 
 module.exports = function(conf) {
+
+	var DATA_FILE = 'data/color-data.json';
 	
 	var frogColors = {
 			actual: {
@@ -20,6 +22,24 @@ module.exports = function(conf) {
 			}
 		};
 
+	fs.readFile(DATA_FILE, { encoding: 'utf-8' }, function(err, fd) {
+		if (err) {
+			console.log(err);
+		} else {
+			try {
+				var d = JSON.parse(fd);
+				frogColors.actual.orange = d.actual.orange;
+				frogColors.actual.green = d.actual.green;
+				frogColors.votes.orange = d.votes.orange;
+				frogColors.votes.green = d.votes.green;
+				frogColors.votes.tartan = d.votes.tartan;
+				console.log("color data set from file");
+			} catch (e) {
+				console.log(e);
+			}
+		}
+		
+	});
 	
 	// middleware for resources that should not be cached
 	function noCache(req, res, next) {
@@ -103,6 +123,21 @@ module.exports = function(conf) {
 			}(total)));
 			
 		});
+		
+		function saveData() {
+			
+			fs.writeFile(DATA_FILE, JSON.stringify(frogColors), function(err) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log("saved color data");
+				}
+				setTimeout(saveData, 1800000);
+			});
+			
+		}
+
+		setTimeout(saveData, 1800000);
 		
 		return myRouter;
 		
