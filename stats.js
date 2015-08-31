@@ -80,7 +80,7 @@ module.exports = function(dbconf) {
 
 			var sql = "SELECT count(*) as c, referer, resource FROM amphibian.comic_access " +
 				"where (tstamp > date_sub(current_timestamp, interval " + pool.escape(h) + " hour)) " +
-				"and (referer not regexp '^http://(www\.)?amphibian.com') " +
+				"and (referer not regexp '^http(s)?://(www\.)?amphibian.com') " +
 				"and (resource = '/' or resource regexp '^/(chtml/)?[0-9]+$') " +
 				"group by referer order by 1 desc limit 10;";
 
@@ -154,7 +154,7 @@ module.exports = function(dbconf) {
 			
 			var sql = 'SELECT count(*) as c, referer, resource FROM amphibian.comic_access ' +
 				'where (tstamp > date_sub(current_timestamp, interval ' + pool.escape(h) + ' hour)) ' +
-				'and (referer not regexp \'^http://(www\.)?amphibian.com\') ' +
+				'and (referer not regexp \'^http(s)?://(www\.)?amphibian.com\') ' +
 				'group by referer order by 1 desc;';
 			
 			pool.query(sql, function(err, rows) {
