@@ -12,12 +12,14 @@ var qr = require('qr-image');
 
 var Feed = require('feed');
 
-var imgRoutes = require('./imageRoutes');
-var dataRoutes = require('./dataRoutes');
+var routers = ["data", "images", "memeGen", "colors", "fb"];
+
+//var imgRoutes = require('./imageRoutes');
+//var dataRoutes = require('./dataRoutes');
 var coinRoutes = require('./coinRoutes');
-var memeRoutes = require('./memeRoutes');
-var colorRoutes = require('./colorRoutes');
-var fbRoutes = require('./fb');
+//var memeRoutes = require('./memeRoutes');
+//var colorRoutes = require('./colorRoutes');
+//var fbRoutes = require('./fb');
 var logging = require('./logger');
 
 var app = express();
@@ -335,27 +337,64 @@ app.get('/archive', function(req, res, next) {
 	
 });
 
-//------------ set up routes for /data/*
+(function setupRouters() {
 
-app.use('/data', dataRoutes({
-	express: express,
-	auth: ensureAuthenticated,
-	dataSource: cfact
-}));
+    var opts = {
+            express: express,
+            auth: ensureAuthenticated,
+            dataSource: cfact,
+            config: conf
+    };
 
-//------------ set up routes for /memeGen/*
+    routers.forEach(function(val) {
 
-app.use('/memeGen', memeRoutes({
-	express: express,
-	auth: conf.memes
-}));
+        try {
+            console.log("loading router [" + val + "] ...");
+            var r = require("./routers/" + val);
+            app.use("/" + val, r(opts));
+        } catch (e) {
+            console.error("error loading router [" + val + "] - " + e);
+        }
 
-//------------ set up routes for /fb/*
+    });
 
-app.use('/fb', fbRoutes({
-	express: express,
-	auth: conf.fb
-}));
+})();
+
+////------------ set up routes for /data/*
+//
+//app.use('/data', dataRoutes({
+//    express: express,
+//    auth: ensureAuthenticated,
+//    dataSource: cfact
+//}));
+//
+////------------ set up routes for /memeGen/*
+//
+//app.use('/memeGen', memeRoutes({
+//	express: express,
+//	config: conf
+//}));
+//
+////------------ set up routes for /fb/*
+//
+//app.use('/fb', fbRoutes({
+//	express: express,
+//	config: conf
+//}));
+//
+////------------ color voting
+//
+//app.use('/colors', colorRoutes({
+//    express: express
+//}));
+//
+////------------ set up routes for /images/*
+//
+//app.use('/images', imgRoutes({
+//    express: express,
+//    auth: ensureAuthenticated,
+//    dataSource: cfact
+//}));
 
 //------------ other routes...
 
@@ -462,14 +501,6 @@ app.get('/feedtest/:n', function(req, res, next) {
 	});
 	
 });
-
-//------------ color voting
-
-app.use('/colors', colorRoutes({
-	express: express
-}));
-
-//------------ end color voting
 
 
 //------------ some old links are still out there, send them to Gist now
@@ -585,13 +616,6 @@ app.get('/cell/:n', function(req, res, next) {
 	
 });
 
-// ------------ set up routes for /images/*
-
-app.use('/images', imgRoutes({
-	express: express,
-	auth: ensureAuthenticated,
-	dataSource: cfact
-}));
 
 //------------ set up routes for /coin/*
 

@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-module.exports = function(conf) {
+module.exports = function(c) {
 
 	var DATA_FILE = 'data/color-data.json';
 	
@@ -49,11 +49,22 @@ module.exports = function(conf) {
 		next();
 	}
 
-	if (conf.express) {
-		
-		var myRouter = conf.express.Router();
+    function saveData() {
+        
+        fs.writeFile(DATA_FILE, JSON.stringify(frogColors), function(err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("saved color data");
+            }
+            setTimeout(saveData, 1800000);
+        });
+        
+    }
 
+	if (c.express) {
 		
+		var myRouter = c.express.Router();
 		
 		myRouter.post('/vote/:c', function(req, res, next) {
 
@@ -124,19 +135,6 @@ module.exports = function(conf) {
 			
 		});
 		
-		function saveData() {
-			
-			fs.writeFile(DATA_FILE, JSON.stringify(frogColors), function(err) {
-				if (err) {
-					console.log(err);
-				} else {
-					console.log("saved color data");
-				}
-				setTimeout(saveData, 1800000);
-			});
-			
-		}
-
 		setTimeout(saveData, 1800000);
 		
 		return myRouter;
