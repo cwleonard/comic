@@ -14,12 +14,7 @@ var Feed = require('feed');
 
 var routers = ["data", "images", "memeGen", "colors", "fb"];
 
-//var imgRoutes = require('./imageRoutes');
-//var dataRoutes = require('./dataRoutes');
 var coinRoutes = require('./coinRoutes');
-//var memeRoutes = require('./memeRoutes');
-//var colorRoutes = require('./colorRoutes');
-//var fbRoutes = require('./fb');
 var logging = require('./logger');
 
 var app = express();
@@ -359,42 +354,6 @@ app.get('/archive', function(req, res, next) {
     });
 
 })();
-
-////------------ set up routes for /data/*
-//
-//app.use('/data', dataRoutes({
-//    express: express,
-//    auth: ensureAuthenticated,
-//    dataSource: cfact
-//}));
-//
-////------------ set up routes for /memeGen/*
-//
-//app.use('/memeGen', memeRoutes({
-//	express: express,
-//	config: conf
-//}));
-//
-////------------ set up routes for /fb/*
-//
-//app.use('/fb', fbRoutes({
-//	express: express,
-//	config: conf
-//}));
-//
-////------------ color voting
-//
-//app.use('/colors', colorRoutes({
-//    express: express
-//}));
-//
-////------------ set up routes for /images/*
-//
-//app.use('/images', imgRoutes({
-//    express: express,
-//    auth: ensureAuthenticated,
-//    dataSource: cfact
-//}));
 
 //------------ other routes...
 
