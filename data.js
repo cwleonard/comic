@@ -402,15 +402,12 @@ module.exports = function(dbconf) {
 					
 				} else {
 					
-					var data = [];
-					if (rows.length > 0) {
-						for (var i = 0; i < rows.length; i++) {
-							data.push({
-								filename: rows[i].filename,
-								type: rows[i].type
-							});
-						}
-					}
+					var data = rows.map(function(val) {
+						return {
+							filename: val.filename,
+							type: val.type
+						};
+					});
 					
 					deferred.resolve(data);
 					

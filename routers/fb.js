@@ -1,10 +1,10 @@
 var request = require('request');
 
-module.exports = function(conf) {
+module.exports = function(c) {
 	
-	if (conf.express) {
+	if (c.express) {
 		
-		var myRouter = conf.express.Router();
+		var myRouter = c.express.Router();
 
 		myRouter.get('/shares/:id', function(req, res, next) {
 
@@ -13,7 +13,7 @@ module.exports = function(conf) {
 			request({
 				uri : 'https://graph.facebook.com/v2.4/',
 				qs : {
-					access_token : conf.auth.token,
+					access_token : c.config.fb.token,
 					id : 'http://amphibian.com/' + comic
 				}
 			}, function(error, response, body) {

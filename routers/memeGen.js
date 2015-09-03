@@ -1,10 +1,10 @@
 var request = require('request');
 
-module.exports = function(conf) {
+module.exports = function(c) {
 	
-	if (conf.express) {
+	if (c.express) {
 		
-		var myRouter = conf.express.Router();
+		var myRouter = c.express.Router();
 
 		myRouter.post('/', function(req, res, next) {
 			
@@ -18,8 +18,8 @@ module.exports = function(conf) {
 			
 			var memeData = {
 					template_id: '41834675',
-					username: conf.auth.username,
-					password: conf.auth.password,
+					username: c.config.memes.username,
+					password: c.config.memes.password,
 					text0: line1,
 					text1: line2
 			};

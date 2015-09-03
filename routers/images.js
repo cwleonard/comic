@@ -1,7 +1,7 @@
 var svgo = require('svgo');
 var xmldom = require("xmldom");
 var multiparty = require('multiparty');
-var imageMaker = require('./staticImage')({
+var imageMaker = require('../staticImage')({
 	dir: '/temp'
 });
 

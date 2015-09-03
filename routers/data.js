@@ -1,4 +1,4 @@
-var imageMaker = require('./staticImage')({
+var imageMaker = require('../staticImage')({
 	dir: '/temp'
 });
 
