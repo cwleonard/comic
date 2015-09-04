@@ -399,8 +399,27 @@ div.buy p.ftitle {
 	height: 600px;
 	width: 800px;
 	margin: auto;
+	margin-top: 15px;
+	margin-bottom: 30px;
 	
 }
+
+#gameInfo p {
+	text-align: center;
+	margin-bottom: 10px;
+	font-family: 'Sniglet', sans-serif;
+	font-size: 1.5em;
+}
+
+#gameInfo p a {
+	text-decoration: underline;
+	color: #004400;
+}
+
+#gameInfo p a:hover,a:focus {
+	color: #009600;
+}
+
 
 /* --------- responsive media stuff ---------------------- */
 

@@ -4,7 +4,7 @@ html
 	head
 		title= pageTitle
 		meta(charset='utf-8')
-		meta(name='viewport',content='width=device-width,user-scalable=1')
+		meta(name='viewport',content='width=800,user-scalable=1')
 		meta(property='og:site_name',content=domain)
 		meta(property='og:type',content='website')
 		link(href='/css/style.css',rel='stylesheet')
@@ -22,6 +22,12 @@ html
 		
 		div#gameArea
 		
+		div#gameInfo
+			p
+				a(href="/404/index.html") Play Full Screen
+			p
+				a(href="https://github.com/cwleonard/comic-404") Complete Source Code on GitHub!
+			
 		include footer
 		include js
 		
