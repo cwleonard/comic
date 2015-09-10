@@ -190,6 +190,21 @@ function moveUpDown(e) {
 	
 }
 
+function rotate(e) {
+    
+    var m = this.pps * (e / 1000);
+    
+    // calculate new rotation
+    var nr = this.rot + m;
+    
+    $(this).css('transform', 'rotate(' + nr + 'deg)');
+    $(this).css('-webkit-transform', 'rotate(' + nr + 'deg)');
+    $(this).css('-mstransform', 'rotate(' + nr + 'deg)');
+    
+    this.rot = nr;
+    
+}
+
 function flicker(e) {
 
 	if (typeof this.timespan === 'undefined') {
@@ -295,6 +310,9 @@ function setupAnimation() {
 				elem.moveFunction = flicker;
 			} else if (dir === 'blink') {
 				elem.moveFunction = blink;
+            } else if (dir === 'rotate') {
+                elem.moveFunction = rotate;
+                elem.rot = 0;
 			} else {
 				// unknown direction value
 				elem.moveFunction = function() {
