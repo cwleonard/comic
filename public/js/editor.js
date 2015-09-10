@@ -156,7 +156,7 @@ function imageToObject(iEl) {
 	// is it animated?
 	var spd = isNaN(iEl.attr("speed")) ? 0 : Number(iEl.attr("speed"));
 	var trvl = isNaN(iEl.attr("travel")) ? 0 : Number(iEl.attr("travel"));
-	if (spd > 0 && trvl !== 0) {
+	if (spd !== 0 && trvl !== 0) {
 		var dir = iEl.attr("direction");
 		var nb = iEl.attr("nobounce");
 		d.move = true;
