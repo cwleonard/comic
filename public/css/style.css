@@ -420,6 +420,14 @@ div.buy p.ftitle {
 	color: #009600;
 }
 
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 /* --------- responsive media stuff ---------------------- */
 
