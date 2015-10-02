@@ -16,6 +16,7 @@ var routers = ["data", "images", "memeGen", "colors", "fb"];
 
 var coinRoutes = require('./coinRoutes');
 var logging = require('./logger');
+var adTrack = require('./sourceTracker');
 
 var app = express();
 
@@ -104,11 +105,14 @@ function correctUrl(b) {
 
 app.use(correctUrl(conf.base));
 
+app.use(cookieParser()); // required before session and source tracker.
+
+app.use(adTrack());
+
 // logging comes first
 //   note: using the header "X-Real-IP" because I proxy this app throuh nginx
 app.use(logging(conf));
 
-app.use(cookieParser()); // required before session.
 app.use(session({ secret: conf.secret, resave: false, saveUninitialized: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

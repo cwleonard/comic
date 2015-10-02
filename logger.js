@@ -26,9 +26,10 @@ module.exports = function(conf) {
 				var resSize = res.get('content-length');
 				var reqRef = req.get('referer');
 				var reqAgent = req.get('user-agent');
+				var adCode = req["click-source"];
 
-				pool.query('INSERT INTO comic_access (ip, verb, resource, response, size, referer, agent) ' +
-						'VALUES (?, ?, ?, ?, ?, ?, ?)', [reqIp, reqVerb, reqPath, resStatus, resSize, reqRef, reqAgent],
+				pool.query('INSERT INTO comic_access (ip, verb, resource, response, size, referer, agent, clickSource) ' +
+						'VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [reqIp, reqVerb, reqPath, resStatus, resSize, reqRef, reqAgent, adCode],
 						function(err, result) {
 
 					if (err) {
