@@ -10,6 +10,7 @@ CREATE TABLE `comic_access` (
   `size` int(11) DEFAULT NULL,
   `referer` varchar(500) DEFAULT NULL,
   `agent` varchar(500) DEFAULT NULL,
+  `clickSource` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1052 DEFAULT CHARSET=latin1$$
 
