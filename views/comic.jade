@@ -66,6 +66,7 @@ div#sizer(comicId=id)
 				a(href="http://topwebcomics.com/vote/18931/default.aspx")
 					!= 'Vote for us on TopWebComics.com!'
 				div(id='twc-rank') Our Current Rank is: <span id="twc-rank-num">0</span>
+		img(src="/images/v/" + id)
 
 if dynScripts
 	- for (var s in dynScripts)

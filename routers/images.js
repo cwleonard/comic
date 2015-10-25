@@ -1,4 +1,5 @@
 var svgo = require('svgo');
+var fs = require('fs');
 var xmldom = require("xmldom");
 var multiparty = require('multiparty');
 var imageMaker = require('../staticImage')({
@@ -12,6 +13,8 @@ module.exports = function(conf) {
 	
 	if (conf.express) {
 		
+	    var pixel = fs.readFileSync("public/simg/1px.png");
+	    
 		var myRouter = conf.express.Router();
 		
 		myRouter.get('/', function(req, res, next) {
@@ -114,6 +117,13 @@ module.exports = function(conf) {
 			});
 			
 		});
+
+	      myRouter.get('/v/:n', function(req, res, next) {
+	            
+	          res.setHeader('Content-Type', 'image/png');
+	          res.send(pixel);
+	            
+	        });
 
 		myRouter.get('/cell/:id/:cell', conf.auth, function(req, res, next) {
 
