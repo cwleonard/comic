@@ -259,6 +259,8 @@ function buildCellObject(elem) {
 			
 			var rot = $(elem).attr('rot');
 			
+			var xs = $(elem).attr('xstyle');
+			
 			$(elem).find("> span").each(function(idx, elem) {
 				var tempObj = {
 						objId: tid,
@@ -267,6 +269,7 @@ function buildCellObject(elem) {
 						width: w,
 						z: zi++,
 						r: rot,
+						xs: xs,
 						words: $(elem).html()
 					};
 				if (!stdText) tempObj.fstyle = "olde-text";
@@ -484,6 +487,8 @@ function addBubble(cell, b) {
  *   - left - left position, in %
  *   - top - top position, in %
  *   - width - area width, in %
+ *   - r - rotation, in degrees
+ *   - xs - extra style text
  *   - fstyle - text style (defaults to "standard-text")
  * 
  * @param cell
@@ -510,6 +515,11 @@ function addText(cell, t) {
 		$(p).css('-webkit-transform', rot);
 		$(p).css('-moz-transform', rot);
 		$(p).attr('rot', txt.r);
+	}
+	
+	if (txt.xs && txt.xs !== '') {
+	    $(p).attr("style", $(p).attr("style") + txt.xs);
+	    $(p).attr("xstyle", txt.xs);
 	}
 	
 	
@@ -983,6 +993,11 @@ function setupMenu(imgSelectOptions) {
 				type: 'text',
 				value: ''
 			},
+            xstyle: {
+                name: 'Extra Style',
+                type: 'text',
+                value: ''
+            },
 			sep1: "----------",
 			objId: {
 				name: 'Object ID',
@@ -1021,18 +1036,23 @@ function setupMenu(imgSelectOptions) {
 				var w = $this.css('width');
 				var t = $this.css('top');
 				var l = $this.css('left');
+				var xs = $this.attr("xstyle");
 				var d = {
 					objId: i,
 					width: w,
 					top: t,
 					left: l,
-					rotation: r
+					rotation: r,
+					xstyle: xs
 				};
 				$.contextMenu.setInputValues(opt, d);
 			},
 			hide: function(opt) {
 				var $this = this;
 				var o = $.contextMenu.getInputValues(opt, $this.data());
+				
+				$this.attr("style", "");
+				
 				$this.attr('id', o.objId);
 				$this.css('top', o.top);
 				$this.css('left', o.left);
@@ -1047,6 +1067,14 @@ function setupMenu(imgSelectOptions) {
 				}
 				$this.css('-webkit-transform', rot);
 				$this.attr('rot', o.rotation);
+				$this.attr('xstyle', o.xstyle);
+				if (o.xstyle !== '') {
+				    $this.attr("xstyle", o.xstyle);
+				    //TODO: this is a bit of a hack. should parse
+				    //      through the xstyle and only set the styles
+				    //      that aren't explicitly set above (top, left, width, etc.)
+				    $this.attr("style", $this.attr("style") + o.xstyle);
+				}
 			}
 		}
 		
