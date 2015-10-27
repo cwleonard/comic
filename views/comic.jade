@@ -3,7 +3,7 @@ mixin makeBubble(bub)
 		!= bub.text
 
 mixin makeText(txt)
-	p(id=txt.objId ? txt.objId : undefined,class='free-text ' + (txt.fstyle ? txt.fstyle : 'standard-text'),style=(txt.z ? 'z-index: ' + txt.z + ';' : '') + (txt.width ? 'width: ' + txt.width + '%;' : '') + 'top: ' + txt.top + '%; left: ' + txt.left + '%;' + (txt.r ? ' transform: rotate(' + txt.r + 'deg); -webkit-transform: rotate(' + txt.r + 'deg); -ms-transform: rotate(' + txt.r + 'deg);' : ''))
+	p(id=txt.objId ? txt.objId : undefined,class='free-text ' + (txt.fstyle ? txt.fstyle : 'standard-text'),style=(txt.z ? 'z-index: ' + txt.z + ';' : '') + (txt.width ? 'width: ' + txt.width + '%;' : '') + (txt.xs ? txt.xs : '') + 'top: ' + txt.top + '%; left: ' + txt.left + '%;' + (txt.r ? ' transform: rotate(' + txt.r + 'deg); -webkit-transform: rotate(' + txt.r + 'deg); -ms-transform: rotate(' + txt.r + 'deg);' : ''))
 		!= txt.words
 
 mixin makeImage(img)
@@ -66,6 +66,7 @@ div#sizer(comicId=id)
 				a(href="http://topwebcomics.com/vote/18931/default.aspx")
 					!= 'Vote for us on TopWebComics.com!'
 				div(id='twc-rank') Our Current Rank is: <span id="twc-rank-num">0</span>
+		img(src="/images/v/" + id)
 
 if dynScripts
 	- for (var s in dynScripts)
