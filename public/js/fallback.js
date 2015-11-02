@@ -24,7 +24,7 @@ function stopStuff() {
     
     bgmusic.stop();
     
-    for (var t = 0; i < timers.length; t++) {
+    for (var t = 0; t < timers.length; t++) {
         clearTimeout(timers[t]);
     }
     
