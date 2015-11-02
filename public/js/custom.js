@@ -53,6 +53,8 @@ function replaceComic(id, push) {
 	$('#comicArea').hide();
 	$('#loading').show();
 	
+	$.Topic( "startComicNav" ).publish( id );
+	
 	$.get('/chtml/' + id, function(data) {
 		
 		$("#comicArea").html(data);
@@ -85,6 +87,8 @@ function replaceComic(id, push) {
 		$.get('/twc', function(data) {
 			$("#twc-rank-num").html(data);
 		}, 'text');
+		
+		$.Topic( "endComicNav" ).publish( id );
 
 	}, 'html');
 	
@@ -400,4 +404,28 @@ $(function () {
 
 $(function() {
 	setupAnimation();
+});
+
+var topics = {};
+
+$(function() {
+
+    jQuery.Topic = function( id ) {
+        var callbacks, method,
+        topic = id && topics[ id ];
+
+        if ( !topic ) {
+            callbacks = jQuery.Callbacks();
+            topic = {
+                    publish: callbacks.fire,
+                    subscribe: callbacks.add,
+                    unsubscribe: callbacks.remove
+            };
+            if ( id ) {
+                topics[ id ] = topic;
+            }
+        }
+        return topic;
+    };
+
 });

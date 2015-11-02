@@ -1,9 +1,11 @@
+var timers = [];
+
 function showCard(n, ms) {
     
     $('#tc'+n).show();
     $('#tt'+n).show();
     
-    setTimeout(function() {
+    timers.push(setTimeout(function() {
 
         $('#tc'+n).hide();
         $('#tt'+n).hide();
@@ -14,12 +16,24 @@ function showCard(n, ms) {
             showCard(1, 6000);
         }
 
-    }, ms);
+    }, ms));
+    
+}
+
+function stopStuff() {
+    
+    bgmusic.stop();
+    
+    for (var t = 0; i < timers.length; t++) {
+        clearTimeout(timers[t]);
+    }
+    
+    $.Topic( "startComicNav" ).unsubscribe( stopStuff );
     
 }
 
 $(function() {
-	
+
     soundManager.setup({
         url : '/swf/',
         onready : function() {
@@ -27,21 +41,20 @@ $(function() {
                 id : 'bgmusic',
                 url : '/audio/Fun_in_a_Bottle.mp3'
             });
-            
+
             bgmusic.onfinish = function() {
                 this.play();
             };
-            
-            bgmusic.play();
-            
         },
         ontimeout : function() {
             console.log("could not start soundmanager!");
         }
-    }); 
+    });
 
-    setTimeout(function() {
+    timers.push(setTimeout(function() {
         showCard(1, 6000);
-    }, 3000);
+    }, 3000));
+    
+    $.Topic( "startComicNav" ).subscribe( stopStuff );
 
 });
