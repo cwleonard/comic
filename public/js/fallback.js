@@ -45,6 +45,8 @@ $(function() {
             bgmusic.onfinish = function() {
                 this.play();
             };
+            
+            bgmusic.play();
         },
         ontimeout : function() {
             console.log("could not start soundmanager!");
@@ -55,6 +57,6 @@ $(function() {
         showCard(1, 6000);
     }, 3000));
     
-    $.Topic( "startComicNav" ).subscribe( stopStuff );
+    //$.Topic( "startComicNav" ).subscribe( stopStuff );
 
 });
