@@ -57,6 +57,6 @@ $(function() {
         showCard(1, 6000);
     }, 3000));
     
-    //$.Topic( "startComicNav" ).subscribe( stopStuff );
+    $.Topic( "startComicNav" ).subscribe( stopStuff );
 
 });
