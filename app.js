@@ -44,6 +44,8 @@ var stats = require('./stats')(conf.database);
 var weather = require('./weather')(conf);
 var twcRank = require('./twc')();
 
+app.locals.holiday = require('./holiday')();
+
 var coin = coinRoutes({
 	express: express,
 	db: cfact,

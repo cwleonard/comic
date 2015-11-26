@@ -1,8 +1,13 @@
+- var monthToday = (new Date()).getMonth();
+- var dateToday = (new Date()).getDate();
+- var thanksgiving = holiday.thanksgiving();
 doctype html
 html
 	include head
 	body
 		include header
+		if (monthToday == 11 || (monthToday == 10 && dateToday >= thanksgiving.getDate()))
+			include holidayHeader
 		div#loading
 			p Grabbing frogs...
 			p
