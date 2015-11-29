@@ -429,3 +429,15 @@ $(function() {
     };
 
 });
+
+// Emojis! (See http://emojione.com/developers)
+$(function() {
+
+    $('.bubble, .free-text').each(function() {
+        var origText = $(this).html();
+        var eText = emojione.shortnameToImage(origText);
+        $(this).html(eText);
+        
+    });
+    
+});

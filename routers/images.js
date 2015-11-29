@@ -21,7 +21,7 @@ module.exports = function(conf) {
 			
 			conf.dataSource.listImages()
 			.then(function(data) {
-				res.setHeader('Content-Type', 'application/json');
+				res.header('Content-Type', 'application/json');
 				res.send(data);
 			}, function(error) {
 				next(error.error);
@@ -110,6 +110,7 @@ module.exports = function(conf) {
 					next(err);
 				} else if (data) {
 					res.setHeader('Content-Type', data.contentType);
+					res.setHeader('Cache-Control', 'max-age=86400');
 					res.send(data.buffer);
 				} else {
 					res.sendStatus(404); // don't use the full-page 404 for missing images
@@ -121,6 +122,7 @@ module.exports = function(conf) {
 	      myRouter.get('/v/:n', function(req, res, next) {
 	            
 	          res.setHeader('Content-Type', 'image/png');
+              res.setHeader('Cache-Control', 'max-age=60');
 	          res.send(pixel);
 	            
 	        });
