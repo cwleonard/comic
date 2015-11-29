@@ -13,7 +13,7 @@ module.exports = function(dbconf) {
 			
 			var sql = 'SELECT count(*) as c FROM amphibian.comic_access where ' +
 				'(tstamp > date_sub(current_timestamp, interval ' + pool.escape(h) + ' hour)) ' +
-				'and (resource = \'/images/v/[0-9]+$\')';
+				'and (resource regexp \'/images/v/[0-9]+$\')';
 			
 			pool.query(sql, function(err, rows) {
 				
@@ -45,7 +45,7 @@ module.exports = function(dbconf) {
 			
 			var sql = 'SELECT date(tstamp) as d, count(*) as c FROM amphibian.comic_access where ' +
 				'(tstamp > date(date_sub(current_timestamp, interval ' + pool.escape(d) + ' day))) ' +
-				'and (resource = \'/\' or resource regexp \'^/(chtml/)?[0-9]+$\') ' +
+				'and (resource regexp \'/images/v/[0-9]+$\') ' +
 				'group by date(tstamp) order by 1';
 			
 			pool.query(sql, function(err, rows) {
