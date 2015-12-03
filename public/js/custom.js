@@ -78,6 +78,8 @@ function replaceComic(id, push) {
 		// build a new Pinterest button
 		build_pinterest_button($('#pin')[0]);
 
+		doEmoji();		
+		
 		$('#comicArea').show();
 		$('#loading').hide();
 
@@ -428,4 +430,19 @@ $(function() {
         return topic;
     };
 
+});
+
+function doEmoji() {
+	
+	$('.bubble, .free-text').each(function() {
+        var origText = $(this).html();
+        var eText = emojione.shortnameToImage(origText);
+        $(this).html(eText);
+    });
+	
+}
+
+// Emojis! (See http://emojione.com/developers)
+$(function() {
+    doEmoji();
 });

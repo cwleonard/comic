@@ -48,6 +48,14 @@
 	font-size: 1.1em;
 }
 
+.free-text img {
+	position: initial !important;
+}
+
+.bubble-text img {
+	position: initial !important;
+}
+
 .bubble {
 	position: absolute;
 	width: 44%;
