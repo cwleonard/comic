@@ -1,0 +1,24 @@
+{
+    "main": [
+        {
+            "type": "image",
+            "key": "tiles",
+            "url": "other/maze-tiles.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "frog",
+            "url": "other/frog-above.png",
+            "frameWidth": 32,
+            "frameHeight": 50
+
+        },
+        {
+            "type": "tilemap",
+            "key": "maze",
+            "url": "other/hedge-map.json",
+            "data": null,
+            "format": "TILED_JSON"
+        }
+    ]
+}
