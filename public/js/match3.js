@@ -25,6 +25,30 @@ function gameState() {
     	
     }
     
+    function spawnFrogs() {
+    	
+        for (var x = 0; x < BOARD_WIDTH; x++) {
+            for (var y = 0; y < BOARD_HEIGHT; y++) {
+            	if (frogs[x][y] == null) {
+            		var f = Math.floor((Math.random() * 5));
+            		var temp = tiles.create(x*40, y*40, "frogs", f);
+            		frogs[x][y] = temp;
+            		temp.boardPosition = {
+            				x: x,
+            				y: y
+            		};
+            		temp.frogType = f;
+            		temp.inputEnabled = true;
+            		temp.input.enableDrag(true);
+            		temp.events.onDragStart.add(selectFrog, temp);
+            		temp.events.onDragStop.add(releaseFrog, temp);
+            	}
+            }
+        }
+    	
+    	
+    }
+    
     function checkForMatches() {
     	
     	// check sideways
@@ -91,6 +115,27 @@ function gameState() {
             	}
             }
         }
+        
+        // look for frogs that should fall
+        for (var x = 0; x < BOARD_WIDTH; x++) {
+            for (var y = BOARD_HEIGHT - 1; y >= 0; y--) {
+            	var tf = frogs[x][y];
+            	if (tf == null) {
+            		var fallTo = { x: x, y: y };
+            		var stop = false;
+            		for (var w = y - 1; w >= 0 && !stop; w--) {
+            			if (frogs[x][w] != null) {
+            				console.log("frog at " + x + ", " + w + " should fall to " + fallTo.x + ", " + fallTo.y);
+            				moveFrog(frogs[x][w], fallTo);
+            				stop = true;
+            			}
+            		}
+            	}
+            }
+        }
+        
+        spawnFrogs();
+        
     }
     
     
@@ -109,22 +154,46 @@ function gameState() {
         
     }
     
+    function swapFrogs(frog1, frog2) {
+    	
+        if (frog2 != null) {
+        	frog1.game.add.tween(frog2.position).to( { x: frog1.boardPosition.x * 40, y: frog1.boardPosition.y * 40 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);        
+        	frog1.game.add.tween(frog1.position).to( { x: frog2.boardPosition.x * 40, y: frog2.boardPosition.y * 40 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);
+        }
+        
+        frogs[frog1.boardPosition.x][frog1.boardPosition.y] = frog2;
+        frogs[frog2.boardPosition.x][frog2.boardPosition.y] = frog1;
+        
+        var np = frog2.boardPosition;
+        frog2.boardPosition = frog1.boardPosition;
+        frog1.boardPosition = np;
+    	
+    	
+    }
+
+    function moveFrog(frog1, np) {
+    	
+    	if (frogs[np.x][np.y]) {
+    		console.log("won't move to an occupied position: " + np);
+    		return;
+    	}
+    	
+       	frog1.game.add.tween(frog1.position).to( { x: np.x * 40, y: np.y * 40 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);
+        
+       	frogs[frog1.boardPosition.x][frog1.boardPosition.y] = null;
+        frogs[np.x][np.y] = frog1;
+        frog1.boardPosition = np;
+    	
+    	
+    }
+
     function releaseFrog(sig, p) {
         
-        var np = tilePosition(p);
-        console.log(np);
-
         this.game.add.tween(this.scale).to( { x: 1, y: 1 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);
-        
-        var otherFrog = frogs[np.x][np.y];
 
-        this.game.add.tween(otherFrog.position).to( { x: this.boardPosition.x * 40, y: this.boardPosition.y * 40 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);        
-        this.game.add.tween(this.position).to( { x: otherFrog.boardPosition.x * 40, y: otherFrog.boardPosition.y * 40}, 100, Phaser.Easing.Linear.None, true, 0, 0, false);        
-        
-        frogs[this.boardPosition.x][this.boardPosition.y] = otherFrog;
-        frogs[np.x][np.y] = this;
-        otherFrog.boardPosition = this.boardPosition;
-        this.boardPosition = np;
+        var np = tilePosition(p);
+        var otherFrog = frogs[np.x][np.y];
+        swapFrogs(this, otherFrog);
         
         checkForMatches();
         
