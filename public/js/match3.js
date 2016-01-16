@@ -32,6 +32,8 @@ function gameState() {
             	if (frogs[x][y] == null) {
             		var f = Math.floor((Math.random() * 5));
             		var temp = tiles.create(x*40, y*40, "frogs", f);
+            		temp.scale.x = 0.01;
+            		temp.scale.y = 0.01;
             		frogs[x][y] = temp;
             		temp.boardPosition = {
             				x: x,
@@ -42,6 +44,7 @@ function gameState() {
             		temp.input.enableDrag(true);
             		temp.events.onDragStart.add(selectFrog, temp);
             		temp.events.onDragStop.add(releaseFrog, temp);
+            		temp.game.add.tween(temp.scale).to( { x: 1, y: 1 }, 500, Phaser.Easing.Linear.None, true, 0, 0, false);
             	}
             }
         }
@@ -157,8 +160,18 @@ function gameState() {
     function swapFrogs(frog1, frog2) {
     	
         if (frog2 != null) {
-        	frog1.game.add.tween(frog2.position).to( { x: frog1.boardPosition.x * 40, y: frog1.boardPosition.y * 40 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);        
-        	frog1.game.add.tween(frog1.position).to( { x: frog2.boardPosition.x * 40, y: frog2.boardPosition.y * 40 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);
+        	var t1 = frog1.game.add.tween(frog2.position);        
+        	var t2 = frog1.game.add.tween(frog1.position);
+        	
+        	t1.to( { x: frog1.boardPosition.x * 40, y: frog1.boardPosition.y * 40 }, 200, Phaser.Easing.Linear.None, false, 0, 0, false);
+        	t2.to( { x: frog2.boardPosition.x * 40, y: frog2.boardPosition.y * 40 }, 200, Phaser.Easing.Linear.None, false, 0, 0, false);
+        	
+        	t2.onComplete.add(function() {
+        		checkForMatches();
+        	}, this);
+        	
+        	t1.start();
+        	t2.start();
         }
         
         frogs[frog1.boardPosition.x][frog1.boardPosition.y] = frog2;
@@ -195,7 +208,7 @@ function gameState() {
         var otherFrog = frogs[np.x][np.y];
         swapFrogs(this, otherFrog);
         
-        checkForMatches();
+        
         
         
     }
