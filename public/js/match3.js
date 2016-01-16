@@ -5,29 +5,94 @@ var elapsedTime = null;
 
 function gameState() {
 	
-    var BOARD_WIDTH = 11;
-    var BOARD_HEIGHT = 7;
+    var BOARD_WIDTH = 5;
+    var BOARD_HEIGHT = 5;
     
-	var board = [];
 	var frogs = [];
-	var tiles;
+	var tiles; // phaser group
 	
     function preload() {
         this.load.pack("main", "other/match3-pack.json");
     }
     
-    function populateArray() {
-        
+    function markFrogs(x, xl, y, yl) {
+    	
+    	for (var i = x; i < x+xl; i++) {
+    		for (var j = y; j < y+yl; j++) {
+    			frogs[i][j].dropOut = true;
+    		}
+    	}
+    	
+    }
+    
+    function checkForMatches() {
+    	
+    	// check sideways
+    	for (var y = 0; y < BOARD_HEIGHT; y++) {
+
+    		var i = 0;
+    		var lastColor = frogs[0][y].frogType; // last color
+    		
+    		for (var x = 1; x < BOARD_WIDTH; x++) {
+    			
+    			var p = frogs[x][y].frogType;
+    			if (p !== lastColor) {
+    				if (x - i >= 3) {
+    					markFrogs(i, x-i, y, 1);
+    					console.log("found matches: y = " + y + ", x = " + i + " to " + (x-1));
+    				}
+    				i = x;
+    				lastColor = p;
+    			} else if (x === (BOARD_WIDTH - 1)) {
+    				if ((x+1) - i >= 3) {
+    					markFrogs(i, (x+1)-i, y, 1);
+    					console.log("found matches: y = " + y + ", x = " + i + " to " + (x));
+    				}
+    			}
+    			
+    		}
+    		
+    	}
+
+    	// check up/down
+    	for (var x = 0; x < BOARD_WIDTH; x++) {
+
+    		var i = 0;
+    		var lastColor = frogs[x][0].frogType; // last color
+    		
+    		for (var y = 1; y < BOARD_HEIGHT; y++) {
+    			
+    			var p = frogs[x][y].frogType;
+    			if (p !== lastColor) {
+    				if (y - i >= 3) {
+    					markFrogs(x, 1, i, y-i);
+    					console.log("found matches: x = " + x + ", y = " + i + " to " + (y-1));
+    				}
+    				i = y;
+    				lastColor = p;
+    			} else if (y === (BOARD_HEIGHT - 1)) {
+    				if ((y+1) - i >= 3) {
+    					markFrogs(x, 1, i, (y+1)-i);
+    					console.log("found matches: x = " + x + ", y = " + i + " to " + (y));
+    				}
+    			}
+    			
+    		}
+    		
+    	}
+    	
+    	// frogs marked, now sweep
         for (var x = 0; x < BOARD_WIDTH; x++) {
-            board[x] = [];
-            frogs[x] = [];
             for (var y = 0; y < BOARD_HEIGHT; y++) {
-                board[x][y] = Math.floor((Math.random() * 5));
-                frogs[x][y] = null;
+            	var tf = frogs[x][y];
+            	if (tf.dropOut) {
+            		tf.destroy();
+            		frogs[x][y] = null;
+            	}
             }
         }
-        
     }
+    
     
     function tilePosition(s) {
         
@@ -61,6 +126,8 @@ function gameState() {
         otherFrog.boardPosition = this.boardPosition;
         this.boardPosition = np;
         
+        checkForMatches();
+        
         
     }
     
@@ -71,7 +138,6 @@ function gameState() {
     
     function create() {
         
-        populateArray();
         
         this.physics.startSystem(Phaser.Physics.ARCADE);
         
@@ -80,15 +146,18 @@ function gameState() {
         tiles = this.add.group();
         tiles.enableBody = true;
 
+        
         for (var x = 0; x < BOARD_WIDTH; x++) {
+        	frogs[x] = [];
             for (var y = 0; y < BOARD_HEIGHT; y++) {
-                var f = board[x][y];
+                var f = Math.floor((Math.random() * 5));
                 var temp = tiles.create(x*40, y*40, "frogs", f);
                 frogs[x][y] = temp;
                 temp.boardPosition = {
                         x: x,
                         y: y
-                }
+                };
+                temp.frogType = f;
                 temp.inputEnabled = true;
                 temp.input.enableDrag(true);
                 temp.events.onDragStart.add(selectFrog, temp);
