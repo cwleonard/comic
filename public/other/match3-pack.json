@@ -1,0 +1,11 @@
+{
+    "main": [
+        {
+            "type": "spritesheet",
+            "key": "frogs",
+            "url": "other/frog-colors.png",
+            "frameWidth": 40,
+            "frameHeight": 40
+        }
+    ]
+}
