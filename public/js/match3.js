@@ -7,6 +7,8 @@ function gameState() {
 	
     var allowMove = true;
     
+    var TILE_OFFSET = 10;
+    
     var BOARD_WIDTH = 7;
     var BOARD_HEIGHT = 7;
     
@@ -27,8 +29,24 @@ function gameState() {
     	
     }
     
-    function spawnFrogs() {
+    function spawnFrogs(num, cb) {
     	
+        var waiting = function(tot, callback) {
+            var t = tot;
+            var c = 0;
+            return {
+                inc: function() {
+                    c++;
+                    if (c === t) {
+                        callback();
+                    }
+                }
+            };
+        }(num, function() {
+            cb();
+        });
+        
+        
         for (var x = 0; x < BOARD_WIDTH; x++) {
             for (var y = 0; y < BOARD_HEIGHT; y++) {
             	if (frogs[x][y] == null) {
@@ -46,7 +64,9 @@ function gameState() {
             		temp.input.enableDrag(true);
             		temp.events.onDragStart.add(selectFrog, temp);
             		temp.events.onDragStop.add(releaseFrog, temp);
-            		temp.game.add.tween(temp.scale).to( { x: 1, y: 1 }, 500, Phaser.Easing.Linear.None, true, 0, 0, false);
+            		var tt = temp.game.add.tween(temp.scale);
+            		tt.onComplete.add(waiting.inc);
+            		tt.to( { x: 1, y: 1 }, 500, Phaser.Easing.Linear.None, true, 0, 0, false);
                     var rect = new Phaser.Rectangle((x-1)*40, (y-1)*40, 120, 120);
                     temp.input.boundsRect = rect;
 
@@ -58,74 +78,72 @@ function gameState() {
     }
     
     function checkForMatches() {
-    	
-        allowMove = false;
 
-        
-    	// check sideways
-    	for (var y = 0; y < BOARD_HEIGHT; y++) {
 
-    		var i = 0;
-    		var lastColor = frogs[0][y].frogType; // last color
-    		
-    		for (var x = 1; x < BOARD_WIDTH; x++) {
-    			
-    			var p = frogs[x][y].frogType;
-    			if (p !== lastColor) {
-    				if (x - i >= 3) {
-    					markFrogs(i, x-i, y, 1);
-    					console.log("found matches: y = " + y + ", x = " + i + " to " + (x-1));
-    				}
-    				i = x;
-    				lastColor = p;
-    			} else if (x === (BOARD_WIDTH - 1)) {
-    				if ((x+1) - i >= 3) {
-    					markFrogs(i, (x+1)-i, y, 1);
-    					console.log("found matches: y = " + y + ", x = " + i + " to " + (x));
-    				}
-    			}
-    			
-    		}
-    		
-    	}
+        // check sideways
+        for (var y = 0; y < BOARD_HEIGHT; y++) {
 
-    	// check up/down
-    	for (var x = 0; x < BOARD_WIDTH; x++) {
+            var i = 0;
+            var lastColor = frogs[0][y].frogType; // last color
 
-    		var i = 0;
-    		var lastColor = frogs[x][0].frogType; // last color
-    		
-    		for (var y = 1; y < BOARD_HEIGHT; y++) {
-    			
-    			var p = frogs[x][y].frogType;
-    			if (p !== lastColor) {
-    				if (y - i >= 3) {
-    					markFrogs(x, 1, i, y-i);
-    					console.log("found matches: x = " + x + ", y = " + i + " to " + (y-1));
-    				}
-    				i = y;
-    				lastColor = p;
-    			} else if (y === (BOARD_HEIGHT - 1)) {
-    				if ((y+1) - i >= 3) {
-    					markFrogs(x, 1, i, (y+1)-i);
-    					console.log("found matches: x = " + x + ", y = " + i + " to " + (y));
-    				}
-    			}
-    			
-    		}
-    		
-    	}
-    	
-    	// frogs marked, now sweep
-    	var howManyKilled = 0;
+            for (var x = 1; x < BOARD_WIDTH; x++) {
+
+                var p = frogs[x][y].frogType;
+                if (p !== lastColor) {
+                    if (x - i >= 3) {
+                        markFrogs(i, x-i, y, 1);
+                        //console.log("found matches: y = " + y + ", x = " + i + " to " + (x-1));
+                    }
+                    i = x;
+                    lastColor = p;
+                } else if (x === (BOARD_WIDTH - 1)) {
+                    if ((x+1) - i >= 3) {
+                        markFrogs(i, (x+1)-i, y, 1);
+                        //console.log("found matches: y = " + y + ", x = " + i + " to " + (x));
+                    }
+                }
+
+            }
+
+        }
+
+        // check up/down
+        for (var x = 0; x < BOARD_WIDTH; x++) {
+
+            var i = 0;
+            var lastColor = frogs[x][0].frogType; // last color
+
+            for (var y = 1; y < BOARD_HEIGHT; y++) {
+
+                var p = frogs[x][y].frogType;
+                if (p !== lastColor) {
+                    if (y - i >= 3) {
+                        markFrogs(x, 1, i, y-i);
+                        //console.log("found matches: x = " + x + ", y = " + i + " to " + (y-1));
+                    }
+                    i = y;
+                    lastColor = p;
+                } else if (y === (BOARD_HEIGHT - 1)) {
+                    if ((y+1) - i >= 3) {
+                        markFrogs(x, 1, i, (y+1)-i);
+                        //console.log("found matches: x = " + x + ", y = " + i + " to " + (y));
+                    }
+                }
+
+            }
+
+        }
+
+        // frogs marked, now sweep
+        var howManyKilled = 0;
         for (var x = 0; x < BOARD_WIDTH; x++) {
             for (var y = 0; y < BOARD_HEIGHT; y++) {
-            	var tf = frogs[x][y];
-            	if (tf.dropOut) {
-            	    howManyKilled++;
-            		tf.destroy();
-            		frogs[x][y] = null;
-            	}
+                var tf = frogs[x][y];
+                if (tf.dropOut) {
+                    howManyKilled++;
+                    tf.destroy();
+                    frogs[x][y] = null;
+                }
             }
         }
 
@@ -144,7 +162,7 @@ function gameState() {
             }
         }
 
-        console.log(shouldFall + " frogs should fall");
+        //console.log(shouldFall + " frogs should fall");
 
         var thingy = function(tot, callback) {
             var t = tot;
@@ -157,36 +175,37 @@ function gameState() {
                     }
                 }
             };
-         }(shouldFall, function() {
-             //console.log("all finished falling");
-             spawnFrogs();
-         });
+        }(shouldFall, function() {
+            //console.log("all finished falling");
+            spawnFrogs(howManyKilled, checkForMatches);
+        });
 
-         if (shouldFall > 0) {
+        if (shouldFall > 0) {
 
-             // make them fall
-             for (var x = 0; x < BOARD_WIDTH; x++) {
-                 for (var y = BOARD_HEIGHT - 1; y >= 0; y--) {
-                     var tf = frogs[x][y];
-                     if (tf == null) {
-                         var fallTo = { x: x, y: y };
-                         var stop = false;
-                         for (var w = y - 1; w >= 0 && !stop; w--) {
-                             if (frogs[x][w] != null) {
-                                 //console.log("frog at " + x + ", " + w + " should fall to " + fallTo.x + ", " + fallTo.y);
-                                 moveFrog(frogs[x][w], fallTo, (fallTo.y - w) * 150, thingy.inc);
-                                 stop = true;
-                             }
-                         }
-                     }
-                 }
-             }
+            // make them fall
+            for (var x = 0; x < BOARD_WIDTH; x++) {
+                for (var y = BOARD_HEIGHT - 1; y >= 0; y--) {
+                    var tf = frogs[x][y];
+                    if (tf == null) {
+                        var fallTo = { x: x, y: y };
+                        var stop = false;
+                        for (var w = y - 1; w >= 0 && !stop; w--) {
+                            if (frogs[x][w] != null) {
+                                //console.log("frog at " + x + ", " + w + " should fall to " + fallTo.x + ", " + fallTo.y);
+                                moveFrog(frogs[x][w], fallTo, (fallTo.y - w) * 150, thingy.inc);
+                                stop = true;
+                            }
+                        }
+                    }
+                }
+            }
 
-         } else if (howManyKilled > 0) {
-            spawnFrogs();
+        } else if (howManyKilled > 0) {
+            spawnFrogs(howManyKilled, checkForMatches);
+        } else if (howManyKilled == 0) {
+            tiles.setAll('inputEnabled', true);
         }
 
-        
     }
     
     
@@ -194,8 +213,8 @@ function gameState() {
         
         //console.log(s.position.x + ", " + s.position.y);
         
-        var x1 = Math.floor((s.position.x+20) / 40);
-        var y1 = Math.floor((s.position.y+20) / 40);
+        var x1 = Math.floor((s.position.x + (s.width / 2)) / 40);
+        var y1 = Math.floor((s.position.y + (s.height / 2)) / 40);
         
         if (x1 < 0 || x1 >= BOARD_WIDTH || y1 < 0 || y1 >= BOARD_HEIGHT) {
             return null;
@@ -244,7 +263,7 @@ function gameState() {
         if (!ts) ts = 100;
         
     	if (frogs[np.x][np.y]) {
-    		console.log("won't move to an occupied position: " + np);
+    		//console.log("won't move to an occupied position: " + np);
     		return;
     	}
     	
@@ -265,13 +284,16 @@ function gameState() {
     	
     }
 
-    function releaseFrog(sig, p) {
+    function releaseFrog(sprite, p) {
+
+        tiles.setAll('inputEnabled', false);
 
         this.game.add.tween(this.scale).to( { x: 1, y: 1 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);
 
-        var np = tilePosition(sig);
+        var np = tilePosition(sprite);
         if (np == null) {
             this.game.add.tween(this.position).to( { x: this.boardPosition.x*40, y: this.boardPosition.y*40 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);
+            tiles.setAll('inputEnabled', true);
             return;
         }
         var otherFrog = frogs[np.x][np.y];
@@ -288,13 +310,9 @@ function gameState() {
     function create() {
         
         
-        this.physics.startSystem(Phaser.Physics.ARCADE);
-        
-        this.stage.backgroundColor = "#666666";
+        this.stage.backgroundColor = "#509d5a";
     
         tiles = this.add.group();
-        tiles.enableBody = true;
-
         
         for (var x = 0; x < BOARD_WIDTH; x++) {
         	frogs[x] = [];
@@ -322,12 +340,10 @@ function gameState() {
     
     function update() {
         
-        this.physics.arcade.collide(tiles);
-        
     }
     
     function render() {
-    	//this.game.debug.body(frog);
+
     }
     
     return {
