@@ -1,16 +1,16 @@
 
-var coinsCollected = 0;
-var startTime = null;
-var elapsedTime = null;
+var game;
+var frameWidth, frameHeight;
 
 function gameState() {
 	
-    var allowMove = true;
+    var showDialog = false;
+    var matchCounter = 0;
     
     var TILE_OFFSET = 10;
     
-    var BOARD_WIDTH = 7;
-    var BOARD_HEIGHT = 7;
+    var BOARD_WIDTH = (frameWidth < 450 ? 5 : 7);
+    var BOARD_HEIGHT = (frameWidth < 450 ? 5 : 7);
     
 	var frogs = [];
 	var tiles; // phaser group
@@ -79,7 +79,6 @@ function gameState() {
     
     function checkForMatches() {
 
-
         // check sideways
         for (var y = 0; y < BOARD_HEIGHT; y++) {
 
@@ -92,6 +91,7 @@ function gameState() {
                 if (p !== lastColor) {
                     if (x - i >= 3) {
                         markFrogs(i, x-i, y, 1);
+                        matchCounter++;
                         //console.log("found matches: y = " + y + ", x = " + i + " to " + (x-1));
                     }
                     i = x;
@@ -99,6 +99,7 @@ function gameState() {
                 } else if (x === (BOARD_WIDTH - 1)) {
                     if ((x+1) - i >= 3) {
                         markFrogs(i, (x+1)-i, y, 1);
+                        matchCounter++;
                         //console.log("found matches: y = " + y + ", x = " + i + " to " + (x));
                     }
                 }
@@ -119,6 +120,7 @@ function gameState() {
                 if (p !== lastColor) {
                     if (y - i >= 3) {
                         markFrogs(x, 1, i, y-i);
+                        matchCounter++;
                         //console.log("found matches: x = " + x + ", y = " + i + " to " + (y-1));
                     }
                     i = y;
@@ -126,6 +128,7 @@ function gameState() {
                 } else if (y === (BOARD_HEIGHT - 1)) {
                     if ((y+1) - i >= 3) {
                         markFrogs(x, 1, i, (y+1)-i);
+                        matchCounter++;
                         //console.log("found matches: x = " + x + ", y = " + i + " to " + (y));
                     }
                 }
@@ -177,7 +180,9 @@ function gameState() {
             };
         }(shouldFall, function() {
             //console.log("all finished falling");
-            spawnFrogs(howManyKilled, checkForMatches);
+            spawnFrogs(howManyKilled, function() {
+                checkForMatches();
+            });
         });
 
         if (shouldFall > 0) {
@@ -201,13 +206,59 @@ function gameState() {
             }
 
         } else if (howManyKilled > 0) {
-            spawnFrogs(howManyKilled, checkForMatches);
+            spawnFrogs(howManyKilled, function() {
+                checkForMatches();
+            });
         } else if (howManyKilled == 0) {
             tiles.setAll('inputEnabled', true);
+            checkMatchCounter();
         }
 
     }
     
+    
+    function clearMatchCounter() {
+        showDialog = true;
+        matchCounter = 0;
+    }
+    
+    function checkMatchCounter() {
+
+        if (!showDialog) return;
+        
+        if (matchCounter > 5) {
+            $('#sfe').html("This is a complete disaster!");
+            $('#sfe').fadeIn(500);
+            game.time.events.add(1000, function() {
+                $('#sfe').fadeOut(500);
+            }, this);
+        } else if (matchCounter > 4) {
+            $('#sfe').html("Why won't they stay? We have free coffee!");
+            $('#sfe').fadeIn(500);
+            game.time.events.add(1500, function() {
+                $('#sfe').fadeOut(500);
+            }, this);
+        } else if (matchCounter > 2) {
+            $('#sfe').html("Is this job really that terrible?");
+            $('#sfe').fadeIn(500);
+            game.time.events.add(1500, function() {
+                $('#sfe').fadeOut(500);
+            }, this);
+        } else if (matchCounter > 0) {
+            $('#sfe').html("Not again! Where are they going?");
+            $('#sfe').fadeIn(500);
+            game.time.events.add(1200, function() {
+                $('#sfe').fadeOut(500);
+            }, this);
+        } else if (matchCounter === 0) {
+            $('#sfe').html("Well, that did nothing.");
+            $('#sfe').fadeIn(500);
+            game.time.events.add(1000, function() {
+                $('#sfe').fadeOut(500);
+            }, this);
+        }
+        
+    }
     
     function tilePosition(s) {
         
@@ -286,6 +337,8 @@ function gameState() {
 
     function releaseFrog(sprite, p) {
 
+        clearMatchCounter();
+        
         tiles.setAll('inputEnabled', false);
 
         this.game.add.tween(this.scale).to( { x: 1, y: 1 }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);
@@ -336,6 +389,13 @@ function gameState() {
             }
         }
         
+        this.add.image((BOARD_WIDTH * 40) + 45, (BOARD_HEIGHT > 5 ? 200 : 140), "science");
+        
+        tiles.setAll('inputEnabled', false);
+        checkForMatches();
+        
+        $('#sfe').fadeOut(1200);
+        
     }
     
     function update() {
@@ -355,15 +415,20 @@ function gameState() {
 	
 }
 
-
 $(function() {
 	
-    var width = $('#sizer').width();
-    var height = $('#cell-2').height();
+    frameWidth = $('#sizer').width();
+    frameHeight = $('#cell-2').height();
+    
+    // 450
+    // 340
+    // 310
+    
+    //console.log("frame width = " + w + ", height = " + h);
     
 	var state = gameState();
 	
-	var game = new Phaser.Game(width, height, Phaser.CANVAS, "cell-2",
+	game = new Phaser.Game(frameWidth, frameHeight, Phaser.CANVAS, "cell-2",
 			state);
 	
 });
