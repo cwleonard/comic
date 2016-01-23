@@ -1,6 +1,6 @@
 {
-	"base": "example.com",
-	"port": 80,
+	"base": "localhost",
+	"port": 3000,
 	"secret": "hoppy frog",
 	"logToConsole": false,
 	"weatherApiKey": "your-key-here",
@@ -8,7 +8,7 @@
 		"host": "localhost",
 		"user": "user",
 		"password": "12345",
-		"database": "dbname"
+		"database": "amphibian"
 	},
 	"fb": {
 	    "token": "app-token"
