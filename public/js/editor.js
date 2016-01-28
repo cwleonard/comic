@@ -1051,35 +1051,78 @@ function setupMenu(imgSelectOptions) {
 				var $this = this;
 				var o = $.contextMenu.getInputValues(opt, $this.data());
 				
-				$this.attr("style", "");
-				
 				$this.attr('id', o.objId);
-				$this.css('top', o.top);
-				$this.css('left', o.left);
-				if ($this.css('width') !== o.width) {
-					$this.resizable('destroy');
-					$this.css('width', o.width);
-					$this.resizable();
-				}
+
+                // -------
+
+				var origXStyle = $this.attr('xstyle') || "";
+                $this.attr('xstyle', o.xstyle);
+
+                var oldStyles = stringToStyles(origXStyle);
+                var newStyles = stringToStyles(o.xstyle);
+
+                newStyles["top"]   = o.top;
+                newStyles["left"]  = o.left;
+                newStyles["width"] = o.width;
+
+                for (var q in oldStyles) {
+                    if (newStyles[q] == null) {
+                        console.log("style " + q + " not in new list!");
+                        $this.css(q, "");
+                    }
+                }
+                
+                for (var n in newStyles) {
+                    if (n === "width") {
+                        if ($this.css('width') !== newStyles[n]) {
+                            $this.resizable('destroy');
+                            $this.css('width', newStyles[n]);
+                            $this.resizable();
+                        }
+                    } else {
+                        $this.css(n, newStyles[n]);
+                    }
+                }
+
+                // -------
+				
 				var rot = '';
 				if (o.rotation !== '') {
 					rot = 'rotate(' + o.rotation + 'deg)';
 				}
 				$this.css('-webkit-transform', rot);
 				$this.attr('rot', o.rotation);
-				$this.attr('xstyle', o.xstyle);
-				if (o.xstyle !== '') {
-				    $this.attr("xstyle", o.xstyle);
-				    //TODO: this is a bit of a hack. should parse
-				    //      through the xstyle and only set the styles
-				    //      that aren't explicitly set above (top, left, width, etc.)
-				    $this.attr("style", $this.attr("style") + o.xstyle);
-				}
+				
 			}
 		}
 		
 	});
 
+}
+
+function stringToStyles(str) {
+
+    var ret = [];
+    var parts = str.split(/\s*;\s*/);
+
+    for (var p = 0; p < parts.length; p++) {
+        
+        if (parts[p].length > 0) {
+            
+            var temp = parts[p].split(/\s*:\s*/);
+            var cssAttr = temp[0];
+            var cssValu = temp[1];
+
+            console.log("css attribue \"" + cssAttr + "\" = \"" + cssValu + "\"");
+            
+            ret[cssAttr] = cssValu;
+            
+        }
+        
+    }
+    
+    return ret;
+    
 }
 
 function toggleImgUpload() {
@@ -1301,3 +1344,63 @@ $(function() {
 	buildMenu();
 	
 });
+
+
+function generateColorGradient(colorStart, colorEnd, colorCount) {
+
+    /* Convert a hex string to an RGB triplet */
+    var convertToRGB = function(hex) {
+        
+        /* Remove '#' in color hex string */
+        var trim = function(s) { return (s.charAt(0) == '#') ? s.substring(1, 7) : s; };
+        
+        var color = [];
+        color[0] = parseInt ((trim(hex)).substring (0, 2), 16);
+        color[1] = parseInt ((trim(hex)).substring (2, 4), 16);
+        color[2] = parseInt ((trim(hex)).substring (4, 6), 16);
+        return color;
+        
+    };
+    
+    /* Convert an RGB triplet to a hex string */
+    var convertToHex = function(rgb) {
+
+        var hex = function(c) {
+            var s = "0123456789abcdef";
+            var i = parseInt(c);
+            if (i == 0 || isNaN(c))
+                return "00";
+            i = Math.round(Math.min(Math.max(0, i), 255));
+            return s.charAt((i - i % 16) / 16) + s.charAt(i % 16);
+        };
+
+        return hex(rgb[0]) + hex(rgb[1]) + hex(rgb[2]);
+        
+    };
+    
+    var start = convertToRGB (colorStart);    
+    var end   = convertToRGB (colorEnd);    
+
+    // The number of colors to compute
+    var len = colorCount - 2;
+
+    //Alpha blending amount
+    var alpha = 0.0;
+
+    var ret = [];
+    ret.push(convertToHex(end));
+    
+    for (i = 0; i < len; i++) {
+        var c = [];
+        alpha += (1.0/len);
+        c[0] = start[0] * alpha + (1 - alpha) * end[0];
+        c[1] = start[1] * alpha + (1 - alpha) * end[1];
+        c[2] = start[2] * alpha + (1 - alpha) * end[2];
+        ret.push(convertToHex (c));
+    }
+
+    ret.push(convertToHex(start));
+    return ret;
+    
+}
+
