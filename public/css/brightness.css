@@ -1,0 +1,11 @@
+#bSlider .slider-track {
+	border: 1px solid #000000;
+}
+
+#bSlider .slider-handle {
+	border: 2px solid #2f70a8;
+}
+
+#bSlider .slider-selection {
+	background: #74aad8;
+}
