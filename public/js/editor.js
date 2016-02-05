@@ -212,7 +212,16 @@ function buildCellObject(elem) {
 			var cssTop = $(elem).css('top');
 			var cssLeft = $(elem).css('left');
 			var cssWidth = $(elem).css('width');
-			var sp = $(elem).hasClass('bubble25') ? 25 : ($(elem).hasClass('bubble75') ? 75 : 50);
+			var sp = '50';
+			if ($(elem).hasClass('bubble25')) {
+			    sp = '25';
+			} else if ($(elem).hasClass('bubble75')) {
+			    sp = '75';
+			} else if ($(elem).hasClass('bubbleRight')) {
+			    sp = 'Right';
+            } else if ($(elem).hasClass('bubbleLeft')) {
+                sp = 'Left';
+			}
 			
 			// positions need converted to %
 			var t = Number(cssTop.replace('px', ''));
@@ -449,7 +458,7 @@ function createEditableParagraph(parent, contents) {
  *   - left - left position, in %
  *   - top - top position, in %
  *   - width - bubble width, in %
- *   - stemPos - position of the stem. valid values are 25, 50, and 75
+ *   - stemPos - position of the stem. valid values are 25, 50, 75, Right, and Left
  * 
  * @param cell
  * @param b
@@ -464,7 +473,12 @@ function addBubble(cell, b) {
 	var rot = ( bub.r ? 'rotate(' + bub.r + 'deg)' : null);
 
 	$(p).attr('id', bub.objId || makeBid());
-	$(p).addClass('bubble');
+    $(p).addClass('bubble');
+	if (stemPos == 'Right' || stemPos == 'Left') {
+	    $(p).addClass('bubbleSide');
+    } else {
+        $(p).addClass('bubbleBottom');
+    }
 	$(p).addClass('bubble-text');
 	$(p).addClass('bubble' + stemPos);
 
@@ -650,7 +664,17 @@ function toggleStemPosition(obj) {
 		$(t).addClass('bubble25');
 	} else if ($(t).hasClass('bubble25')) {
 		$(t).removeClass('bubble25');
-		$(t).addClass('bubble50');
+        $(t).removeClass('bubbleBottom');
+        $(t).addClass('bubbleSide');
+		$(t).addClass('bubbleRight');
+    } else if ($(t).hasClass('bubbleRight')) {
+        $(t).removeClass('bubbleRight');
+        $(t).addClass('bubbleLeft');
+    } else if ($(t).hasClass('bubbleLeft')) {
+        $(t).removeClass('bubbleLeft');
+        $(t).removeClass('bubbleSide');
+        $(t).addClass('bubbleBottom');
+        $(t).addClass('bubble50');
 	}
 	
 }
@@ -1350,18 +1374,20 @@ function generateColorGradient(colorStart, colorEnd, colorCount) {
 
     /* Convert a hex string to an RGB triplet */
     var convertToRGB = function(hex) {
-        
+
         /* Remove '#' in color hex string */
-        var trim = function(s) { return (s.charAt(0) == '#') ? s.substring(1, 7) : s; };
-        
+        var trim = function(s) {
+            return (s.charAt(0) == '#') ? s.substring(1, 7) : s;
+        };
+
         var color = [];
-        color[0] = parseInt ((trim(hex)).substring (0, 2), 16);
-        color[1] = parseInt ((trim(hex)).substring (2, 4), 16);
-        color[2] = parseInt ((trim(hex)).substring (4, 6), 16);
+        color[0] = parseInt((trim(hex)).substring(0, 2), 16);
+        color[1] = parseInt((trim(hex)).substring(2, 4), 16);
+        color[2] = parseInt((trim(hex)).substring(4, 6), 16);
         return color;
-        
+
     };
-    
+
     /* Convert an RGB triplet to a hex string */
     var convertToHex = function(rgb) {
 
@@ -1375,32 +1401,33 @@ function generateColorGradient(colorStart, colorEnd, colorCount) {
         };
 
         return hex(rgb[0]) + hex(rgb[1]) + hex(rgb[2]);
-        
+
     };
-    
-    var start = convertToRGB (colorStart);    
-    var end   = convertToRGB (colorEnd);    
+
+    var start = convertToRGB(colorStart);
+    var end = convertToRGB(colorEnd);
 
     // The number of colors to compute
-    var len = colorCount - 2;
+    var len = colorCount - 1;
 
     //Alpha blending amount
     var alpha = 0.0;
 
     var ret = [];
-    ret.push(convertToHex(end));
-    
+    ret.push(convertToHex(start));
+
     for (i = 0; i < len; i++) {
         var c = [];
-        alpha += (1.0/len);
-        c[0] = start[0] * alpha + (1 - alpha) * end[0];
-        c[1] = start[1] * alpha + (1 - alpha) * end[1];
-        c[2] = start[2] * alpha + (1 - alpha) * end[2];
-        ret.push(convertToHex (c));
+        alpha += (1.0 / len);
+        c[0] = end[0] * alpha + (1 - alpha) * start[0];
+        c[1] = end[1] * alpha + (1 - alpha) * start[1];
+        c[2] = end[2] * alpha + (1 - alpha) * start[2];
+        ret.push(convertToHex(c));
     }
 
-    ret.push(convertToHex(start));
+    ret[len] = convertToHex(end); // last color might be slightly off
+
     return ret;
-    
+
 }
 
