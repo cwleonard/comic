@@ -1,0 +1,105 @@
+The comic should run on any platform that supports Node, but I generally run it on Ubuntu Linux.
+These instructions outline the required steps to set up a new server to serve the comic application,
+including the MySQL database and nginx.
+
+-----
+
+If the server doesn't have an SSH server installed, I install it and perform the rest of the steps
+from an SSH session.
+
+	> sudo apt-get install openssh-server
+
+New installations often need a bunch of security updates applied.
+
+	> sudo apt-get update
+	> sudo apt-get upgrade
+	> sudo reboot
+
+Now we get to the real stuff for the comic. I currently use MySQL as a database, and nginx
+as a reverse proxy in front of the Node application.
+
+	> sudo apt-get install git
+	> sudo apt-get install unzip
+	> sudo apt-get install mysql-server
+	> sudo apt-get install nginx
+
+The code currently expects /temp instead of /tmp.
+
+	> sudo ln -s /tmp /temp
+
+The comic has been tested on Node 5.5.0, but other versions will work. Just change the download
+path and filename below to use a different one.
+
+	> wget https://nodejs.org/download/release/latest-v5.x/node-v5.5.0-linux-x64.tar.gz
+	> sudo tar -C /usr/local --strip-components 1 -xzf node-v5.5.0-linux-x64.tar.gz
+
+To generate the static images of the comic, PhantomJS is required. The current version, 2.0.0, has
+no publicly available binary for Linux at this time. To build it, do the following (it takes a while):
+
+	> sudo apt-get install build-essential g++ flex bison gperf ruby perl libsqlite3-dev libfontconfig1-dev libicu-dev libfreetype6 libssl-dev libpng-dev libjpeg-dev python libx11-dev libxext-dev ttf-mscorefonts-installer
+	> wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.0.0-source.zip
+	> unzip phantomjs-2.0.0-source.zip
+	> cd phantomjs-2.0.0
+	> ./build.sh
+	> sudo cp ./bin/phantomjs /usr/local/bin
+	> sudo chmod 775 /usr/local/bin/phantomjs
+	
+	* Note - I built it for Ubuntu 14.04.3 64-bit and keep a copy of the binary around. If you can get it,
+	         just skip to the part about copying it to /usr/local/bin and go from there.
+
+Installing the comic application, to run under a user named "comic" and lives in /opt/comic.
+
+	> sudo useradd -M comic
+	> cd /opt
+	> sudo git clone https://github.com/cwleonard/comic.git
+	> cd comic
+	> sudo npm install
+	> sudo cp /opt/comic/data/config.json.tmplt /opt/comic/data/config.json
+	> sudo chown -R comic:comic /opt/comic
+
+Set up the database in MySQL. Whatever user and password you use here must be the same you'll put in
+the config.json file before starting the app. Also note that when prompted for a password, it's asking
+for the MySQL root password.
+
+	> cd /opt/comic/sql
+	> sudo chmod +x create_db.sh
+	> sudo ./create_db.sh amphibian <user> <password>
+
+Set up nginx to proxy HTTP requests on port 80 to whatever high port the comic runs on. By default,
+the comic app listens on port 3000 but you can change that if you edit /opt/comic/nginx/amphibian before
+running these steps. You'll have to set config.json to match whatever you decide to use.
+
+If this is for production,
+
+	> cd /opt/comic/nginx
+	> sudo cp amphibian /etc/nginx/sites-available/amphibian
+	> sudo ln -s /etc/nginx/sites-available/amphibian /etc/nginx/sites-enabled/
+	> sudo service nginx restart
+	
+...or if this is for a test environment,
+
+	> cd /opt/comic/nginx
+	> sudo cp amphibian-test /etc/nginx/sites-available/amphibian-test
+	> sudo ln -s /etc/nginx/sites-available/amphibian-test /etc/nginx/sites-enabled/
+	> sudo service nginx restart
+
+Before starting the app for the first time, edit the config file and set all the values properly.
+This mainly will involve setting the database access information to whatever user and password
+you used above.
+
+	> sudo vi /opt/comic/data/config.json
+
+Set the comic app to auto-start when the machine boots. Also gives you a way to control the process.
+
+	> cd /opt/comic
+	> sudo cp comic_start /etc/init.d/comic
+	> sudo chmod +x /etc/init.d/comic
+	> sudo update-rc.d comic defaults
+
+Start it up!
+
+	> sudo /etc/init.d/comic start
+
+If everything worked, navigating to http://localhost should show you something. Of course, you
+won't have any comic data at this point.
+

@@ -1,0 +1,16 @@
+{
+    "main": [
+        {
+            "type": "spritesheet",
+            "key": "frogs",
+            "url": "other/frog-colors.png",
+            "frameWidth": 40,
+            "frameHeight": 40
+        },
+        {
+            "type": "image",
+            "key": "science",
+            "url": "other/frog-science-left.png"
+        }
+    ]
+}

@@ -77,7 +77,7 @@
 
 }
 
-.bubble:after {
+.bubbleBottom:after {
 	content: '';
 	position: absolute;
 	border-style: solid;
@@ -94,7 +94,7 @@
 	margin-left: -12px;
 }
 
-.bubble:before {
+.bubbleBottom:before {
 	content: '';
 	position: absolute;
 	border-style: solid;
@@ -153,6 +153,82 @@
 	top: -27px;
 	bottom: initial;
 }
+
+
+.bubbleLeft:after {
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-color: transparent #FFFFFF;
+	display: block;
+	width: 0;
+	z-index: 1;
+	box-sizing: initial;
+	-moz-box-sizing: initial;
+	-webkit-box-sizing: initial;
+	/* the following are adjusted by screen size. these values are the minimums.  */
+	border-width: 9px 25px 9px 0;
+	top: 30%;
+	left: -20px;
+	bottom: initial;
+
+}
+
+.bubbleLeft:before {
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-color: transparent #000000;
+	display: block;
+	width: 0;
+	z-index: 0;
+	box-sizing: initial;
+	-moz-box-sizing: initial;
+	-webkit-box-sizing: initial;
+	/* the following are adjusted by screen size. these values are the minimums.  */
+	border-width: 9px 25px 9px 0;
+	left: -14px;
+	top: 30%;
+	margin-left: -14px;
+}
+
+.bubbleRight:after {
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-color: transparent #FFFFFF;
+	display: block;
+	width: 0;
+	z-index: 1;
+	box-sizing: initial;
+	-moz-box-sizing: initial;
+	-webkit-box-sizing: initial;
+	/* the following are adjusted by screen size. these values are the minimums.  */
+	border-width: 9px 0 9px 25px;
+	top: 30%;
+	right: -19px;
+	bottom: initial;
+
+}
+
+.bubbleRight:before {
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-color: transparent #000000;
+	display: block;
+	width: 0;
+	z-index: 0;
+	box-sizing: initial;
+	-moz-box-sizing: initial;
+	-webkit-box-sizing: initial;
+	/* the following are adjusted by screen size. these values are the minimums.  */
+	border-width: 9px 0 9px 25px;
+	right: -25px;
+	top: 30%;
+	margin-left: -14px;
+}
+
 
 div#sizer {
 	margin: auto;
@@ -526,16 +602,42 @@ div.buy p.ftitle {
 		border-radius: 28px;
 	}
 
-	.bubble:after {
+	.bubbleBottom:after {
 		border-width: 34px 15px 0;
 		bottom: -32px;
 		margin-left: -20px;
 	}
 	
-	.bubble:before {
+	.bubbleBottom:before {
 		border-width: 36px 17px 0;
 		bottom: -38px;
 		margin-left: -22px;
+	}
+
+	.bubbleLeft:after {
+	  	border-width: 15px 34px 15px 0;
+		top: 30%;
+		left: -26px;
+	}
+	
+	.bubbleLeft:before {
+		border-width: 15px 34px 15px 0;
+		left: -20px;
+		top: 30%;
+		margin-left: -14px;
+	}
+
+	.bubbleRight:after {
+	  	border-width: 15px 0 15px 34px;
+		top: 30%;
+		right: -26px;
+	}
+	
+	.bubbleRight:before {
+		border-width: 15px 0 15px 34px;
+		right: -34px;
+		top: 30%;
+		margin-left: -14px;
 	}
 
 	.bubbleTop:after {

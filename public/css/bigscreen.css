@@ -31,16 +31,42 @@
 		border-radius: 34px;
 	}
 
-	.bubble:after {
+	.bubbleBottom:after {
 		border-width: 48px 20px 0;
 		bottom: -46px;
 		margin-left: -24px;
 	}
 	
-	.bubble:before {
+	.bubbleBottom:before {
 		border-width: 50px 22px 0;
 		bottom: -52px;
 		margin-left: -26px;
+	}
+
+	.bubbleLeft:after {
+	  	border-width: 22px 50px 22px 0;
+		top: 30%;
+		left: -43px;
+	}
+	
+	.bubbleLeft:before {
+		border-width: 22px 50px 22px 0;
+		left: -38px;
+		top: 30%;
+		margin-left: -14px;
+	}
+
+	.bubbleRight:after {
+	  	border-width: 22px 0 22px 50px;
+		top: 30%;
+		right: -41px;
+	}
+	
+	.bubbleRight:before {
+		border-width: 22px 0 22px 50px;
+		right: -50px;
+		top: 30%;
+		margin-left: -14px;
 	}
 
 }

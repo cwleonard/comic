@@ -106,6 +106,10 @@ hr{
 	background: #FF0033;
 }
 
+.social a.github i {
+	background: #990066;
+}
+
 .social a.linkedin i{
 	background:#2d93cf;
 }
