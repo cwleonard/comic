@@ -1,0 +1,34 @@
+{
+    "main": [
+        {
+            "type": "image",
+            "key": "tiles",
+            "url": "other/dw_tiles.png"
+        },
+        {
+            "type": "image",
+            "key": "boxes",
+            "url": "other/rpg-boxes.png"
+        },
+        {
+            "type": "image",
+            "key": "printer",
+            "url": "other/printer.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "frog",
+            "url": "other/fw-sprite.png",
+            "frameWidth": 32,
+            "frameHeight": 32
+
+        },
+        {
+            "type": "tilemap",
+            "key": "map",
+            "url": "other/frog-warrior-map.json",
+            "data": null,
+            "format": "TILED_JSON"
+        }
+    ]
+}
