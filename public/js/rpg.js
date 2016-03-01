@@ -19,6 +19,8 @@ function boot() {
 
 function walkAround() {
 
+    var sf = 1;
+
     var fightTrigger;
     var dist;
     var frog;
@@ -30,6 +32,12 @@ function walkAround() {
     var fPos = { x: 200, y: 500 };
 
     function create() {
+
+        if (this.game.width === 340) {
+            sf = 0.75;
+        } else if (this.game.width === 310) {
+            sf = 0.69;
+        }
 
         fightTrigger = Math.floor(Math.random() * 300) + 400; 
         dist = 0;
@@ -43,7 +51,6 @@ function walkAround() {
 
         layer = map.createLayer("layer1");
         layer.resizeWorld();
-
         map.setLayer(layer);
 
         map.setCollision(17);
@@ -121,6 +128,9 @@ function walkAround() {
 
 function fight() {
 
+    var sf = 1;
+    var fontSize = 16;
+    
     var myEXP = 44;
     var myHP = 15;
     var oHP = 15;
@@ -149,24 +159,61 @@ function fight() {
         myHP = 15;
         oHP = 15;
         
-        boxes = this.add.image(16, 0, "boxes");
-        printer = this.add.image(150, 70, "printer");
+        if (this.game.width === 340) {
+            sf = 0.75;
+        } else if (this.game.width === 310) {
+            sf = 0.69;
+        }
         
-        this.add.bitmapText(40, 0, "font", "Frog", 16);
-        this.add.bitmapText(30, 18, "font", "LV   3", 16);
-        hpText = this.add.bitmapText(30, 34, "font", "HP  " + myHP, 16);
-        this.add.bitmapText(30, 50, "font", "G    0", 16);
-        eText = this.add.bitmapText(30, 66, "font", "E   " + myEXP, 16);
+        // adjust font size to scale factor
+        fontSize = 16 * sf;
+        
+        
+        boxes = this.add.image(16 * sf, 0, "boxes");
+        boxes.scale.setTo(1 * sf, 1 * sf);
+        
+        printer = this.add.image(150 * sf, 70 * sf, "printer");
+        printer.scale.setTo(1 * sf, 1 * sf);
+        
+        this.add.bitmapText(40 * sf, 0, "font", "Frog", fontSize);
+        this.add.bitmapText(30 * sf, 18 * sf, "font", "LV   3", fontSize);
+        hpText = this.add.bitmapText(30 * sf, 34 * sf, "font", "HP  " + myHP, fontSize);
+        this.add.bitmapText(30 * sf, 50 * sf, "font", "G    0", fontSize);
+        eText = this.add.bitmapText(30 * sf, 66 * sf, "font", "E   " + myEXP, fontSize);
 
-        this.add.bitmapText(290, 0, "font", "COMMAND", 16);
-        this.add.bitmapText(260, 18, "font", "FIGHT", 16);
-        this.add.bitmapText(350, 18, "font", "SPELL", 16);
-        this.add.bitmapText(260, 34, "font", "RUN", 16);
-        this.add.bitmapText(350, 34, "font", "ITEM", 16);
+        this.add.bitmapText(290 * sf, 0 * sf, "font", "COMMAND", fontSize);
+        
+        var fightCommand = this.add.bitmapText(260 * sf, 18 * sf, "font", "FIGHT", fontSize);
+        fightCommand.inputEnabled = true;
+        fightCommand.events.onInputDown.add(function() {
+            selPos = 0;
+            doCommand(this.game);
+        }, fightCommand);
+        
+        var spellCommand = this.add.bitmapText(350 * sf, 18 * sf, "font", "SPELL", fontSize);
+        spellCommand.inputEnabled = true;
+        spellCommand.events.onInputDown.add(function() {
+            selPos = 2;
+            doCommand(this.game);
+        }, spellCommand);
+        
+        var runCommand = this.add.bitmapText(260 * sf, 34 * sf, "font", "RUN", fontSize);
+        runCommand.inputEnabled = true;
+        runCommand.events.onInputDown.add(function() {
+            selPos = 1;
+            doCommand(this.game);
+        }, runCommand);
+        
+        var itemCommand = this.add.bitmapText(350 * sf, 34 * sf, "font", "ITEM", fontSize);
+        itemCommand.inputEnabled = true;
+        itemCommand.events.onInputDown.add(function() {
+            selPos = 3;
+            doCommand(this.game);
+        }, itemCommand);
 
-        selector = this.add.bitmapText(commandSelectorPositions[selPos].x, commandSelectorPositions[selPos].y, "font", "*", 16);
+        selector = this.add.bitmapText(commandSelectorPositions[selPos].x * sf, commandSelectorPositions[selPos].y * sf, "font", "*", fontSize);
 
-        fText = this.add.bitmapText(30, 205, "font", "A broken printer draws near!\nCommand?", 16);
+        fText = this.add.bitmapText(30 * sf, 205 * sf, "font", "A broken printer draws near!\nCommand?", fontSize);
 
         cursors = this.input.keyboard.createCursorKeys();
         enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -231,9 +278,6 @@ function fight() {
             fText.text = "Thou hast a paperclip, but\nthou art no MacGyver.";
         }
         
-        // reset to "fight" for next round
-        selPos = 0;
-        
         myTurn = false;
         game.time.events.add(3000, function() {
             if (oHP > 0) {
@@ -263,8 +307,8 @@ function fight() {
             selector.visible = true;
         }
         
-        selector.position.x = commandSelectorPositions[selPos].x;
-        selector.position.y = commandSelectorPositions[selPos].y;
+        selector.position.x = commandSelectorPositions[selPos].x * sf;
+        selector.position.y = commandSelectorPositions[selPos].y * sf;
 
     }
     
@@ -286,8 +330,13 @@ function fight() {
         }
         
         game.time.events.add(3000, function() {
+            
+            // reset selector to "fight" for next round
+            selPos = 0;
+            
             fText.text = "Command?";
             myTurn = true;
+            
         }, this);
 
         
@@ -299,7 +348,6 @@ function fight() {
     };
 
 }
-
 
 $(function() {
 	
