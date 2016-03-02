@@ -82,30 +82,47 @@ function walkAround() {
     function update() {
 
         this.physics.arcade.collide(frog, layer);
-
-        if (cursors.left.isDown) {
-            frog.body.velocity.x = -100;
-            frog.scale.x = 1;
-        } else if (cursors.right.isDown) {
-            frog.body.velocity.x = 100;
-            frog.scale.x = -1;
+        
+        if (this.input.activePointer.isDown) {
+            
+            // touch/mouse
+            
+            this.physics.arcade.moveToPointer(frog, 100);
+            
         } else {
-            frog.body.velocity.x = 0;
+
+            // keyboard
+            
+            if (cursors.left.isDown) {
+                frog.body.velocity.x = -100;
+            } else if (cursors.right.isDown) {
+                frog.body.velocity.x = 100;
+            } else {
+                frog.body.velocity.x = 0;
+            }
+
+            if (cursors.up.isDown) {
+                frog.body.velocity.y = -100;
+            } else if (cursors.down.isDown) {
+                frog.body.velocity.y = 100;
+            } else {
+                frog.body.velocity.y = 0;
+            }
+
         }
 
-        if (cursors.up.isDown) {
-            frog.body.velocity.y = -100;
-        } else if (cursors.down.isDown) {
-            frog.body.velocity.y = 100;
-        } else {
-            frog.body.velocity.y = 0;
-        }
-
-        if (frog.body.velocity.y < 0) {
+        var vert = Math.abs(frog.body.velocity.y) > Math.abs(frog.body.velocity.x) ? true : false;
+        
+        if (frog.body.velocity.y < 0 && vert) {
             frog.animations.play("walk-b");
-        } else if (frog.body.velocity.y > 0) {
+        } else if (frog.body.velocity.y > 0 && vert) {
             frog.animations.play("walk-f");
         } else if (frog.body.velocity.x != 0) {
+            if (frog.body.velocity.x < 0) {
+                frog.scale.x = 1;
+            } else {
+                frog.scale.x = -1;
+            }
             frog.animations.play("walk-s");
         } else {
             frog.animations.stop(null, true);
@@ -284,9 +301,9 @@ function fight() {
                 printerAttack(game);
             } else {
                 printer.visible = false;
-                fText.text = "Thou hast gained 0 gold\nand 3 experience.";
+                fText.text = "Thou hast gained 0 gold\nand 3 experience.\nThine boss hast gained 5 gold.";
                 myEXP += 3;
-                game.time.events.add(4000, function() {
+                game.time.events.add(5000, function() {
                     game.state.start("walking");
                 }, this);
             }
