@@ -271,6 +271,29 @@ div#extraText a {
     text-decoration: underline;
 }
 
+div#tags {
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+span.tag {
+    color: #006633;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #66FF66;
+    background: #99FF99;
+    border-radius: 12px;
+}
+
+span.tag a:hover {
+	color: #006633;
+	text-decoration: underline;
+}
+
+span.tag:before {
+	content: '#';
+}
+
 div.info {
 	width: 100%;
 	margin: auto;
