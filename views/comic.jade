@@ -28,6 +28,11 @@ div#sizer(comicId=id)
 			- for (var i in cells[c].imgs)
 				+makeImage(cells[c].imgs[i])
 	div#info(comicId=id,class='info')
+		if tags && tags.length > 0
+			div#tags
+				- for (var t in tags)
+					span.tag
+						!= '<a href="search?t=' + tags[t] + '">' + tags[t] + '</a>'
 		if extraText && !basic
 			div#extraText
 				!= extraText
