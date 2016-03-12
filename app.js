@@ -325,17 +325,18 @@ app.get('/list', ensureAuthenticated, function(req, res, next) {
 });
 
 app.get('/archive', function(req, res, next) {
-	
-	cfact.listComics(true) // no future comics
+
+	cfact.listComics(true, req.query.f) // no future comics
 	.then(function(data) {
 		res.render('archive', {
 			title: 'Archive',
-			comics: data
+			comics: data,
+			filteredBy: req.query.f
 		});
 	}, function(error) {
 		next(error.error);
 	});
-	
+
 });
 
 (function setupRouters() {
