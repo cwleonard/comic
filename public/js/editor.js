@@ -316,6 +316,7 @@ function buildComicOjbect() {
 	var pd = $('#pubDate').val();
 	var et = $('#extraText').val();
 	var js = $('#extraJs').val();
+	var tg = $('#tags').val();
 	
 	var cobj = {
 		pubDate: pd,
@@ -326,6 +327,10 @@ function buildComicOjbect() {
 	
 	if (js !== '') {
 		cobj.scripts = js.split(/\s*,\s*/);
+	}
+	
+	if (tg !== '') {
+		cobj.tags = tg.split(/\s*,\s*/);
 	}
 	
 	$('#cellArea div.box').each(function(idx, elem) {
@@ -1216,6 +1221,9 @@ function dataToComic(data) {
 	$('#extraText').val(data.extraText);
 	if (data.scripts && data.scripts.length > 0) {
 		$('#extraJs').val(data.scripts.join());
+	}
+	if (data.tags && data.tags.length > 0) {
+		$('#tags').val(data.tags.join());
 	}
 	$('#pubDate').val(pd.format('YYYY-MM-DD'));
 
