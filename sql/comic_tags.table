@@ -1,0 +1,8 @@
+delimiter $$
+
+CREATE TABLE `comic_tags` (
+  `id` int(11) NOT NULL,
+  `tag` varchar(50) NOT NULL,
+  PRIMARY KEY (`tag`,`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+

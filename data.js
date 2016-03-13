@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var q = require('q');
+var async = require('async');
 
 module.exports = function(dbconf) {
 	
@@ -167,7 +168,41 @@ module.exports = function(dbconf) {
 		});
 		
 	}
-	
+
+	function storeTags(id, tags, callback) {
+		
+		var sql = 'DELETE FROM comic_tags WHERE id = ?';
+		pool.query(sql, [id], function(err, result) {
+			
+			if (err) {
+				callback(err);
+			} else {
+				
+				async.each(tags, function(tag, cb) {
+					
+					var isql = "INSERT INTO comic_tags (id, tag) VALUES (?, ?)";
+					pool.query(isql, [id, tag], function(e, r) {
+						if (e) {
+							console.error(e);
+						}
+						cb();
+					});
+					
+				}, function(terr) {
+					if (terr) {
+						callback(terr);
+					} else {
+						callback();
+					}
+				});
+				
+			}
+			
+		});
+		
+		
+	}
+
 	return {
 		
 		loadCurrent: function (cb) {
@@ -374,13 +409,27 @@ module.exports = function(dbconf) {
 				if (err) {
 					callback(err);
 				} else {
+					
 					if (id) {
-						callback(null, id);
+						storeTags(id, data.tags, function(e) {
+							if (e) {
+								callback(e);
+							} else {
+								callback(null, id);
+							}
+						});
 					} else if (result.affectedRows === 1) {
-						callback(null, result.insertId);
+						storeTags(id, data.tags, function(e) {
+							if (e) {
+								callback(e);
+							} else {
+								callback(null, result.insertId);
+							}
+						});
 					} else {
 						callback(new Error('no data inserted!'));
 					}
+					
 				}
 				
 			});
@@ -418,18 +467,31 @@ module.exports = function(dbconf) {
 			
 		},
 
-		listComics: function(noFuture) {
+		listComics: function(noFuture, withTag) {
 
 			var deferred = q.defer();
 
-			var sql;
+			var sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ';
+			var params = [];
+			var wheres = new Array();
 			if (noFuture) {
-				sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data WHERE DATE(pub_date) <= CURDATE() ORDER by pub_date';
-			} else {
-				sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%e %M %Y\') as pd, data FROM comic_data ORDER by pub_date';
+				wheres.push('DATE(pub_date) <= CURDATE()');
 			}
+			if (withTag) {
+				wheres.push('id IN (SELECT id FROM comic_tags WHERE tag = ?)');
+				params.push(withTag);
+			}
+			if (wheres.length > 0) {
+				sql += "WHERE ";
+				for (var w = 0; w < wheres.length; w++) {
+					if (w > 0) sql += "AND ";
+					sql += wheres[w] + ' ';
+				}
+			}
+			sql += 'ORDER by pub_date';
 			
-			pool.query(sql, function(err, rows) {
+			
+			pool.query(sql, params, function(err, rows) {
 
 				if (err) {
 					

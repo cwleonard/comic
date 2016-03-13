@@ -22,5 +22,6 @@ $MYSQL -u$2 -p$3 $1 < comic_data.table
 $MYSQL -u$2 -p$3 $1 < comic_access.table
 $MYSQL -u$2 -p$3 $1 < comic_img.table
 $MYSQL -u$2 -p$3 $1 < comic_users.table
+$MYSQL -u$2 -p$3 $1 < comic_tags.table
 $MYSQL -u$2 -p$3 $1 < products.table
 $MYSQL -u$2 -p$3 $1 < purchases.table

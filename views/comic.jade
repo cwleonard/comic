@@ -32,7 +32,7 @@ div#sizer(comicId=id)
 			div#tags
 				- for (var t in tags)
 					span.tag
-						!= '<a href="search?t=' + tags[t] + '">' + tags[t] + '</a>'
+						!= '<a href="archive?f=' + tags[t] + '">' + tags[t] + '</a>'
 		if extraText && !basic
 			div#extraText
 				!= extraText

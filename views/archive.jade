@@ -7,6 +7,11 @@ html
 		div(class="about-us block",style="border-bottom: none;")
 			div(class="container")
 				
+				if (filteredBy)
+					div(class="filtered-archive")
+						h2(style="margin-bottom: 15px !important;")
+							!= 'Showing comics with the tag #' + filteredBy
+				
 				div(class="about-one")
 					div(class="about-one-item")
 						div(class="about-one-content")
