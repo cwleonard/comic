@@ -28,7 +28,7 @@ div#sizer(comicId=id)
 			- for (var i in cells[c].imgs)
 				+makeImage(cells[c].imgs[i])
 	div#info(comicId=id,class='info')
-		if tags && tags.length > 0
+		if (tags && tags.length > 0 && !basic)
 			div#tags
 				- for (var t in tags)
 					span.tag
