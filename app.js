@@ -44,16 +44,14 @@ if (conf.ssl) {
 var server = http.createServer(app).listen(conf.port, function() {
     console.log('listening on port %d', server.address().port);
 });
+var io = require('socket.io')(server);
 
 if (sslOptions) {
     var secureServer = https.createServer(sslOptions, app).listen(conf.ssl.port, function() {
         console.log('listening securely on port %d', secureServer.address().port);
     });
+    io.attach(secureServer);
 }
-
-var io = require('socket.io')(server);
-
-
 
 // ---------------
 
