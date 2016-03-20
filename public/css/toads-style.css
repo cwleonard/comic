@@ -107,6 +107,10 @@ hr{
 	background:#f22d0c;
 }
 
+.social a.github i {
+ 	background: #990066;
+ }
+ 
 .social a.blogger i {
 	background: #f9760b;
 }
@@ -161,7 +165,7 @@ hr{
 /* Basic CSS ends */
 
 .container{
-	width:900px;
+	width:910px;
 }
 
 .tblue{
