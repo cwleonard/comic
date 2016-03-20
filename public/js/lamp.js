@@ -1,6 +1,16 @@
 $(function() {
 
-    var socket = io('http://amphibian.com:3000');
+    var urlParts = window.location.href.split("/");
+    var cUrl = urlParts[0] + "//" + urlParts[2];
+    if (!window.location.port) {
+        if (urlParts[0] !== "https:") {
+            cUrl += ':3000';
+        } else {
+            cUrl += ':4443';
+        }
+    }
+    
+    var socket = io(cUrl);
     
     socket.on("lamp-off", function(d) { 
         $('#glow').hide();
