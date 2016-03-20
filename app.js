@@ -12,7 +12,7 @@ var qr = require('qr-image');
 
 var Feed = require('feed');
 
-var routers = ["data", "images", "memeGen", "colors", "fb"];
+var routers = ["data", "images", "memeGen", "colors", "fb", "lamp"];
 
 var coinRoutes = require('./coinRoutes');
 var logging = require('./logger');
@@ -25,18 +25,37 @@ var conf = JSON.parse(fs.readFileSync('data/config.json', { encoding: 'utf-8' })
 var sslOptions = null;
 if (conf.ssl) {
 
-	try {
-		
-		sslOptions = {
-			key: fs.readFileSync(conf.ssl.key),
-			cert: fs.readFileSync(conf.ssl.cert)
-		};
-	
-	} catch (e) {
-		console.log("unable to use SSL: " + e);
-	}
-	
+    try {
+        
+        sslOptions = {
+            key: fs.readFileSync(conf.ssl.key),
+            cert: fs.readFileSync(conf.ssl.cert)
+        };
+    
+    } catch (e) {
+        console.log("unable to use SSL: " + e);
+    }
+    
 }
+
+// ---------------
+
+
+var server = http.createServer(app).listen(conf.port, function() {
+    console.log('listening on port %d', server.address().port);
+});
+
+if (sslOptions) {
+    var secureServer = https.createServer(sslOptions, app).listen(conf.ssl.port, function() {
+        console.log('listening securely on port %d', secureServer.address().port);
+    });
+}
+
+var io = require('socket.io')(server);
+
+
+
+// ---------------
 
 var cfact = require('./data')(conf.database);
 var authorizer = require('./userAuth')(conf.database);
@@ -339,10 +358,13 @@ app.get('/archive', function(req, res, next) {
 
 });
 
+//------------ other routes...
+
 (function setupRouters() {
 
     var opts = {
             express: express,
+            sio: io,
             auth: ensureAuthenticated,
             dataSource: cfact,
             config: conf
@@ -362,7 +384,8 @@ app.get('/archive', function(req, res, next) {
 
 })();
 
-//------------ other routes...
+
+
 
 app.get('/editor', ensureAuthenticated, function(req, res, next) {
 	res.render('editpage', {
@@ -629,6 +652,7 @@ app.get('/temperature', function(req, res, next) {
 
 app.get('/twc', function(req, res, next) {
 	res.setHeader('Content-Type', 'text/plain');
+	res.setHeader('Access-Control-Allow-Origin', 'http://toads.co');
 	res.status(200).send(twcRank.rank());
 });
 
@@ -655,7 +679,7 @@ app.get('/broken', function(req, res, next) {
 
 app.use(express.static('public', {
 	'setHeaders': function(res, path, stat) {
-			if (path.match(/\.(ttf|ttc|otf|eot|woff|font.css|css)$/)) {
+			if (path.match(/\.(ttf|ttc|otf|eot|woff|woff2|font.css|css)$/)) {
 				res.setHeader('Access-Control-Allow-Origin', 'http://toads.co');
 			}
 		}
@@ -723,12 +747,4 @@ app.use(function(err, req, res, next) {
 	});
 });
 
-var server = http.createServer(app).listen(conf.port, function() {
-	console.log('listening on port %d', server.address().port);
-});
 
-if (sslOptions) {
-	var secureServer = https.createServer(sslOptions, app).listen(conf.ssl.port, function() {
-		console.log('listening securely on port %d', secureServer.address().port);
-	});
-}
