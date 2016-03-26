@@ -10,16 +10,12 @@ module.exports = function(c) {
 	    
 	    io.on('connection', function (socket) {
 
-	        //console.log("connection!");
-	        
 	        socket.on("lamp-toggle", function(data) {
 	            
 	            if (lampOn) {
 	                io.emit("lamp-off");
-	                //console.log("lamp shutting off");
 	            } else {
 	                io.emit("lamp-on");
-                    //console.log("lamp turning on");
 	            }
 	            
 	            lampOn = !lampOn;
