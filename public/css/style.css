@@ -488,6 +488,11 @@ div.buy p.ftitle {
 	color: #ffffff;
 }
 
+#jsWarning {
+	font-size: 1.7em;
+	text-align: center;
+}
+
 #tipModal .modal-body p {
 	text-align: center;
 }

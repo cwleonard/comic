@@ -14,6 +14,9 @@ mixin makeImage(img)
 		img(id=img.objId ? img.objId : undefined,animated=img.move ? 'true' : undefined,speed=img.speed ? img.speed : undefined,travel=img.travel ? img.travel : undefined,direction=img.direction ? img.direction : undefined,noBounce=img.noBounce ? img.noBounce : undefined,style='top: ' + img.top + '%; left: ' + img.left + '%;'+(img.width ? ' width: ' + img.width + '%;' : '')+(img.z ? ' z-index: ' + img.z + ';' : '')+(img.hide ? ' display: none;' : '')+(img.r ? ' transform: rotate(' + img.r + 'deg); -webkit-transform: rotate(' + img.r + 'deg); -ms-transform: rotate(' + img.r + 'deg);' : ''),src='/images/'+img.src,alt=img.altText ? img.altText : 'object')
 
 div#sizer(comicId=id)
+	if (basic && scripts && title)
+		div#jsWarning
+			!= 'This comic contains a (probably) fun dynamic element! To really enjoy it, you should visit https://' + url + '/' + id
 	if title
 		p.cTitle= title
 	- for (var c in cells)

@@ -212,40 +212,60 @@ app.get('/:n', function(req, res, next) {
 			next(err);
 		} else if (data) {
 			
-			if (req.isAuthenticated()) {
-				data.admin = true;
-			}
-			
-			if (data.pubDate) {
-				var p = new Date(data.pubDate);
-				if (p > new Date()) {
-					if (!req.isAuthenticated()) {
-						// only authenticated users can see future comics
-						fs.readFile('data/403.json', { encoding: 'utf-8' }, function(err, data) {
-							if (err) {
-								next(err);
-							} else {
-								res.render('comicpage', JSON.parse(data), function(err, str) {
-									if (err) {
-										next(err);
-									} else {
-										res.status(403).send(str);
-									}
-								});
-							}
-						});
-					} else {
-						data.url = conf.base;
-						res.render('comicpage', data);
-					}
-				} else {
-					data.url = conf.base;
-					res.render('comicpage', data);
-				}
-			} else {
-				data.url = conf.base;
-				res.render('comicpage', data);
-			}
+		    if (req.query.b === '1' && (req.isAuthenticated() || (req.get('X-Real-IP') == null && req.ip === conf.allowBasicFrom))) {
+		        
+		        if (req.query.c) {
+		            var cn = Number(req.query.c);
+		            var singleCell = [ data.cells[cn - 1] ];
+		            data.cells = singleCell;
+		            data.title = null;
+		        }
+		        
+		        data.basic = true;
+	            data.pubDate = null;
+	            data.prevDate = null;
+	            data.nextDate = null;
+	            data.url = conf.base;
+	            res.render('basiccomicpage', data);
+		        
+		    } else {
+
+		        if (req.isAuthenticated()) {
+		            data.admin = true;
+		        }
+
+		        if (data.pubDate) {
+		            var p = new Date(data.pubDate);
+		            if (p > new Date()) {
+		                if (!req.isAuthenticated()) {
+		                    // only authenticated users can see future comics
+		                    fs.readFile('data/403.json', { encoding: 'utf-8' }, function(err, data) {
+		                        if (err) {
+		                            next(err);
+		                        } else {
+		                            res.render('comicpage', JSON.parse(data), function(err, str) {
+		                                if (err) {
+		                                    next(err);
+		                                } else {
+		                                    res.status(403).send(str);
+		                                }
+		                            });
+		                        }
+		                    });
+		                } else {
+		                    data.url = conf.base;
+		                    res.render('comicpage', data);
+		                }
+		            } else {
+		                data.url = conf.base;
+		                res.render('comicpage', data);
+		            }
+		        } else {
+		            data.url = conf.base;
+		            res.render('comicpage', data);
+		        }
+
+		    }
 			
 		} else {
 			next(); // no comic found
