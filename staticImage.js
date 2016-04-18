@@ -7,6 +7,7 @@ module.exports = function(conf) {
 	var config = conf || {};
 	
 	var tempDir = config.dir || './temp';
+	var magicNumber = config.magicNumber;
 	
 	
 	return {
@@ -17,10 +18,11 @@ module.exports = function(conf) {
 			var storeFunc = (((typeof cellOrStoreFunc) === 'function') ? cellOrStoreFunc : storeFuncOrCallback);
 			var cb = callback || storeFuncOrCallback;
 			
+			var cn = "";
 			var fileId = id;
 			var urlId = id;
 			if (cellNum) {
-				urlId += '/' + cellNum;
+				cn = '&c=' + cellNum;
 				fileId += "-" + cellNum;
 			}
 			
@@ -29,20 +31,22 @@ module.exports = function(conf) {
 			
 			var cFileData = "var page = require('webpage').create();\n" +
 				"page.viewportSize = { width: 1202, height: 5000 };\n" +
-				"page.open('http://localhost:3000/basic/" + urlId + "', function() {\n" +
-				"    page.clipRect = page.evaluate(function() {\n" +
-				"        var rect = document.getElementById('comicArea').getBoundingClientRect();\n" +
-				"        var rect2 = document.getElementById('cell-0').getBoundingClientRect();\n" +
-				"        var r = JSON.parse(JSON.stringify(rect));\n" +
-				"        r.height += (r.top * 2);\n" +
-				"        r.top = 0;\n" +
-				"        r.left = rect2.left - 102;\n" +
-				"        r.right = rect2.right + 102;\n" +
-				"        r.width = rect2.width + 204;\n" +
-				"        return r;\n" +
-				"    });\n" +
-				"    page.render('" + imgFileName.replace(/\\/g, '\\\\') + "');\n" +
-				"    phantom.exit();\n" +
+				"page.open('http://localhost:3000/" + urlId + "?b=1" + cn + "', function() {\n" +
+				"    window.setTimeout(function() {\n" +
+				"        page.clipRect = page.evaluate(function() {\n" +
+				"            var rect = document.getElementById('comicArea').getBoundingClientRect();\n" +
+				"            var rect2 = document.getElementById('cell-0').getBoundingClientRect();\n" +
+				"            var r = JSON.parse(JSON.stringify(rect));\n" +
+				"            r.height += (r.top * 2);\n" +
+				"            r.top = 0;\n" +
+				"            r.left = rect2.left - 102;\n" +
+				"            r.right = rect2.right + 102;\n" +
+				"            r.width = rect2.width + 204;\n" +
+				"            return r;\n" +
+				"        });\n" +
+				"        page.render('" + imgFileName.replace(/\\/g, '\\\\') + "');\n" +
+				"        phantom.exit();\n" +
+				"    }, 500);\n" +
 				"});";
 			
 			fs.writeFile(fn, cFileData, function(err) {

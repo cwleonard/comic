@@ -4,6 +4,7 @@
 	"secret": "hoppy frog",
 	"logToConsole": false,
 	"weatherApiKey": "your-key-here",
+	"allowBasicFrom": "127.0.0.1",
 	"database": {
 		"host": "localhost",
 		"user": "user",
