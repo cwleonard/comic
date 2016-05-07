@@ -90,7 +90,7 @@
 	-webkit-box-sizing: initial;
 	/* the following are adjusted by screen size. these values are the minimums.  */
 	border-width: 21px 7px 0;
-	bottom: -21px;
+	bottom: -20px;
 	margin-left: -12px;
 }
 
