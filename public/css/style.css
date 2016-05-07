@@ -90,7 +90,7 @@
 	-webkit-box-sizing: initial;
 	/* the following are adjusted by screen size. these values are the minimums.  */
 	border-width: 21px 7px 0;
-	bottom: -21px;
+	bottom: -20px;
 	margin-left: -12px;
 }
 
@@ -265,6 +265,7 @@ div#extraText {
 	padding: 8px;
 	border-radius: 5px;
 	font-size: 16px;
+	clear: both;
 }
 
 div#extraText a {
@@ -283,6 +284,7 @@ span.tag {
     border: 1px solid #66FF66;
     background: #99FF99;
     border-radius: 12px;
+    float: left;
 }
 
 span.tag a:hover {

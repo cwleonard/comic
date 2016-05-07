@@ -36,7 +36,7 @@ div#sizer(comicId=id)
 				- for (var t in tags)
 					span.tag
 						!= '<a href="archive?f=' + tags[t] + '">' + tags[t] + '</a>'
-		if extraText && !basic
+		if !basic
 			div#extraText
 				!= extraText
 		div#hiddenLinks
