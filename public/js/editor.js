@@ -233,6 +233,8 @@ function buildCellObject(elem) {
 			
 			var rot = $(elem).attr('rot');
 
+			var xs = $(elem).attr('xstyle');
+
 			$(elem).find("> span").each(function(idx, elem) {
 				b.bubbles.push({
 					objId: bid, 
@@ -241,6 +243,7 @@ function buildCellObject(elem) {
 					width: w,
 					z: zi++,
 					r: rot,
+					xs: xs,
 					stemPos: sp,
 					text: $(elem).html()
 				});

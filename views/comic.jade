@@ -1,5 +1,5 @@
 mixin makeBubble(bub)
-	p(id=bub.objId ? bub.objId : undefined,class='bubble bubble' + ((bub.stemPos == 'Right' || bub.stemPos == 'Left') ? 'Side' : 'Bottom') + ' bubble-text bubble' + (bub.stemPos ? bub.stemPos : 50),style=(bub.z ? 'z-index: ' + bub.z + ';' : '') + (bub.width ? 'width: ' + bub.width + '%;' : '') + 'top: ' + bub.top + '%; left: ' + bub.left + '%;' + (bub.r ? ' transform: rotate(' + bub.r + 'deg); -webkit-transform: rotate(' + bub.r + 'deg); -ms-transform: rotate(' + bub.r + 'deg);' : ''))
+	p(id=bub.objId ? bub.objId : undefined,class='bubble bubble' + ((bub.stemPos == 'Right' || bub.stemPos == 'Left') ? 'Side' : 'Bottom') + ' bubble-text bubble' + (bub.stemPos ? bub.stemPos : 50),style=(bub.z ? 'z-index: ' + bub.z + ';' : '') + (bub.width ? 'width: ' + bub.width + '%;' : '') + 'top: ' + bub.top + '%; left: ' + bub.left + '%;' + (bub.xs ? bub.xs : '') + (bub.r ? ' transform: rotate(' + bub.r + 'deg); -webkit-transform: rotate(' + bub.r + 'deg); -ms-transform: rotate(' + bub.r + 'deg);' : ''))
 		!= bub.text
 
 mixin makeText(txt)
