@@ -8,13 +8,13 @@ $(function() {
     
     var launchAt = new Date(2016, 4, 16, 18, 0, 0);
     
-    var doCountdown = function() {
+    function showTimer() {
         
         var now = new Date();
         
         var diff = launchAt - now;
         
-        var secs = Math.floor(diff / 1000);
+        var secs = Math.floor(Math.abs(diff) / 1000);
         var mins = Math.floor(secs / 60);
         var hours = Math.floor(mins / 60);
 
@@ -25,26 +25,36 @@ $(function() {
         var m = (mins < 10 ? "0" + mins : mins);
         var h = (hours < 10 ? "0" + hours : hours);
 
-        var nextCheck = 1000;
+        var sign = "-";
         
-        if (diff > 0) {
-            $("#countdown").html(h + ":" + m + ":" + s);
-        } else {
-            $("#countdown").html("00:00:00");
-            nextCheck = 10000;
+        // see if we're past the launch time
+        if (diff < 0) {
+            sign = "+";
         }
+
+        $("#countdown").html(sign + h + ":" + m + ":" + s);
+
+        return diff;
+        
+    }
+    
+    var doCountdown = function() {
+        
+        
+        var nextCheck = 1000;
+
+        var diff = showTimer();
 
         if (timeline.length > highestStep + 1) {
             if (diff <= timeline[highestStep+1].startAt) {
                 highestStep++;
-                test(highestStep);
+                advance(highestStep);
             }
         }
         
         window.setTimeout(doCountdown, nextCheck);
         
     };
-    doCountdown();
     
     
     function createSmoke(time, num) {
@@ -131,11 +141,27 @@ $(function() {
             exec: [stopSmoke, liftoff]
     };
     
-    timeline = [ step0, step1, step2, step3 ];
+    var step4 = {
+            startAt: -10000,
+            show: ["#gone"],
+            exec: [stopSmoke]
+    }
+    
+    timeline = [ step0, step1, step2, step3, step4 ];
+    
+    // what if you come to the comic after the launch?
+    // change the start times so you can review the steps...
+    if (launchAt - (new Date()) < 0) {
+        launchAt = new Date((Date.now() + 30000));
+        timeline[1].startAt = 20000;
+        timeline[2].startAt = 10000;
+    }
+    
+    doCountdown();
     
 });
 
-function test(i) {
+function advance(i) {
     
     //console.log("going to step " + i);
     
