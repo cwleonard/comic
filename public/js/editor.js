@@ -496,6 +496,11 @@ function addBubble(cell, b) {
 		$(p).attr('rot', bub.r);
 	}
 
+	if (bub.xs && bub.xs !== '') {
+	    $(p).attr("style", $(p).attr("style") + bub.xs);
+	    $(p).attr("xstyle", bub.xs);
+	}
+
 	$(p).dblclick(toggleStemPosition);
 	
 }
