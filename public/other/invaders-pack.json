@@ -1,0 +1,23 @@
+{
+    "main": [
+        {
+            "type": "image",
+            "key": "rock",
+            "url": "other/rock.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "frog",
+            "url": "other/frog-above.png",
+            "frameWidth": 32,
+            "frameHeight": 50
+        },
+        {
+            "type": "spritesheet",
+            "key": "coin",
+            "url": "other/coin.png",
+            "frameWidth": 16,
+            "frameHeight": 16
+        }
+    ]
+}
