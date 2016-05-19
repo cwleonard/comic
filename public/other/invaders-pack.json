@@ -6,18 +6,23 @@
             "url": "other/rock.png"
         },
         {
-            "type": "spritesheet",
-            "key": "frog",
-            "url": "other/frog-above.png",
-            "frameWidth": 32,
-            "frameHeight": 50
+            "type": "image",
+            "key": "ground",
+            "url": "other/moon-ground.png"
         },
         {
             "type": "spritesheet",
-            "key": "coin",
-            "url": "other/coin.png",
-            "frameWidth": 16,
-            "frameHeight": 16
+            "key": "invader",
+            "url": "other/invader.png",
+            "frameWidth": 40,
+            "frameHeight": 30
+        },
+        {
+            "type": "image",
+            "key": "frog",
+            "url": "other/generic-frog-above-1.png",
+            "frameWidth": 32,
+            "frameHeight": 29
         }
     ]
 }
