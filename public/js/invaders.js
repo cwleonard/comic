@@ -25,6 +25,8 @@ function gameState() {
             sf = 0.75;
         } else if (this.game.width === 310) {
             sf = 0.69;
+        } else if (this.game.width === 650) {
+        	sf = 1.44;
         }
         
         this.physics.startSystem(Phaser.Physics.ARCADE);
