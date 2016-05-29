@@ -71,6 +71,14 @@ $(function() {
 			"comic author. This is where he usually tries to convince " +
 			"you that it was actually funny.";
 
+	$('.cTitle').popover({
+		content : contentBuilder(titleContent, "Got it!"),
+		placement : "bottom",
+		trigger : "manual",
+		container : "#comicArea",
+		html : true
+	});
+	
 	$('#ceo-1').popover({
 		html: true,
 		content : contentBuilder(ceoContent, "Okay!"),
@@ -79,15 +87,6 @@ $(function() {
 		container : "#comicArea"
 	});
 
-	$('.cTitle').popover({
-		content : contentBuilder(titleContent, "Got it!"),
-		placement : "top",
-		trigger : "manual",
-		container : "#comicArea",
-		html : true,
-		
-	});
-	
 	$('#bubble-1').popover({
 		html: true,
 		content : contentBuilder(bubbleContent, "Next"),
