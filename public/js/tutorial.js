@@ -9,15 +9,21 @@ var advance = function() {
 	}
 
 	if (step == steps.length) {
+		
 		$(steps[step]).popover("hide");
+		$('html, body').animate({
+			scrollTop: 0
+		}, 1000);
+		
 	} else {
 		
 		$(steps[step]).popover("show");
-		step++;
-
+		
 		$('html, body').animate({
-			scrollTop: $(".popover").offset().top
+			scrollTop: (step == 0 ? 0 : $(".popover").offset().top)
 		}, 1000);
+
+		step++;
 
 	}
 
