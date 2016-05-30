@@ -37,5 +37,6 @@ $(function() {
 	// Make it rain
 	createRain("0");
 	createRain("1");
+	createRain("3");
 	
 });
