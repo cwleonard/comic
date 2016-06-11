@@ -1,0 +1,23 @@
+.drop {
+
+	z-index: 9999;
+	position: absolute;
+	bottom:500px;
+	-webkit-animation: fall 7s linear infinite;
+	-moz-animation: fall 7s linear infinite;
+	animation: fall 7s linear infinite;
+  
+}
+
+/* animate the drops*/
+@-webkit-keyframes fall {
+	to {margin-top:2100px;}
+}
+
+@-moz-keyframes fall {
+	to {margin-top:2100px;}
+}
+
+@keyframes fall {
+	to {margin-top:2100px;}
+}

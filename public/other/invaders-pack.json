@@ -1,0 +1,28 @@
+{
+    "main": [
+        {
+            "type": "image",
+            "key": "rock",
+            "url": "other/rock.png"
+        },
+        {
+            "type": "image",
+            "key": "ground",
+            "url": "other/moon-ground.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "invader",
+            "url": "other/invader.png",
+            "frameWidth": 40,
+            "frameHeight": 30
+        },
+        {
+            "type": "image",
+            "key": "frog",
+            "url": "other/generic-frog-above-1.png",
+            "frameWidth": 32,
+            "frameHeight": 29
+        }
+    ]
+}

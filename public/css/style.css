@@ -454,6 +454,36 @@ div.buy p.ftitle {
 
 }
 
+.popover {
+    background-color: #B0C4DE !important;
+}
+
+.popover-title {
+    color: #fff !important;
+    background-color: #4682B4 !important;
+    border-bottom: 1px solid #4682B4 !important;
+}
+
+.popover.top > .arrow:after {
+    border-top-color: #B0C4DE !important;
+}
+
+.popover.bottom > .arrow:after {
+    border-bottom-color: #B0C4DE !important;
+}
+
+.popover.left > .arrow:after {
+    border-left-color: #B0C4DE !important;
+}
+
+.popover.right > .arrow:after {
+    border-right-color: #B0C4DE !important;
+}
+
+.popover button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
 .promo {
 	
