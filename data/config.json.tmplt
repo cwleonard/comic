@@ -14,6 +14,9 @@
 	"fb": {
 	    "token": "app-token"
 	},
+	"captcha": {
+	    "secret": "captcha-secret"
+	},
 	"coin": {
 	    "key": "api-key",
 	    "secret": "api-secret",
