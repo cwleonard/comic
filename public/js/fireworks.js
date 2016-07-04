@@ -53,6 +53,7 @@ function launch() {
 }
 
 function launchFrom(x) {
+    
     if (rockets.length < 10) {
         var rocket = new Rocket(x);
         rocket.explosionColor = Math.floor(Math.random() * 360 / 10) * 10;
@@ -63,6 +64,7 @@ function launchFrom(x) {
         rocket.gravity = 0.01;
         rockets.push(rocket);
     }
+    
 }
 
 function loop() {
@@ -88,6 +90,7 @@ function loop() {
     // update screen size
     if (SCREEN_WIDTH != cw) {
         canvas.width = SCREEN_WIDTH = cw;
+        launchPos.x = SCREEN_WIDTH / 2;
     }
     if (SCREEN_HEIGHT != ch) {
         canvas.height = SCREEN_HEIGHT = ch;
