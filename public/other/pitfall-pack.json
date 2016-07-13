@@ -1,0 +1,33 @@
+{
+    "main": [
+        {
+            "type": "image",
+            "key": "bg",
+            "url": "other/pitfall_bg.png"
+        },
+        {
+            "type": "image",
+            "key": "bg_lower",
+            "url": "other/pitfall_bg_lower.png"
+        },
+        {
+            "type": "image",
+            "key": "money",
+            "url": "other/pitfall_money.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "vine",
+            "url": "other/pitfall_vine_frog.png",
+            "frameWidth": 50,
+            "frameHeight": 193
+        },
+        {
+            "type": "spritesheet",
+            "key": "frog",
+            "url": "other/pixel_frog_ani.png",
+            "frameWidth": 50,
+            "frameHeight": 38
+        }
+    ]
+}
