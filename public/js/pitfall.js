@@ -92,6 +92,7 @@ function gameState() {
         ground.add(ground1);
         ground.add(ground2);
         
+        money.scale.setTo(1 * sf, 1 * sf);
         
         player.body.fixedRotation = true;
         player.scale.setTo(1 * sf, 1 * sf);
