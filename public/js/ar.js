@@ -44,6 +44,7 @@ $(function() {
     
     if (MediaStreamTrack) {
 
+        try {
         MediaStreamTrack.getSources(function(sourceInfos) {
 
             var sid = null;
@@ -63,6 +64,13 @@ $(function() {
             startCamera(sid);
 
         });
+        
+        } catch (e) {
+            
+            console.log(e);
+            startCamera(null);
+            
+        }
 
     } else {
         
