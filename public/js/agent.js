@@ -68,7 +68,7 @@ $(function() {
         
         window.setTimeout(function() {
             doSomething();
-        }, 7000);
+        }, 9000);
         
     }
 	
