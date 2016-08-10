@@ -1,0 +1,182 @@
+@keyframes degauss-left {
+  0% {
+    background: radial-gradient(red,green,blue,purple,orange);
+    transform: rotate(3deg);
+    opacity: 0;
+  }
+  1% {
+    background: radial-gradient(red,green,blue,purple,orange);
+    transform: rotate(3deg);
+    opacity: 0.5;
+  }
+  60% {
+    background: radial-gradient(red,green,blue,purple,orange);
+    opacity: 0;
+  } 
+  100% {
+    opacity: 0;
+  } 
+}
+
+@keyframes degauss-right {
+  0% {
+    transform: rotate(-6deg);
+    opacity: 0;
+  }
+  1% {
+    opacity: 0.5;
+  }  
+  60% {
+    opacity: 0;
+  }  
+  100% {
+    opacity: 0;
+  }  
+}
+
+
+.screen {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at center, rgba(98,125,77,0.08) 0%, rgba(31,59,8,0.59) 100%),
+    url('/other/degas.png') no-repeat center center;
+  background-size: cover;
+}
+
+.screen:before {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-right 5s infinite;
+  background: transparent url('/other/degas.png');
+  background-size: cover;
+  position: absolute;
+}
+
+.screen:after {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-left 5s infinite;
+  position: absolute;
+}
+
+.screen1 {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at center, rgba(98,125,77,0.08) 0%, rgba(31,59,8,0.59) 100%),
+    url('/other/degas-a.png') no-repeat center center;
+  background-size: cover;
+}
+
+.screen1:before {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-right 5s infinite;
+  background: transparent url('/other/degas-a.png');
+  background-size: cover;
+  position: absolute;
+}
+
+.screen1:after {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-left 5s infinite;
+  position: absolute;
+}
+
+.screen2 {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at center, rgba(98,125,77,0.08) 0%, rgba(31,59,8,0.59) 100%),
+    url('/other/degas-b.png') no-repeat center center;
+  background-size: cover;
+}
+
+.screen2:before {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-right 5s infinite;
+  background: transparent url('/other/degas-b.png');
+  background-size: cover;
+  position: absolute;
+}
+
+.screen2:after {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-left 5s infinite;
+  position: absolute;
+}
+
+.screen3 {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at center, rgba(98,125,77,0.08) 0%, rgba(31,59,8,0.59) 100%),
+    url('/other/degas-c.png') no-repeat center center;
+  background-size: cover;
+}
+
+.screen3:before {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-right 5s infinite;
+  background: transparent url('/other/degas-c.png');
+  background-size: cover;
+  position: absolute;
+}
+
+.screen3:after {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-left 5s infinite;
+  position: absolute;
+}
+
+.screen4 {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at center, rgba(98,125,77,0.08) 0%, rgba(31,59,8,0.59) 100%),
+    url('/other/degas-d.png') no-repeat center center;
+  background-size: cover;
+}
+
+.screen4:before {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-right 5s infinite;
+  background: transparent url('/other/degas-d.png');
+  background-size: cover;
+  position: absolute;
+}
+
+.screen4:after {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  content: "";
+  animation: degauss-left 5s infinite;
+  position: absolute;
+}
+
