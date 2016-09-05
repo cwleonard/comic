@@ -1,0 +1,34 @@
+{
+    "main": [
+        {
+            "type": "image",
+            "key": "frog",
+            "url": "other/frog-back.png"
+        },
+        {
+            "type": "image",
+            "key": "ground",
+            "url": "other/ground.png"
+        },
+        {
+            "type": "image",
+            "key": "screen",
+            "url": "other/work-screen.png"
+        },
+        {
+            "type": "image",
+            "key": "burger",
+            "url": "other/hamburger.png"
+        },
+        {
+            "type": "image",
+            "key": "skull",
+            "url": "other/cow_skull.png"
+        },
+        {
+            "type": "image",
+            "key": "pizza",
+            "url": "other/pizza.png"
+        }
+    ]
+}
