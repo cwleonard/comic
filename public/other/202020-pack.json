@@ -27,6 +27,31 @@
         },
         {
             "type": "image",
+            "key": "pumpkin",
+            "url": "other/pumpkin.png"
+        },
+        {
+            "type": "image",
+            "key": "pancakes",
+            "url": "other/pancakes.png"
+        },
+        {
+            "type": "image",
+            "key": "bowling_ball",
+            "url": "other/bowling_ball.png"
+        },
+        {
+            "type": "image",
+            "key": "treasure",
+            "url": "other/treasure.png"
+        },
+        {
+            "type": "image",
+            "key": "bananas",
+            "url": "other/bananas.png"
+        },
+        {
+            "type": "image",
             "key": "pizza",
             "url": "other/pizza.png"
         }
