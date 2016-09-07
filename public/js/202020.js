@@ -149,7 +149,7 @@ function gameState() {
             frog.alpha = 0.6;
         }
         
-        if (Math.floor(Math.random() * 10) === 1) {
+        if (Math.floor(Math.random() * 15) === 1) {
             game.camera.x += (5 * (Math.random() > 0.5 ? 1 : -1));
         }
 
