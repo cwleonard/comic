@@ -211,7 +211,7 @@ $(function() {
     
     var state = gameState();
     
-    game = new Phaser.Game(width, height, Phaser.CANVAS, "cell-0",
+    game = new Phaser.Game(width, height, Phaser.CANVAS, "cell-2",
             state);
     
 });
