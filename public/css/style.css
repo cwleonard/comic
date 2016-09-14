@@ -56,6 +56,10 @@
 	position: initial !important;
 }
 
+.curly-underline {
+	background: url(/simg/underline.gif) bottom repeat-x;
+}
+
 .bubble {
 	position: absolute;
 	width: 44%;
