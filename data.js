@@ -220,7 +220,12 @@ module.exports = function(dbconf) {
 		loadById: function (id, cb) {
 
 			var idn = Number(id);
-			if (idn == -1) {
+			if (idn == Number.NaN) {
+			    
+			    // these should really be numbers
+			    cb(null, null);
+			    
+			} else if (idn == -1 || id === "latest") {
 				
 				loadNewest(cb);
 				
