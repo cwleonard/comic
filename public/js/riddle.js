@@ -18,16 +18,35 @@ $(function() {
     newMarkup += "<div style='border-radius: 0px 15px 15px 15px; margin-left: 15%; margin-top: 3px; padding: 10px; background-color: #ffffff; border: 1px solid #999999;'>Earn money from home! Visit http://badid.ea/xowiug7 to learn how!</div>";
     newMarkup += "<hr/>";
     
+    newMarkup += "<div id='moreComments'></div>";
+    
     newMarkup += "<p>Leave a comment:</p>";
     newMarkup += "<div style='margin-left: 15%; margin-top: 3px;'>";
     newMarkup += "<input type='text' class='form-control' id='comment-name' placeholder='your name'>";
     newMarkup += "<textarea style='margin-top: 3px;' class='form-control' id='comment-text' placeholder='your comments'></textarea>";
-    newMarkup += "<button style='margin-top: 3px;'>Submit</button>";
+    newMarkup += "<button id='leaveCommentButton' style='margin-top: 3px;'>Submit</button>";
     newMarkup += "</div>";
     newMarkup += "<hr/>";
     
     
     $("#extraText").html(newMarkup);
+    
+    $("#leaveCommentButton").click(function() {
+        
+        var n = $("#comment-name").val();
+        var c = $("#comment-text").val();
+        
+        if (n !== "" && c !== "") {
+            
+            var yourComment = "<p>Comment from <span style='text-decoration: underline;'>you</span>:</p>";
+            yourComment += "<div style='border-radius: 0px 15px 15px 15px; margin-left: 15%; margin-top: 3px; padding: 10px; background-color: #ffffff; border: 1px solid #999999;'>This is not what I typed in. I guess I can't really leave a comment.</div>";
+            yourComment += "<hr/>";
+            
+            $("#moreComments").append(yourComment);
+            
+        }
+        
+    });
     
     $("#riddle-answer").change(function() {
        
