@@ -99,6 +99,18 @@ function replaceComic(id, push) {
 		} catch (e) {
 		    console.log("pinterest error! " + e);
 		}
+		
+		try {
+		    
+		    // build a new StumbleUpon button
+		    if (window.STMBLPN) {
+		        window.STMBLPN.wasProcessLoaded = false;
+		        window.STMBLPN.processWidgets();
+		    }
+		    
+		} catch (e) {
+		    console.log("stumbleupon error! " + e);
+		}
 
 
 	}, 'html');
