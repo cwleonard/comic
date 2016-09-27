@@ -464,7 +464,9 @@ function doEmoji() {
 	$('.bubble, .free-text').each(function() {
         var origText = $(this).html();
         var eText = emojione.shortnameToImage(origText);
-        $(this).html(eText);
+        if (origText != eText) {
+            $(this).html(eText);
+        }
     });
 	
 }
