@@ -8,10 +8,17 @@ $(function() {
 	$("div.box").css("box-shadow", "none");
 	$("div.box").css("border", "1px solid #333333");
 	
+	var redAt = 600;
+	var w = $("#sizer").width();
+	if (w === 340) {
+		redAt = 450;
+	} else if (w === 310) {
+		redAt = 350;
+	}
 	
 	$(window).scroll(function() {
 		
-		if ($(this).scrollTop() > 600) {
+		if ($(this).scrollTop() > redAt) {
 			
 			$("body").css("background-color", "red");
 			$("header").css("background", "red");
