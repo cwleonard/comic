@@ -16,7 +16,7 @@ $(function() {
 		redAt = 350;
 	}
 	
-	$(window).scroll(function() {
+	var scrollFunc = function() {
 		
 		if ($(this).scrollTop() > redAt) {
 			
@@ -36,7 +36,21 @@ $(function() {
 			
 		}
 		
-	});
-
+	};
+	
+	$(window).scroll(scrollFunc);
+	
+	var stopStuff = function() {
+		
+		$(window).off("scroll", scrollFunc);
+		
+		$("body").css("background-color", "");
+		$("header").css("background", "");
+		$("footer").css("background", "");
+		$(".ptop").css("background", "");
+		
+	};
+	
+	$.Topic( "startComicNav" ).subscribe( stopStuff );
 	
 });
