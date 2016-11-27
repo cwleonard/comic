@@ -81,7 +81,7 @@ function drawCommandOutput(lines) {
         
         cursor.y += lineHeight;
         
-        if (cursor.y > maxHeight) {
+        if (cursor.y > (maxHeight - lineHeight)) {
             allUserCmds.splice(0, 1);
             cursor.y -= lineHeight;
 //            draw();
@@ -165,13 +165,15 @@ function keyDownHandler(e){
 		allUserCmds.push(PROMPT + currentCmd);
 		currentCmd = "";
 
-		if (cursor.y > maxHeight) {
+		if (cursor.y > (maxHeight - lineHeight)) {
             allUserCmds.splice(0, 1);
             cursor.y -= lineHeight;
             draw();
         }
 
-		if (lastCommand === "dir") {
+		var commandArray = lastCommand.split(/\s/);
+		
+		if (commandArray[0] === "dir") {
        		    drawCommandOutput([ " Directory of C:\\", "",
                     "11/22/2016  08:25 PM    246 frogs.txt",
                     "11/22/2016  08:26 PM   1244  bugs.txt", "" ]);
@@ -180,20 +182,20 @@ function keyDownHandler(e){
             setTimeout(function() {
                 $("body").html("");
             }, 2000);
-        } else if (lastCommand === "chkdsk") {
+        } else if (commandArray[0] === "chkdsk") {
             drawCommandOutput([" Checking C:", "...it's full of syrup!", ""]);
-        } else if (lastCommand.startsWith("edlin") && lastCommand.startsWith("edlin ")) {
+        } else if (commandArray[0] === "edlin") {
             if (lastCommand.length === 5) {
                 drawCommandOutput([" no file name specified"]);
             } else {
                 drawCommandOutput([" Have you gone mad?", ""]);
             }
-        } else if (lastCommand.startsWith("echo") && lastCommand.startsWith("echo ")) {
+        } else if (commandArray[0] === "echo") {
             if (lastCommand.length > 4 && lastCommand.indexOf(">") == -1) {
                 var toEcho = lastCommand.substring(5) + " and a bag of chips";
                 drawCommandOutput([toEcho, ""]);
             }
-        } else if (lastCommand === "qbasic") {
+        } else if (commandArray[0] === "qbasic") {
             drawCommandOutput([" Sorry, can't play Gorillas right now.", ""]);
 		} else if (lastCommand !== "") {
 		    drawCommandOutput(["Bad command or file name"]);
