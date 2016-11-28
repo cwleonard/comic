@@ -1,4 +1,4 @@
-var DOS_COMIC_ID = 73;
+var DOS_COMIC_ID = 411;
 var dosInitialized;
 
 $(function() {
