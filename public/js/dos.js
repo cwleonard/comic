@@ -23,6 +23,7 @@ var leftWindowMargin = 2;
 var cursor = null;
 var flashCounter = 1;
 var maxHeight = null;
+var blinkInterval = null;
 
 function initDos(elemId, w, h)
 {
@@ -40,13 +41,26 @@ function initDos(elemId, w, h)
 	window.addEventListener("keydown",keyDownHandler);
 	window.addEventListener("keypress",showKey);
 	initViewArea(w, h);
-	setInterval(flashCursor,300);
+	blinkInterval = setInterval(flashCursor,300);
 	function appCursor (cursor){
 		this.x = cursor.x;
 		this.y = cursor.y;
 		this.width = cursor.width;
 		this.height = cursor.height;
 	}
+}
+
+function stopDos() {
+
+    if (blinkInterval != null) {
+        console.log("clearInterval(" + blinkInterval + ")");
+        clearInterval(blinkInterval);
+        blinkInterval = null;
+    }
+    window.removeEventListener("resize", draw);
+    window.removeEventListener("keydown", keyDownHandler);
+    window.removeEventListener("keypress", showKey);
+    
 }
 
 function drawNewLine(){
@@ -217,6 +231,8 @@ function showKey(e){
 
 function flashCursor(){
 	
+    console.log("flash");
+    
 	var flag = flashCounter % 3;
 
 	switch (flag)
