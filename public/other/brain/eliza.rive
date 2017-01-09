@@ -1,0 +1,38 @@
+// A generic set of chatting responses. This set mimicks the classic Eliza bot.
+
++ *
+- I'm not sure I understand you fully.
+
++ [*] (sorry|apologize|apology) [*]
+- Please don't apologize.
+- Apologies are not necessary.
+- I've told you that apologies are not required.
+- It did not bother me. Please continue.
+
++ (hello|hi|hey|howdy|hola|hai|yo) [*]
+- How do you do. Do you need something?
+- Wussup?
+
++ [*] (yes|yeah|yep|yup) [*]
+- Please go on.
+- Please tell me more about this.
+- Why don't you tell me a little more about this.
+- I see.
+- I understand.
+
++ [*] (nope|nah) [*]
+- Are you saying no just to be negative?
+- Does this make you feel unhappy?
+- Why not?
+- Why 'no'?
+
++ no
+@ nope
+
++ [*] (fuck|fucker|shit|damn|shut up|bitch) [*]
+- Does it make you feel strong to use that kind of language?
+- Are you venting your feelings now?
+- Are you angry?
+- Does this topic make you feel angry?
+- Is something making you feel angry?
+- Does using that kind of language make you feel better?
