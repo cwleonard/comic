@@ -1,0 +1,24 @@
+! version = 2.0
+
+> object add javascript
+	var a = args[0];
+	var b = args[1];
+	return parseInt(a) + parseInt(b);
+< object
+
+> object comicComplete javascript
+    comicComplete();
+< object
+
+> object businessWords javascript
+    businessWords(args[0]);
+< object
+
++ add # and #
+- <star1> + <star2> = <call>add <star1> <star2></call>
+
++ make business frog say *
+- OK<call>businessWords <star1></call>
+
++ (fix|complete) the (dialog|comic)
+- OK<call>comicComplete</call>
