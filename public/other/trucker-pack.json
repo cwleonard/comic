@@ -1,0 +1,26 @@
+{
+    "main": [
+        {
+            "type": "image",
+            "key": "rock",
+            "url": "other/rock.png"
+        },
+        {
+            "type": "image",
+            "key": "ground",
+            "url": "other/highway.png"
+        },
+        {
+            "type": "image",
+            "key": "truck",
+            "url": "other/truck.png"
+        },
+        {
+            "type": "spritesheet",
+            "key": "frog",
+            "url": "other/small-frog-above.png",
+            "frameWidth": 25,
+            "frameHeight": 35
+        }
+    ]
+}
