@@ -288,6 +288,7 @@ function gameState() {
     }
     
     function restart () {
+        completed = 0;
         parkedTrucks.removeAll();
         frogs.removeAll();
         frogSlots = [];
