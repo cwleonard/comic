@@ -16,6 +16,31 @@
             "url": "other/truck.png"
         },
         {
+            "type": "image",
+            "key": "cone",
+            "url": "other/cone.png"
+        },
+        {
+            "type": "image",
+            "key": "instructions",
+            "url": "other/instructions.png"
+        },
+        {
+            "type": "audio",
+            "key": "parked",
+            "urls": ["audio/Powerup10.mp3"]
+        },
+        {
+            "type": "audio",
+            "key": "explode",
+            "urls": ["audio/Explosion2.mp3"]
+        },
+        {
+            "type": "audio",
+            "key": "jump",
+            "urls": ["audio/Jump16.mp3"]
+        },
+        {
             "type": "spritesheet",
             "key": "frog",
             "url": "other/small-frog-above.png",
