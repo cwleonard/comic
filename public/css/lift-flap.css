@@ -1,0 +1,72 @@
+div.threshold {
+    position: absolute;
+    /* margin: -100px 0 0 -100px; */
+	/* width: 200px; */
+    /* height: 200px; */
+    /* background-color: #FFFFFF; */
+    border: 1px solid black;
+}
+
+
+
+div.door-left {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* background-color: #FF0000; */
+    -webkit-transform-style: preserve-3d;
+    -webkit-perspective: 550px;
+    -webkit-transform-origin: left 0;
+    -webkit-transition: all 1s;
+    -moz-transform-style: preserve-3d;
+    -moz-perspective: 550px;
+    -moz-transform-origin: left 0;
+    -moz-transition: all 1s;
+    -o-transform-style: preserve-3d;
+    -o-perspective: 550px;
+    -o-transform-origin: left 0;
+    -o-transition: all 1s;
+    transform-style: preserve-3d;
+    perspective: 550px;
+    transform-origin: left 0px;
+    transition: all 1s;
+}
+div.door-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* background-color: #FF0000; */
+    -webkit-transform-style: preserve-3d;
+    -webkit-perspective: 550px;
+    -webkit-transform-origin: right 0;
+    -webkit-transition: all 1s;
+    -moz-transform-style: preserve-3d;
+    -moz-perspective: 550px;
+    -moz-transform-origin: right 0;
+    -moz-transition: all 1s;
+    -o-transform-style: preserve-3d;
+    -o-perspective: 550px;
+    -o-transform-origin: right 0;
+    -o-transition: all 1s;
+    transform-style: preserve-3d;
+    perspective: 550px;
+    transform-origin: right 0px;
+    transition: all 1s;
+}
+div.dooropen-left {
+    -webkit-transform: scale(0.05,1) skew(0deg,20deg); /*use scale to change how wide it opens*/
+    -moz-transform: scale(0.05,1) skew(0deg,20deg);
+    -o-transform: scale(0.05,1) skew(0deg,20deg);
+    transform: scale(0.05,1) skew(0deg,20deg);
+}
+
+div.dooropen-right {
+    -webkit-transform: scale(0.05,1) skew(0deg,-20deg); /*use scale to change how wide it opens*/
+    -moz-transform: scale(0.05,1) skew(0deg,-20deg);
+    -o-transform: scale(0.05,1) skew(0deg,-20deg);
+    transform: scale(0.05,1) skew(0deg,-20deg);
+}
