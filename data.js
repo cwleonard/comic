@@ -220,7 +220,8 @@ module.exports = function(dbconf) {
 		loadById: function (id, cb) {
 
 			var idn = Number(id);
-			if (idn == Number.NaN) {
+			
+			if (isNaN(idn)) {
 			    
 			    // these should really be numbers
 			    cb(null, null);
