@@ -26,6 +26,7 @@
     "xmldom": "0.1.22",
     "request": "2.75.0",
     "async": "1.5.2",
-    "socket.io": "1.4.5"
+    "socket.io": "1.4.5",
+    "twitter": "1.7.0"
   }
 }
