@@ -9,11 +9,10 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var qr = require('qr-image');
-var Twitter = require("twitter");
 
 var Feed = require('feed');
 
-var routers = ["data", "images", "memeGen", "colors", "fb", "lamp", "captcha", "tweets"];
+var routers = ["data", "images", "memeGen", "colors", "fb", "lamp", "captcha"];
 
 var coinRoutes = require('./coinRoutes');
 var logging = require('./logger');
@@ -88,19 +87,6 @@ passport.deserializeUser(function(id, done) {
 
 // use jade for templates
 app.set('view engine', 'jade');
-
-var twitterClient = new Twitter({
-    consumer_key: conf.twitter.consumerKey,
-    consumer_secret: conf.twitter.consumerSecret,
-    access_token_key: conf.twitter.tokenKey,
-    access_token_secret: conf.twitter.tokenSecret
-  });
-
-var twitterStream = twitterClient.stream('statuses/filter', {track: '@frogcomics, #webcomic'});
-twitterStream.on('error', function(error) {
-    console.log(error);
-});
-
 
 // used on resources that you have to be authenticated to use
 function ensureAuthenticated(req, res, next) {
@@ -220,7 +206,7 @@ loginRoute.post(function(req, res, next) {
 
 // load individual comic pages by id
 app.get('/:n', function(req, res, next) {
-    
+
 	cfact.loadById(req.params.n, function (err, data) {
 		if (err) {
 			next(err);
@@ -397,7 +383,6 @@ app.get('/archive', function(req, res, next) {
     var opts = {
             express: express,
             sio: io,
-            twitterStream: twitterStream,
             auth: ensureAuthenticated,
             dataSource: cfact,
             config: conf
