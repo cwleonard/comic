@@ -3,7 +3,8 @@ var sound2;
 var sound3;
 var sound4;
 
-var sounds = [ sound1, sound2, sound3, sound4 ];
+var sounds;
+
 
 $(function() {
 	
@@ -45,6 +46,8 @@ $(function() {
               url: '/audio/phone_ring.mp3'
             });
 
+          sounds = [ sound1, sound2, sound3, sound4 ];
+          
         },
         ontimeout: function() {
           // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
