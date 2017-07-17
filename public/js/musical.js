@@ -78,6 +78,7 @@ var showLyrics = function(pos) {
 
 function stopStuff() {
     bgmusic.stop();
+    $("#lyrics").hide();
     $.Topic( "startComicNav" ).unsubscribe( stopStuff );
 }
 
