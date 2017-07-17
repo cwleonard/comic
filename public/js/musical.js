@@ -23,15 +23,19 @@ var lyrics = [
 var played = false;
 var counter = 0;
 
-var playAt = 500;
+var playAt = 400;
 var w = $("#sizer").width();
 if (w === 340) {
-    redAt = 350;
+    playAt = 250;
 } else if (w === 310) {
-    redAt = 250;
+    playAt = 150;
 }
 
 function playIt() {
+    
+    if (bgmusic.playState === 1) return;
+    
+    $("#mobile-notice").hide();
     
     counter = 0;
     bgmusic.play();
@@ -47,7 +51,7 @@ var scrollFunc = function() {
     
 };
 
-$(window).scroll(scrollFunc);
+
 
 
 var showLyrics = function(pos) {
@@ -61,9 +65,9 @@ var showLyrics = function(pos) {
     $lyricsDiv.html(lyrics[counter++]);
     
     if (counter == lyrics.length) {
-        $("#cell-3").hide();
-        $("#cell-4").show();
         setTimeout(function() {
+            $("#cell-3").hide();
+            $("#cell-4").show();
             played = false;
         }, 3000);
     }
@@ -107,22 +111,14 @@ $(function() {
             bgmusic.onPosition(27600, showLyrics);   // "La La Laaaaaa"
             bgmusic.onPosition(29600, showLyrics);
             
-//            var urlParts = window.location.href.split("/");
-//            var cUrl = urlParts[0] + "//" + urlParts[2];
-//            if (!window.location.port) {
-//                if (urlParts[0] !== "https:") {
-//                    cUrl += ':3000';
-//                } else {
-//                    cUrl += ':4443';
-//                }
-//            }
-//
-//            var socket = io(cUrl);
-//                    
-//            socket.on("musical-play", function(d) {
-//                counter = 0;
-//                bgmusic.play();
-//            });
+            
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                $("#mobile-notice").show();
+                $("#cell-3").click(playIt);
+                $("#cell-4").click(playIt);
+            } else {
+                $(window).scroll(scrollFunc);
+            }
             
         },
         ontimeout : function() {
