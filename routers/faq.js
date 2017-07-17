@@ -23,7 +23,7 @@ module.exports = function(c) {
 	
     function saveData() {
         
-        fs.writeFile(DATA_FILE, JSON.stringify(frogColors), function(err) {
+        fs.writeFile(DATA_FILE, JSON.stringify(faq), function(err) {
             if (err) {
                 console.log(err);
             } else {
