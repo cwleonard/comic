@@ -221,7 +221,7 @@ module.exports = function(dbconf) {
 
 			var idn = Number(id);
 			
-			if (isNaN(idn)) {
+			if (isNaN(idn) && id !== "latest") {
 			    
 			    // these should really be numbers
 			    cb(null, null);
