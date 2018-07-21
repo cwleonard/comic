@@ -4,14 +4,20 @@ html
 	body
 		include header
 		
-		div(class="about-us block",style="border-bottom: none;")
+		div(class="about-us block",style="border-bottom: none;" + (filteredBy || searchedFor ? "padding-top: 15px;" : ''))
 			div(class="container")
 				
-				if (filteredBy)
+				if (filteredBy || searchedFor)
 					div(class="filtered-archive")
-						h2(style="margin-bottom: 15px !important;")
-							!= 'Showing comics with the tag #' + filteredBy
-				
+						h2(style="float: left;")
+							if (filteredBy)
+								!= 'Showing comics with the tag #' + filteredBy
+							if (searchedFor)
+								!= 'Showing comics containing "' + searchedFor + '"'
+						span(class="clear-filter")
+							i(class="fa fa-times",aria-hidden="true")
+						div(class="clearfix")
+
 				div(class="about-one")
 					div(class="about-one-item")
 						div(class="about-one-content")

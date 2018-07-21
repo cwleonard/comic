@@ -1,4 +1,26 @@
 
+.filtered-archive {
+
+	font-family: 'Sniglet';
+	padding: 15px;
+	background-color: #99cc66;
+	border: 1px solid #73ac39;
+	margin-bottom: 15px;
+	border-radius: 15px;
+
+}
+
+.clear-filter {
+	float: right;
+	font-size: 1.6em;
+	color: #cc0000;
+	text-shadow: -1px -1px 0 #000,  
+    			  1px -1px 0 #000,
+                 -1px 1px 0 #000,
+				  1px 1px 0 #000;
+	cursor: pointer;
+}
+
 .free-text {
 	
 	position: absolute;
