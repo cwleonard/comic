@@ -473,7 +473,7 @@ module.exports = function(dbconf) {
 			
 		},
 
-		listComics: function(noFuture, withTag) {
+		listComics: function(noFuture, withTag, containing) {
 
 			var deferred = q.defer();
 
@@ -486,6 +486,10 @@ module.exports = function(dbconf) {
 			if (withTag) {
 				wheres.push('id IN (SELECT id FROM comic_tags WHERE tag = ?)');
 				params.push(withTag);
+			}
+			if (containing) {
+				wheres.push("data LIKE ?");
+				params.push("%" + containing + "%");
 			}
 			if (wheres.length > 0) {
 				sql += "WHERE ";

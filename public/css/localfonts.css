@@ -1,0 +1,51 @@
+@font-face {
+	font-family: 'Canterbury';
+	src: url('../fonts/Canterbury.eot');
+	src: url('../fonts/Canterbury.woff') format('woff'),
+		 url('../fonts/Canterbury.ttf') format('truetype'),
+		 url('../fonts/Canterbury.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* ubuntu-regular - latin */
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/ubuntu-v11-latin-regular.eot'); /* IE9 Compat Modes */
+	src: local('Ubuntu Regular'), local('Ubuntu-Regular'),
+		 url('../fonts/ubuntu-v11-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		 url('../fonts/ubuntu-v11-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+		 url('../fonts/ubuntu-v11-latin-regular.woff') format('woff'), /* Modern Browsers */
+		 url('../fonts/ubuntu-v11-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		 url('../fonts/ubuntu-v11-latin-regular.svg#Ubuntu') format('svg'); /* Legacy iOS */
+}
+
+/* architects-daughter-regular - latin */
+@font-face {
+	font-family: 'Architects Daughter';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/architects-daughter-v8-latin-regular.eot'); /* IE9 Compat Modes */
+	src: local('Architects Daughter Regular'), local('ArchitectsDaughter-Regular'),
+		 url('../fonts/architects-daughter-v8-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		 url('../fonts/architects-daughter-v8-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+		 url('../fonts/architects-daughter-v8-latin-regular.woff') format('woff'), /* Modern Browsers */
+		 url('../fonts/architects-daughter-v8-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		 url('../fonts/architects-daughter-v8-latin-regular.svg#ArchitectsDaughter') format('svg'); /* Legacy iOS */
+}
+
+/* sniglet-regular - latin */
+@font-face {
+    font-family: 'Sniglet';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/sniglet-v9-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local('Sniglet Regular'), local('Sniglet-Regular'),
+         url('../fonts/sniglet-v9-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/sniglet-v9-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/sniglet-v9-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/sniglet-v9-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/sniglet-v9-latin-regular.svg#Sniglet') format('svg'); /* Legacy iOS */
+  }

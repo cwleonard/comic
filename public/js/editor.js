@@ -258,6 +258,8 @@ function buildCellObject(elem) {
 			var cssLeft = $(elem).css('left');
 			var cssWidth = $(elem).css('width');
 			var stdText = $(elem).hasClass('standard-text');
+			var handText = $(elem).hasClass('hand-text');
+			var oldeText = $(elem).hasClass('olde-text');
 
 			// positions need converted to %
 			var t = Number(cssTop.replace('px', ''));
@@ -266,8 +268,6 @@ function buildCellObject(elem) {
 			t = t * (1 / sizerHeight) * 100;
 			l = l * (1 / sizerWidth) * 100;
 			w = w * (1 / sizerWidth) * 100;
-			
-			var fs = (stdText ? 'standard-text' : 'olde-text');
 			
 			var rot = $(elem).attr('rot');
 			
@@ -284,7 +284,8 @@ function buildCellObject(elem) {
 						xs: xs,
 						words: $(elem).html()
 					};
-				if (!stdText) tempObj.fstyle = "olde-text";
+				if (handText) tempObj.fstyle = "hand-text";
+				if (oldeText) tempObj.fstyle = "olde-text";
 				b.text.push(tempObj);
 			});
 			
@@ -697,6 +698,9 @@ function toggleFontStyle(obj) {
 	var t = obj.target;
 	if ($(t).hasClass('standard-text')) {
 		$(t).removeClass('standard-text');
+		$(t).addClass('hand-text');
+	} else if ($(t).hasClass('hand-text')) {
+		$(t).removeClass('hand-text');
 		$(t).addClass('olde-text');
 	} else if ($(t).hasClass('olde-text')) {
 		$(t).removeClass('olde-text');

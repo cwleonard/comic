@@ -363,12 +363,13 @@ app.get('/list', ensureAuthenticated, function(req, res, next) {
 
 app.get('/archive', function(req, res, next) {
 
-	cfact.listComics(true, req.query.f) // no future comics
+	cfact.listComics(true, req.query.f, req.query.q) // no future comics
 	.then(function(data) {
 		res.render('archive', {
 			title: 'Archive',
 			comics: data,
-			filteredBy: req.query.f
+			filteredBy: req.query.f,
+			searchedFor: req.query.q
 		});
 	}, function(error) {
 		next(error.error);

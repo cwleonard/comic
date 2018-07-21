@@ -422,6 +422,15 @@ $(function() {
 	setupAnimation();
 });
 
+/**
+ * function to clear filters or searches on the archive page
+ */
+$(function() {
+	$(".clear-filter").click(function() {
+		window.location.href = "/archive";
+	});
+});
+
 var topics = {};
 
 $(function() {
