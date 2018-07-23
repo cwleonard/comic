@@ -5,10 +5,21 @@ var fs = require('fs');
 module.exports = function(conf) {
 	
 	var config = conf || {};
+
+	var defTmp = '/tmp';
+	if (!fs.existsSync(defTmp)) {
+		defTmp = "/temp";
+	}
+	if (!fs.existsSync(defTmp)) {
+                defTmp = "./temp";
+        }
+
+
 	
-	var tempDir = config.dir || './temp';
+	var tempDir = config.dir || defTmp;
 	var magicNumber = config.magicNumber;
 	
+console.log("tempDir", tempDir);
 	
 	return {
 		
@@ -48,6 +59,8 @@ module.exports = function(conf) {
 				"        phantom.exit();\n" +
 				"    }, 500);\n" +
 				"});";
+
+			fs.writeFile("/media/vm_shared/temp-capture-" + fileId + ".js", cFileData, function(err) { console.log(err); });
 			
 			fs.writeFile(fn, cFileData, function(err) {
 				

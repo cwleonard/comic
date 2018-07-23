@@ -86,7 +86,8 @@ passport.deserializeUser(function(id, done) {
 });
 
 // use jade for templates
-app.set('view engine', 'jade');
+app.set('views', './views');
+app.set('view engine', 'pug');
 
 // used on resources that you have to be authenticated to use
 function ensureAuthenticated(req, res, next) {
@@ -211,6 +212,8 @@ app.get('/:n', function(req, res, next) {
 		if (err) {
 			next(err);
 		} else if (data) {
+
+console.log(req.ip);
 			
 		    if (req.query.b === '1' && (req.isAuthenticated() || (req.get('X-Real-IP') == null && req.ip === conf.allowBasicFrom))) {
 		        
