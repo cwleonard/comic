@@ -19,6 +19,8 @@ div#sizer(comicId=id)
 			!= 'This comic contains a (probably) fun dynamic element! To really enjoy it, you should visit https://' + url + '/' + id
 	if title
 		p.cTitle= title
+	if subtitle
+		p.subTitle= subtitle
 	- for (var c in cells)
 		div.box(style=(cells[c].background ? 'background-color: ' + cells[c].background + ( cells[c].extraStyle ? ';' + cells[c].extraStyle : '') : undefined ),id='cell-' + c)
 			if cells[c].bubble

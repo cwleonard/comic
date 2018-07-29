@@ -317,6 +317,7 @@ function buildCellObject(elem) {
 function buildComicOjbect() {
 	
 	var ct = $('#ctitle').val();
+	var st = $('#subtitle').val();
 	var pd = $('#pubDate').val();
 	var et = $('#extraText').val();
 	var js = $('#extraJs').val();
@@ -328,6 +329,10 @@ function buildComicOjbect() {
 		extraText: et,
 		cells: []
 	};
+
+	if (st !== '') {
+		cobj.subtitle = st;
+	}
 	
 	if (js !== '') {
 		cobj.scripts = js.split(/\s*,\s*/);
@@ -629,9 +634,11 @@ function clear() {
 	
 	$('#cid').val('');
 	$('#ctitle').val('');
+	$('#subtitle').val('');
 	$('#extraJs').val('');
 	$('#pubDate').val(moment().format('YYYY-MM-DD'));
 	$('#cellArea div.box').remove();
+	$('#tags').val('');
 	
 }
 
@@ -1230,6 +1237,9 @@ function dataToComic(data) {
 		$('#cid').val(data.id);
 	}
 	$('#ctitle').val(data.title);
+	if (data.subtitle) {
+		$('#subtitle').val(data.subtitle);
+	}
 	$('#extraText').val(data.extraText);
 	if (data.scripts && data.scripts.length > 0) {
 		$('#extraJs').val(data.scripts.join());

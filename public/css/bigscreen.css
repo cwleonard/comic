@@ -9,6 +9,10 @@
 		font-size: 3.2em;
 	}
 
+	p.subTitle {
+		font-size: 1.8em;
+	}
+
 	.box {
 		height: 404px;
 	}
