@@ -23,11 +23,13 @@ html
 						div(class="about-one-content")
 
 						- var cMon = -1;
+						- var cYear = -1;
 						- var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 						- for (var c in comics)
 
-							if (cMon != comics[c].pdate.getMonth())
+							if (cMon != comics[c].pdate.getMonth() || cYear != comics[c].pdate.getFullYear())
 								- cMon = comics[c].pdate.getMonth()
+								- cYear = comics[c].pdate.getFullYear()
 								h3(style='margin-bottom: 20px !important;')= monthNames[comics[c].pdate.getMonth()] + ' ' + comics[c].pdate.getFullYear()
 								p(style='margin-left: 50px !important;')
 									a(href='/' + comics[c].id)= comics[c].published + ' - ' + comics[c].title
