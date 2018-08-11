@@ -4,7 +4,7 @@ html
 	body
 		include header
 		
-		div(class="about-us block",style="border-bottom: none;" + (filteredBy || searchedFor ? "padding-top: 15px;" : ''))
+		div(class="about-us block",style="border-bottom: none; padding-top: 20px;")
 			div(class="container")
 				
 				if (filteredBy || searchedFor)
@@ -17,6 +17,13 @@ html
 						span(class="clear-filter")
 							i(class="fa fa-times",aria-hidden="true")
 						div(class="clearfix")
+
+				div(class="form-inline",style="margin-bottom: 15px;")
+					div(class='form-group clearfix')
+						label(style="font-family: 'Sniglet'; font-weight: normal; font-size: larger; margin-right: 10px;",for="searchFor") Search For Comics Containing
+						input#searchFor.form-control(style="",type="text",placeholder="something cool")
+					button#doSearch(style="margin-left: 10px;",class="btn btn-primary")
+						| Go
 
 				div(class="about-one")
 					div(class="about-one-item")
@@ -36,6 +43,13 @@ html
 							else
 								p(style='margin-left: 50px !important;')
 									a(href='/' + comics[c].id)= comics[c].published + ' - ' + comics[c].title
+
+						- if (comics.length == 0)
+							div
+								p No comics found! Alert the accountants!
+								img(src="/images/business_face_left_puzzled.svg",style="width: 20%; float: right;")
+						- else
+							img(src="/images/frog.svg",style="width: 20%; float: right;")
 
 				div(class="clearfix")
 

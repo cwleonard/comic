@@ -431,6 +431,30 @@ $(function() {
 	});
 });
 
+/**
+ * function to perform search on the archive page
+ */
+function goSearch() {
+	var terms = $("#searchFor").val();
+	if (terms && terms.length > 0) {
+		window.location.href = "/archive?q=" + encodeURI(terms);
+	}
+}
+
+/**
+ * bind to the archive page search controls
+ */
+$(function() {
+	$('#searchFor').keypress(function(event) {
+        if (event.keyCode == 13) {
+            goSearch();
+        }
+    });
+	$("#doSearch").click(function() {
+		goSearch();
+	});
+});
+
 var topics = {};
 
 $(function() {
