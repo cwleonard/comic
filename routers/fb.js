@@ -22,11 +22,23 @@ module.exports = function(c) {
 
 					var data = JSON.parse(body);
 
-					res.setHeader('Content-Type', 'application/json');
-					res.send({
-						id : data.id,
-						shares : data.share.share_count
-					});
+					if (data.id && data.share && data.share.share_count) {
+
+						res.setHeader('Content-Type', 'application/json');
+						res.send({
+							id : data.id,
+							shares : data.share.share_count
+						});
+	
+					} else {
+
+						console.log("unexpected data: " + body);
+						res.setHeader('Content-Type', 'application/json');
+						res.send({
+							id : 0,
+							shares : 0
+						});
+					}
 
 				} else {
 					next(error);
