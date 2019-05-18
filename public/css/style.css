@@ -594,6 +594,14 @@ div.buy p.ftitle {
 	margin-left: 30%;
 }
 
+#patreon div {
+	float: right;
+}
+
+#patreon div iframe {
+	width: 180px !important;
+}
+
 #twc {
 	margin-top: 15px;
 	text-align: center;
