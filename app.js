@@ -420,6 +420,20 @@ app.get('/about', function(req, res, next) {
 	
 });
 
+app.get('/thanks', function(req, res, next) {
+	
+	cfact.loadPatrons()
+	.then(function(data) {
+		res.render('thanks', {
+			title: 'Thanks',
+			patrons: data
+		});
+	}, function(error) {
+		next(error.error);
+	});
+	
+});
+
 app.get('/promo', function(req, res, next) {
 	
 	res.render('promoFeb2015', {

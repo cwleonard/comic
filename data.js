@@ -203,8 +203,52 @@ module.exports = function(dbconf) {
 		
 	}
 
+	function getPatrons(callback) {
+
+		var deferred = q.defer();
+
+		var sql = 'SELECT id, name, frog_name FROM comic_patrons ORDER BY id';
+		pool.query(sql, function(err, rows) {
+
+			if (err) {
+
+				deferred.reject({
+					message: 'database query failed',
+					error: err
+				});
+
+			} else {
+
+				var patrons = [];
+				for (var i = 0; i < rows.length; i++) {
+
+					var obj = {};
+					obj.id = rows[i].id;
+					obj.patronName = rows[i].name;
+					obj.patronFrog = rows[i].frog_name;
+
+					patrons.push(obj);
+
+				}
+
+				deferred.resolve(patrons);
+
+			}
+
+		});
+
+		return deferred.promise;
+
+	}
+
 	return {
 		
+		loadPatrons: function() {
+
+			return getPatrons();
+
+		},
+
 		loadCurrent: function (cb) {
 			
 			loadNewest(cb);
