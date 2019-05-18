@@ -1,0 +1,38 @@
+doctype html
+html
+	include head
+	body
+		include header
+		
+		div(class="about-us block",style="border-bottom: none;")
+			div(class="container")
+				
+				div(class="about-one",style="margin-bottom: 20px;")
+
+					div(class="about-one-item")
+
+						div(class="about-one-content")
+							h3 Thanks to our Patrons!
+							p The following people have contributed to this comic via Patreon. We are very grateful for their support!
+
+							table(class="pure-table pure-table-striped patron-table")
+								thead
+									tr
+										th Patron
+										th Worker Frog Name
+
+								- for (var p in patrons)
+									tr
+										td= patrons[p].patronName
+										td= patrons[p].patronFrog
+
+							p If you enjoy this comic, please consider supporting it via Patreon. Patrons who support at the $5/month level get to name one of the worker frogs!
+							div#patreon2
+								a(href="https://www.patreon.com/bePatron?u=541017",data-patreon-widget-type="become-patron-button")
+									='Become a Patron!'
+									script(async,src="https://c6.patreon.com/becomePatronButton.bundle.js")
+
+					div(class="clearfix")
+		
+		include footer
+		include js

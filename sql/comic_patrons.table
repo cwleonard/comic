@@ -1,0 +1,8 @@
+delimiter $$
+
+CREATE TABLE `comic_patrons` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(300) NOT NULL,
+	`frog_name` VARCHAR(300) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1$$

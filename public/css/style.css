@@ -602,6 +602,15 @@ div.buy p.ftitle {
 	width: 180px !important;
 }
 
+.patron-table {
+	margin: 10px 20px 20px 20px;
+	font-size: 1.6rem;
+}
+
+#patreon2 {
+	margin: 10px 20px 20px 20px;
+}
+
 #twc {
 	margin-top: 15px;
 	text-align: center;
