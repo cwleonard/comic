@@ -589,7 +589,13 @@ div.buy p.ftitle {
 	
 }
 
+#patreon {
+	margin-top: 20px;
+	margin-left: 30%;
+}
+
 #twc {
+	margin-top: 15px;
 	text-align: center;
 }
 
