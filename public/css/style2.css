@@ -1578,7 +1578,7 @@ footer .copy{
 	}
 
 	header .navigation a {
-		font-size: 1.2em;
+		font-size: 1.15em;
 		padding: 5px 8px;
 		margin-right: 3px;
 		margin-left: 3px;
@@ -1590,7 +1590,7 @@ footer .copy{
 @media (min-width: 600px) {
 
 	header .navigation a {
-		font-size: 1.2em;
+		font-size: 1.15em;
 		padding: 10px 15px;
 		margin-right: 5px;
 		margin-left: 5px;
