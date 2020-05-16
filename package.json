@@ -6,7 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "4.17.0",
+    "express": "4.17.1",
     "mysql": "2.18.1",
     "jade": "1.11.0",
     "compression": "1.7.4",
