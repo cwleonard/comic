@@ -33,20 +33,14 @@ path and filename below to use a different one.
 	> wget https://nodejs.org/download/release/latest-v5.x/node-v5.5.0-linux-x64.tar.gz
 	> sudo tar -C /usr/local --strip-components 1 -xzf node-v5.5.0-linux-x64.tar.gz
 
-To generate the static images of the comic, PhantomJS is required. The current version, 2.0.0, has
-no publicly available binary for Linux at this time. To build it, do the following (it takes a while):
+To generate the static images of the comic, PhantomJS is required.
 
-	> sudo apt-get install build-essential g++ flex bison gperf ruby perl libsqlite3-dev libfontconfig1-dev libicu-dev libfreetype6 libssl-dev libpng-dev libjpeg-dev python libx11-dev libxext-dev ttf-mscorefonts-installer
-	> wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.0.0-source.zip
-	> unzip phantomjs-2.0.0-source.zip
-	> cd phantomjs-2.0.0
-	> ./build.sh
-	> sudo cp ./bin/phantomjs /usr/local/bin
-	> sudo chmod 775 /usr/local/bin/phantomjs
+	> wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+	> tar xvf phantomjs-2.1.1-linux-x86_64.tar.bz2
+	> sudo mv phantomjs-2.1.1-linux-x86_64 /opt
+	> cd /usr/local/bin
+	> sudo ln -s /opt/phantomjs-2.1.1-linux-x86_64/bin/phantomjs phantomjs
 	
-	* Note - I built it for Ubuntu 14.04.3 64-bit and keep a copy of the binary around. If you can get it,
-	         just skip to the part about copying it to /usr/local/bin and go from there.
-
 Installing the comic application, to run under a user named "comic" and lives in /opt/comic.
 
 	> sudo useradd -M comic
@@ -95,6 +89,14 @@ Set the comic app to auto-start when the machine boots. Also gives you a way to 
 	> sudo cp comic_start /etc/init.d/comic
 	> sudo chmod +x /etc/init.d/comic
 	> sudo update-rc.d comic defaults
+
+	OR
+
+	Use pm2
+
+	> cd /opt/comic
+	> pm2 start app.js --name comic
+	> pm2 save
 
 Start it up!
 
