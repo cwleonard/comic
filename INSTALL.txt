@@ -98,6 +98,13 @@ Set the comic app to auto-start when the machine boots. Also gives you a way to 
 	> pm2 start app.js --name comic
 	> pm2 save
 
+To set up the 404 page soccer game:
+
+	> cd /opt
+	> sudo git clone https://github.com/cwleonard/comic-404.git
+	> cd comic
+	> sudo ln -s /opt/comic-404/public soccer
+
 Start it up!
 
 	> sudo /etc/init.d/comic start
