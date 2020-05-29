@@ -30,7 +30,7 @@ module.exports = function(dbconf) {
 		
 		var sql = 'SELECT id, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
 			'WHERE pub_date = (SELECT MIN(pub_date) FROM comic_data WHERE pub_date > ? AND ' +
-			'DATE(pub_date) <= CURDATE())';
+			'DATE(pub_date) <= CONVERT_TZ(CURRENT_TIMESTAMP(), \'UTC\',\'America/New_York\'))';
 		pool.query(sql, [d], function(err, rows) {
 			
 			if (err) {
@@ -87,7 +87,7 @@ module.exports = function(dbconf) {
 	function loadNewest(cb) {
 
 		var sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
-		'WHERE pub_date = (SELECT MAX(pub_date) FROM comic_data WHERE DATE(pub_date) <= CURDATE())';
+		'WHERE pub_date = (SELECT MAX(pub_date) FROM comic_data WHERE DATE(pub_date) <= CONVERT_TZ(CURRENT_TIMESTAMP(), \'UTC\',\'America/New_York\'))';
 		pool.query(sql, function(err, rows) {
 
 			if (err) {
@@ -125,7 +125,7 @@ module.exports = function(dbconf) {
 	function loadRecentSet(num, cb) {
 		
 		var sql = 'SELECT id, pub_date, DATE_FORMAT(pub_date, \'%W, %e %M %Y\') as pd, data FROM comic_data ' +
-		'WHERE pub_date <= (SELECT MAX(pub_date) FROM comic_data WHERE DATE(pub_date) <= CURDATE()) ' +
+		'WHERE pub_date <= (SELECT MAX(pub_date) FROM comic_data WHERE DATE(pub_date) <= CONVERT_TZ(CURRENT_TIMESTAMP(), \'UTC\',\'America/New_York\')) ' +
 		'ORDER BY pub_date DESC LIMIT ' + pool.escape(num);
 		pool.query(sql, function(err, rows) {
 
@@ -525,7 +525,7 @@ module.exports = function(dbconf) {
 			var params = [];
 			var wheres = new Array();
 			if (noFuture) {
-				wheres.push('DATE(pub_date) <= CURDATE()');
+				wheres.push('DATE(pub_date) <= CONVERT_TZ(CURRENT_TIMESTAMP(), \'UTC\',\'America/New_York\')');
 			}
 			if (withTag) {
 				wheres.push('id IN (SELECT id FROM comic_tags WHERE tag = ?)');
