@@ -59,6 +59,10 @@ for the MySQL root password.
 	> sudo chmod +x create_db.sh
 	> sudo ./create_db.sh amphibian <user> <password>
 
+Load timezone info in to MySQL.
+
+    > sudo mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
+
 Set up nginx to proxy HTTP requests on port 80 to whatever high port the comic runs on. By default,
 the comic app listens on port 3000 but you can change that if you edit /opt/comic/nginx/amphibian before
 running these steps. You'll have to set config.json to match whatever you decide to use.
