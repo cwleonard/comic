@@ -101,13 +101,13 @@ function replaceComic(id, push) {
 		}
 
 		try {
-			if (DISQUS) {
+			if (DISQUS && $('#disqus_thread').length) {
 				DISQUS.reset(
 					{
 						reload: true,
 						config: function () {
-							this.page.identifier = id;
-							this.page.url = "http://amphibian.com/" + id;
+							this.page.identifier = $('#sizer').attr('comicId');
+							this.page.url = "http://amphibian.com/" + $('#sizer').attr('comicId');
 						}
 					});
 			}
