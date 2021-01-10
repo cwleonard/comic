@@ -169,6 +169,11 @@ app.get('/', function(req, res, next) {
 					data.admin = true;
 				}
 				data.url = conf.base;
+				var cDate  = new Date("1 January 2021");
+				var p = new Date(data.pubDate);
+				if (p > cDate) {
+					data.allowComments = true;
+				}
 				res.render('comicpage', data);
 			} else {
 				next(); // no comic found
@@ -675,8 +680,8 @@ app.use('/paidContent', paidContentRouter);
 
 // ------------ teapot
 
-app.get('/teapot', function(req, res, next) {
-	res.status(418).send('your tea is ready');
+app.get('/coffee', function(req, res, next) {
+	res.status(418).send('i am a teapot');
 });
 
 // ------------ what's temperature here?
