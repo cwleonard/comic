@@ -100,6 +100,21 @@ function replaceComic(id, push) {
 		    console.log("pinterest error! " + e);
 		}
 
+		try {
+			if (DISQUS) {
+				DISQUS.reset(
+					{
+						reload: true,
+						config: function () {
+							this.page.identifier = id;
+							this.page.url = "http://amphibian.com/" + id;
+						}
+					});
+			}
+		} catch (e) {
+			console.log("disqus error!", e);
+		}
+
 	}, 'html');
 	
 }

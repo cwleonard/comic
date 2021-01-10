@@ -14,6 +14,9 @@ if admin
 	script(src='/js/jquery.contextMenu.js')
 	script(src='/js/adminFunctions.js')
 
+if allowComments
+	script(src='/js/disqus.js')
+
 if scripts
 	- for (var s in scripts)
 		script(src='/js/' + scripts[s])

@@ -236,7 +236,8 @@ app.get('/:n', function(req, res, next) {
 
 		        if (data.pubDate) {
 		            var p = new Date(data.pubDate);
-		            if (p > new Date()) {
+		            if (p > new Date()) { // future comic
+						data.allowComments = false;
 		                if (!req.isAuthenticated()) {
 		                    // only authenticated users can see future comics
 		                    fs.readFile('data/403.json', { encoding: 'utf-8' }, function(err, data) {
@@ -256,11 +257,16 @@ app.get('/:n', function(req, res, next) {
 		                    data.url = conf.base;
 		                    res.render('comicpage', data);
 		                }
-		            } else {
-		                data.url = conf.base;
+		            } else { // normal path
+						data.url = conf.base;
+						var cDate  = new Date("1 January 2021");
+						var p = new Date(data.pubDate);
+						if (p > cDate) {
+							data.allowComments = true;
+						}
 		                res.render('comicpage', data);
 		            }
-		        } else {
+		        } else { // not sure about this one
 		            data.url = conf.base;
 		            res.render('comicpage', data);
 		        }
