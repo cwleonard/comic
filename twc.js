@@ -1,4 +1,4 @@
-var http = require('http');
+var https = require('https');
 
 module.exports = function() {
 	
@@ -10,7 +10,7 @@ module.exports = function() {
 	
 	function pullRank(cb) {
 
-		http.get("https://topwebcomics.com/rankimages/plaintext.aspx?comicid=" + twcComicId, function(res) {
+		https.get("https://topwebcomics.com/rankimages/plaintext.aspx?comicid=" + twcComicId, function(res) {
 			
 			var wData = '';
 			res.on('data', function(chunk) {
