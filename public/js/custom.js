@@ -101,7 +101,7 @@ function replaceComic(id, push) {
 		}
 
 		try {
-			if (DISQUS && $('#disqus_thread').length) {
+			if ( (typeof DISQUS !== 'undefined') && $('#disqus_thread').length) {
 				DISQUS.reset(
 					{
 						reload: true,
