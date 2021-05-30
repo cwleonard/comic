@@ -345,6 +345,12 @@ app.get('/chtml/:n', function(req, res, next) {
 			// happens at this path, the JS footer (which looks at 'scripts')
 			// is not used.
 			data.dynScripts = data.scripts;
+
+			var cDate  = new Date("1 January 2021");
+			var p = new Date(data.pubDate);
+			if (p > cDate) {
+				data.allowComments = true;
+			}
 			
 			res.render('comic', data, function(err, str) {
 				if (err) {
