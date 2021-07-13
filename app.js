@@ -12,7 +12,7 @@ var qr = require('qr-image');
 
 var Feed = require('feed');
 
-var routers = ["data", "images", "memeGen", "colors", "fb", "lamp", "captcha", "faq"];
+var routers = ["data", "images", "memeGen", "colors", "fb", "lamp", "captcha", "faq", "algorithmOrder"];
 
 var coinRoutes = require('./coinRoutes');
 var logging = require('./logger');
