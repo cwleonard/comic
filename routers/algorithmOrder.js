@@ -7,19 +7,19 @@ module.exports = function(c) {
 	var sortData = [
 		{
 			"cell": 0,
-			"up": 1,
+			"up": 4,
 			"down": 1
 		}, {
 			"cell": 1,
-			"up": 2,
-			"down": 1
-		}, {
-			"cell": 2,
 			"up": 3,
 			"down": 1
 		}, {
+			"cell": 2,
+			"up": 2,
+			"down": 1
+		}, {
 			"cell": 3,
-			"up": 4,
+			"up": 1,
 			"down": 1
 		}
 	];
