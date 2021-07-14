@@ -8,17 +8,33 @@ $(function() {
 
     // --------------------------------------
 
-    for (var i = 0; i < 4; i++) {
-        
-        $('#cell-' + i + '-up').click(function() {
-            cellFeedback(i, true, false);
-        });
-    
-        $('#cell-' + i + '-down').click(function() {
-            cellFeedback(i, false, true);
-        });
+    $('#cell-0-up').click(function(i) {
+        cellFeedback(0, true, false);
+    });
+    $('#cell-0-down').click(function() {
+        cellFeedback(0, false, true);
+    });
 
-    }
+    $('#cell-1-up').click(function(i) {
+        cellFeedback(1, true, false);
+    });
+    $('#cell-1-down').click(function() {
+        cellFeedback(1, false, true);
+    });
+
+    $('#cell-2-up').click(function(i) {
+        cellFeedback(2, true, false);
+    });
+    $('#cell-2-down').click(function() {
+        cellFeedback(2, false, true);
+    });
+
+    $('#cell-3-up').click(function(i) {
+        cellFeedback(3, true, false);
+    });
+    $('#cell-3-down').click(function() {
+        cellFeedback(3, false, true);
+    });
 
     // --------------------------------------
 	
