@@ -1,27 +1,24 @@
 
 $(function() {
-	
-	$('#cell-0-up').unbind('click');
-	$('#cell-0-down').unbind('click');
 
-    $('#cell-1-up').unbind('click');
-	$('#cell-1-down').unbind('click');
-
-    $('#cell-2-up').unbind('click');
-	$('#cell-2-down').unbind('click');
-
-    $('#cell-3-up').unbind('click');
-	$('#cell-3-down').unbind('click');
+    for (var i = 0; i < 4; i++) {
+        $('#cell-' + i + '-up').unbind('click');
+        $('#cell-' + i + '-down').unbind('click');
+    }
 
     // --------------------------------------
 
-    $('#cell-0-up').click(function() {
-        cellFeedback(0, true, false);
-    });
+    for (var i = 0; i < 4; i++) {
+        
+        $('#cell-' + i + '-up').click(function() {
+            cellFeedback(i, true, false);
+        });
+    
+        $('#cell-' + i + '-down').click(function() {
+            cellFeedback(i, false, true);
+        });
 
-    $('#cell-0-down').click(function() {
-        cellFeedback(0, false, true);
-    });
+    }
 
     // --------------------------------------
 	
