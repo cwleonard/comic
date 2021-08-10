@@ -1,11 +1,11 @@
 @keyframes swing1 {
-  0%, 100% { transform: rotate(-30deg); }
-  50% { transform: rotate(30deg); }
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
 }
 
 @keyframes swing2 {
-  0%, 100% { transform: rotate(30deg); }
-  50% { transform: rotate(-30deg); }
+  0%, 100% { transform: rotate(10deg); }
+  50% { transform: rotate(-10deg); }
 }
 
 #cell-0 {
