@@ -1,0 +1,25 @@
+@keyframes swing1 {
+  0%, 100% { transform: rotate(-30deg); }
+  50% { transform: rotate(30deg); }
+}
+
+@keyframes swing2 {
+  0%, 100% { transform: rotate(30deg); }
+  50% { transform: rotate(-30deg); }
+}
+
+#cell-0 {
+  animation: swing1 2s infinite ease-in-out;
+}
+
+#cell-1 {
+  animation: swing2 2s infinite ease-in-out;
+}
+
+#cell-2 {
+  animation: swing1 2s infinite ease-in-out;
+}
+
+#cell-3 {
+  animation: swing2 2s infinite ease-in-out;
+}
