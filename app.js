@@ -102,7 +102,7 @@ function correctUrl(b) {
 	
 	return function (req, res, next) {
 
-		if (req.hostname.indexOf('toads.co') !== -1 && req.originalUrl === '/') {
+		if (req.hostname && req.hostname.indexOf('toads.co') !== -1 && req.originalUrl === '/') {
 			req.toads = true;
 			next();
 		} else if (req.hostname !== b) {

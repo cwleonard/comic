@@ -11,7 +11,7 @@
     "jade": "1.11.0",
     "compression": "1.7.4",
     "body-parser": "1.19.0",
-    "multiparty": "4.2.1",
+    "multiparty": "4.2.2",
     "morgan": "1.10.0",
     "cookie-parser": "1.4.5",
     "express-session": "1.17.1",
