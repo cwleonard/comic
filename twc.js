@@ -10,7 +10,7 @@ module.exports = function() {
 	
 	function pullRank(cb) {
 
-		https.get("https://topwebcomics.com/rankimages/plaintext.aspx?comicid=" + twcComicId, function(res) {
+		https.get("https://www.topwebcomics.com/rankimages/plaintext.aspx?comicid=" + twcComicId, function(res) {
 			
 			var wData = '';
 			res.on('data', function(chunk) {
