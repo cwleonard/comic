@@ -17,7 +17,7 @@
     "express-session": "1.17.1",
     "passport": "0.4.1",
     "passport-local": "1.0.0",
-    "ua-parser-js": "0.7.21",
+    "ua-parser-js": "0.7.24",
     "feed": "0.3.0",
     "q": "1.5.1",
     "qr-image": "3.2.0",
