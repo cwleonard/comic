@@ -11,7 +11,8 @@ $(function() {
 
     $("#cell-0").css({
         "animation-name": "darken",
-        "animation-duration": "15s"
+        "animation-duration": "15s",
+        "animation-fill-mode": "forwards"
     });
 
 });
