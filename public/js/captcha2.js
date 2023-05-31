@@ -23,7 +23,7 @@ var questions = [
 			"https://amphibian.com/images/basement-bug.jpg",
             "https://amphibian.com/images/brown_bug.jpg",
             "https://amphibian.com/images/cicada.jpg",
-            "https://amphibian.com/images/bed-bug.png",
+            "https://amphibian.com/images/bed-bug.jpg",
             "https://amphibian.com/images/spotted-lanternfly.jpg",
             "https://amphibian.com/images/ladybug.jpg",
             "https://amphibian.com/images/waterbug.jpg"
