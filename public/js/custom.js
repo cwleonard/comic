@@ -120,7 +120,7 @@ function replaceComic(id, push) {
 }
 
 function showTipModal() {
-	$('#tipModal').modal('show');
+	//$('#tipModal').modal('show');
 }
 
 $(function() {
