@@ -23,7 +23,7 @@
     "qr-image": "3.2.0",
     "coinbase": "1.0.2",
     "svgo": "0.7.1",
-    "xmldom": "0.1.31",
+    "xmldom": "0.6.0",
     "request": "2.88.2",
     "async": "1.5.2",
     "socket.io": "1.4.5"
